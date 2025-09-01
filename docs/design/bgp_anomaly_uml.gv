@@ -1,0 +1,114 @@
+digraph BGP_Anomaly_Detection {
+	rankdir=TB splines=ortho
+	start [label="" fillcolor=black shape=circle style=filled]
+	load_configs [label="Load Configurations:
+roles.yml & collector.yml" shape=box]
+	start_nats [label="Start NATS Message Broker" shape=box]
+	start_collector [label="Start BGP Collector (Go)" shape=box]
+	start_pipeline [label="Start Python Pipeline" shape=box]
+	start_dashboard [label="Start Streamlit Dashboard" shape=box]
+	init_gobgp [label="Initialize GoBGP Server" shape=box]
+	add_peers [label="Add BGP Peers
+(ToR, Spine, Edge, RR)" shape=box]
+	establish_sessions [label="Establish BGP Sessions" shape=box]
+	session_check [label="BGP Sessions
+Established?" shape=diamond]
+	session_fail [label="Session Establishment Failed
+Retry or Alert" fillcolor=orange shape=box style=filled]
+	listen_updates [label="Listen for BGP Updates
+(Announcements/Withdrawals)" shape=box]
+	parse_update [label="Parse BGP Update:
+Prefix, AS-Path, Peer" shape=box]
+	publish_nats [label="Publish Parsed Update
+to NATS (bgp.updates)" shape=box]
+	consume_nats [label="Consume BGP Updates
+from NATS" shape=box]
+	aggregate_features [label="Aggregate Features in Bins
+(30s windows)" shape=box]
+	bin_ready [label="Feature Bin
+Complete?" shape=diamond]
+	extract_features [label="Extract Features:
+• Announcements/Withdrawals
+• AS-Path Changes
+• Peer Activity" shape=box]
+	mp_detection [label="Matrix Profile Detection:
+Compute Discord Score" shape=box]
+	anomaly_check [label="Anomaly Score >
+Threshold?" shape=diamond]
+	normal_activity [label="Normal BGP Activity
+Continue Monitoring" fillcolor=lightgreen shape=box style=filled]
+	triage_analysis [label="Triage Analysis:
+Classify Impact Scope" shape=box]
+	role_analysis [label="Analyze Affected Roles:
+ToR, Spine, Edge, RR, Server" shape=box]
+	prefix_analysis [label="Analyze Prefix Spread
+& Table Impact" shape=box]
+	impact_decision [label="Impact Classification" shape=diamond]
+	edge_local [label="EDGE_LOCAL:
+ToR ↔ Server Issue
+Limited Blast Radius" fillcolor=yellow shape=box style=filled]
+	network_impact [label="NETWORK_IMPACTING:
+Wide-scale Failure
+Multiple Roles Affected" fillcolor=red shape=box style=filled]
+	publish_event [label="Publish Event to
+Dashboard Channel" shape=box]
+	update_dashboard [label="Update Streamlit Dashboard:
+• Live Anomaly Score
+• Affected Prefixes/Roles
+• Explanation" shape=box]
+	alert_check [label="Network Impact
+Requires Alert?" shape=diamond]
+	send_alert [label="Send Network Alert
+(Critical)" fillcolor=red shape=box style=filled]
+	log_event [label="Log Event
+(Informational)" shape=box]
+	continue_monitoring [label="Continue Monitoring
+for Next Updates" shape=box]
+	end [label="" fillcolor=black shape=circle style=filled]
+	start -> load_configs
+	load_configs -> start_nats
+	start_nats -> start_collector
+	start_collector -> start_pipeline
+	start_pipeline -> start_dashboard
+	start_dashboard -> init_gobgp
+	init_gobgp -> add_peers
+	add_peers -> establish_sessions
+	establish_sessions -> session_check
+	session_check -> session_fail [label=No]
+	session_fail -> establish_sessions [label=Retry]
+	session_check -> listen_updates [label=Yes]
+	listen_updates -> parse_update
+	parse_update -> publish_nats
+	publish_nats -> consume_nats
+	consume_nats -> aggregate_features
+	aggregate_features -> bin_ready
+	bin_ready -> aggregate_features [label="No
+(Continue)"]
+	bin_ready -> extract_features [label=Yes]
+	extract_features -> mp_detection
+	mp_detection -> anomaly_check
+	anomaly_check -> normal_activity [label=No]
+	normal_activity -> continue_monitoring
+	anomaly_check -> triage_analysis [label=Yes]
+	triage_analysis -> role_analysis
+	role_analysis -> prefix_analysis
+	prefix_analysis -> impact_decision
+	impact_decision -> edge_local [label="ToR/Server Only
+<100 Prefixes"]
+	impact_decision -> network_impact [label="Multiple Roles
+>100 Prefixes"]
+	edge_local -> publish_event
+	network_impact -> publish_event
+	publish_event -> update_dashboard
+	update_dashboard -> alert_check
+	alert_check -> send_alert [label="Yes
+(Network Impact)"]
+	alert_check -> log_event [label="No
+(Edge Local)"]
+	send_alert -> continue_monitoring
+	log_event -> continue_monitoring
+	continue_monitoring -> listen_updates [label="Next Update"]
+	continue_monitoring -> end [label=Shutdown constraint=false style=dashed]
+	node [fontsize=10]
+	edge [fontsize=9]
+}

@@ -1,6 +1,17 @@
-# Failure‑Focused Live BGP Failure Detection (Topology‑Aware)
+# BGP Failure Detection using Topology-Aware Machine Learning
 
-This repo detects **failure‑induced** BGP anomalies on live streams and triages edge‑local (ToR↔server) vs. network‑impacting events using a lightweight topology‑aware blast‑radius score.
+> **IS499 Capstone Project** | Real-time BGP anomaly detection with topology-aware failure localization
+
+This system detects **failure‑induced** BGP anomalies on live streams and triages edge‑local (ToR↔server) vs. network‑impacting events using Matrix Profile analysis and lightweight topology‑aware blast‑radius scoring.
+
+## 📚 Project Documentation
+
+**👉 [Complete Documentation](docs/)** | **[References](docs/research/references.md)** | **[System Design](docs/design/)**
+
+- **Research Foundation:** [9 peer-reviewed sources](docs/research/references.md) on BGP anomaly detection
+- **Technical Design:** [UML diagrams](docs/design/) and system architecture  
+- **Academic Integration:** [Program alignment](docs/development/program_alignment.md) mapping to IS curriculum
+- **Project Planning:** [Proposal](docs/development/proposal.md) and [evaluation plan](docs/development/evaulation_plan.md)
 
 ## Quick Start
 1. **Edit configs**
@@ -41,3 +52,22 @@ make down       # stop
 make collector  # build/run Go collector (reads configs/collector.yml)
 make pipeline   # run python pipeline (env from requirements.txt)
 ```
+
+## 🎓 Academic Context
+
+**Thesis:** Traditional BGP monitoring suffers from high false positives and lacks failure localization context. This system combines Matrix Profile discord detection with network topology analysis to reduce alert fatigue and enable faster failure resolution.
+
+**Novel Contributions:**
+- Real-time topology-aware failure localization (EDGE_LOCAL vs NETWORK_IMPACTING)
+- Streaming Matrix Profile implementation for BGP time series analysis
+- Multi-language integration (Go collector + Python ML pipeline)
+- Production-ready architecture with Docker containerization
+
+**Program Integration:** Demonstrates competencies across 12 IS courses including networking, databases, security, software development, and enterprise architecture.
+
+---
+
+**Author:** Mike Hernandez  
+**Institution:** [Your University] - Information Systems Program  
+**Advisor:** [Advisor Name]  
+**Repository:** https://github.com/mhernandezit/capstone-anomaly
