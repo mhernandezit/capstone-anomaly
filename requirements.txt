@@ -7,3 +7,5 @@ nats-py
 pyyaml
 scipy
 graphviz
+ruff
+black

@@ -1,6 +1,7 @@
 from typing import Dict
 from python.utils.schema import FeatureBin
 
+
 class ImpactScorer:
     def __init__(self, cfg_roles: Dict):
         self.roles = cfg_roles.get("roles", {})
@@ -18,7 +19,9 @@ class ImpactScorer:
             roles_hit.add(role)
         # Prefix spread proxy = announcements + withdrawals (you can wire exact table deltas)
         prefix_spread = fb.totals.get("ann_total", 0) + fb.totals.get("wdr_total", 0)
-        edge_local = (roles_hit == {"tor"} or roles_hit == {"server", "tor"}) and prefix_spread <= self.edge_local_prefix_max
+        edge_local = (
+            roles_hit == {"tor"} or roles_hit == {"server", "tor"}
+        ) and prefix_spread <= self.edge_local_prefix_max
         impact = "EDGE_LOCAL" if edge_local else "NETWORK_IMPACTING"
         return {
             "impact": impact,

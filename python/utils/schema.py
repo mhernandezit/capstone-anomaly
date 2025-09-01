@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
+
 
 class BGPUpdate(BaseModel):
     ts: int
@@ -8,6 +9,7 @@ class BGPUpdate(BaseModel):
     announce: Optional[List[str]] = None
     withdraw: Optional[List[str]] = None
     attrs: Optional[Dict[str, Any]] = None
+
 
 class FeatureBin(BaseModel):
     bin_start: int

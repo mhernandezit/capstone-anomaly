@@ -1,7 +1,7 @@
 from collections import defaultdict, deque
 from typing import Dict
 from python.utils.schema import BGPUpdate, FeatureBin
-import time
+
 
 class FeatureAggregator:
     def __init__(self, bin_seconds: int = 30):
@@ -28,7 +28,8 @@ class FeatureAggregator:
                 peers={p: dict(m) for p, m in self.by_peer.items()},
             )
             self.closed.append(fb)
-            self.current.clear(); self.by_peer.clear()
+            self.current.clear()
+            self.by_peer.clear()
             self.current_bin_start = b
         # update counts
         ann = len(u.announce or [])

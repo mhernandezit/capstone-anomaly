@@ -1,9 +1,6 @@
 import asyncio
-import json
-import time
 import yaml
 from nats.aio.client import Client as NATS
-from collections import defaultdict
 from python.utils.schema import BGPUpdate
 from python.features.stream_features import FeatureAggregator
 from python.models.mp_detector import MPDetector
@@ -11,6 +8,7 @@ from python.triage.impact import ImpactScorer
 
 CFG_ROLES = yaml.safe_load(open("configs/roles.yml"))
 BIN_SECS = CFG_ROLES["binning"]["bin_seconds"]
+
 
 async def main():
     nc = NATS()
@@ -37,6 +35,7 @@ async def main():
             await asyncio.sleep(0.5)
     finally:
         await nc.drain()
+
 
 if __name__ == "__main__":
     asyncio.run(main())
