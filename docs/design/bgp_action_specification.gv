@@ -1,0 +1,148 @@
+digraph BGP_Action_Specification {
+	rankdir=LR size="16,12" splines=ortho
+	node [fontname=Arial fontsize=10]
+	edge [fontname=Arial fontsize=8]
+	subgraph cluster_actors {
+		fillcolor=lightblue label="System Actors" style=filled
+		network_operator [label="Network Operator
+(Primary User)" fillcolor=lightgreen shape=box style=filled]
+		bgp_router [label="BGP Router
+(Data Source)" fillcolor=lightcoral shape=box style=filled]
+		monitoring_system [label="Existing Monitoring
+(Integration)" fillcolor=lightyellow shape=box style=filled]
+		management_system [label="Network Management
+(Consumer)" fillcolor=lightgray shape=box style=filled]
+	}
+	subgraph cluster_use_cases {
+		fillcolor=lightcyan label="Primary Use Cases" style=filled
+		uc_monitor [label="Monitor BGP Stream
+[Real-time]" shape=ellipse]
+		uc_detect [label="Detect Anomalies
+[Matrix Profile]" shape=ellipse]
+		uc_classify [label="Classify Impact
+[Topology-Aware]" shape=ellipse]
+		uc_alert [label="Generate Alerts
+[Contextual]" shape=ellipse]
+		uc_visualize [label="Visualize Events
+[Dashboard]" shape=ellipse]
+		uc_investigate [label="Investigate Failures
+[Root Cause]" shape=ellipse]
+	}
+	subgraph cluster_actions {
+		fillcolor=mistyrose label="Action Specifications" style=filled
+		action_connect [label="Action: EstablishBGPSessions
+Pre: Config loaded, NATS ready
+Post: Active BGP sessions
+Exception: SessionFailure" shape=note]
+		action_parse [label="Action: ParseBGPUpdate
+Pre: Raw BGP message received
+Post: Structured update object
+Exception: MalformedMessage" shape=note]
+		action_publish [label="Action: PublishToMessageBus
+Pre: Valid update object
+Post: Message in NATS stream
+Exception: PublishFailure" shape=note]
+		action_aggregate [label="Action: AggregateFeatures
+Pre: BGP updates in time window
+Post: Feature vector computed
+Exception: InsufficientData" shape=note]
+		action_bin [label="Action: CreateTimeBin
+Pre: 30-second window elapsed
+Post: Closed feature bin
+Exception: TimingError" shape=note]
+		action_mp [label="Action: ComputeMatrixProfile
+Pre: Sufficient historical data
+Post: Anomaly score calculated
+Exception: ComputationError" shape=note]
+		action_threshold [label="Action: EvaluateThreshold
+Pre: Anomaly score available
+Post: Boolean anomaly decision
+Exception: ThresholdError" shape=note]
+		action_role [label="Action: AnalyzeRoleImpact
+Pre: Anomaly detected
+Post: Affected roles identified
+Exception: TopologyError" shape=note]
+		action_blast [label="Action: CalculateBlastRadius
+Pre: Role analysis complete
+Post: Impact classification
+Exception: ClassificationError" shape=note]
+		action_dashboard [label="Action: UpdateDashboard
+Pre: Event classified
+Post: UI updated with event
+Exception: DisplayError" shape=note]
+		action_alert [label="Action: TriggerAlert
+Pre: Network impact detected
+Post: Alert sent to operators
+Exception: AlertFailure" shape=note]
+	}
+	subgraph cluster_decisions {
+		fillcolor=lavender label="Decision Logic" style=filled
+		decision_session [label="BGP Session
+Health Check
+[Every 30s]" fillcolor=yellow shape=diamond style=filled]
+		decision_anomaly [label="Anomaly Score
+> Threshold
+[Configurable]" fillcolor=orange shape=diamond style=filled]
+		decision_impact [label="Impact Scope
+Classification
+[Rule-based]" fillcolor=red shape=diamond style=filled]
+		decision_alert [label="Alert Severity
+Determination
+[Policy-driven]" fillcolor=purple shape=diamond style=filled]
+	}
+	subgraph cluster_constraints {
+		fillcolor=honeydew label="System Constraints & Invariants" style=filled
+		constraint_latency [label="Constraint: DetectionLatency
+< 60 seconds end-to-end" fillcolor=lightsteelblue shape=box style=filled]
+		constraint_accuracy [label="Constraint: FalsePositiveRate
+< 5% for network impact events" fillcolor=lightsteelblue shape=box style=filled]
+		constraint_availability [label="Constraint: SystemAvailability
+> 99.5% uptime" fillcolor=lightsteelblue shape=box style=filled]
+		invariant_data [label="Invariant: DataIntegrity
+All BGP updates processed in order" fillcolor=lightpink shape=box style=filled]
+		invariant_session [label="Invariant: SessionState
+BGP sessions monitored continuously" fillcolor=lightpink shape=box style=filled]
+	}
+	network_operator -> uc_monitor [label=initiates]
+	network_operator -> uc_investigate [label=performs]
+	network_operator -> uc_visualize [label=views]
+	bgp_router -> uc_monitor [label="provides data to"]
+	monitoring_system -> uc_alert [label="receives from"]
+	management_system -> uc_alert [label=consumes]
+	uc_monitor -> action_connect [label=realizes]
+	uc_monitor -> action_parse [label=includes]
+	uc_monitor -> action_publish [label=includes]
+	uc_detect -> action_aggregate [label=requires]
+	uc_detect -> action_mp [label=performs]
+	uc_detect -> action_threshold [label=evaluates]
+	uc_classify -> action_role [label=executes]
+	uc_classify -> action_blast [label=calculates]
+	uc_alert -> action_alert [label=triggers]
+	uc_visualize -> action_dashboard [label=updates]
+	action_connect -> decision_session [label=validates]
+	action_threshold -> decision_anomaly [label=determines]
+	action_blast -> decision_impact [label=classifies]
+	decision_impact -> decision_alert [label=influences]
+	action_mp -> constraint_latency [label="bounded by" style=dashed]
+	decision_anomaly -> constraint_accuracy [label="measured by" style=dashed]
+	uc_monitor -> constraint_availability [label=requires style=dashed]
+	action_publish -> invariant_data [label=maintains style=dashed]
+	decision_session -> invariant_session [label=enforces style=dashed]
+	subgraph cluster_sequence {
+		fillcolor=aliceblue label="Temporal Sequence" style=filled
+		seq_1 [label="1. BGP Update
+Received" fillcolor=wheat shape=box style=filled]
+		seq_2 [label="2. Features
+Aggregated" fillcolor=wheat shape=box style=filled]
+		seq_3 [label="3. Anomaly
+Detected" fillcolor=wheat shape=box style=filled]
+		seq_4 [label="4. Impact
+Classified" fillcolor=wheat shape=box style=filled]
+		seq_5 [label="5. Response
+Triggered" fillcolor=wheat shape=box style=filled]
+		seq_1 -> seq_2 [label="30s window"]
+		seq_2 -> seq_3 [label="real-time"]
+		seq_3 -> seq_4 [label="<1s"]
+		seq_4 -> seq_5 [label=immediate]
+	}
+}

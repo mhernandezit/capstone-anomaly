@@ -10,9 +10,12 @@ docs/
 │   ├── references.md   # Academic literature (APA format)
 │   └── proposals/      # Project proposals and planning
 ├── design/            # System architecture and design
-│   ├── bgp_anomaly_uml.py    # UML class diagrams
-│   ├── bgp_anomaly_uml.gv    # Graphviz diagram source
-│   └── bgp_anomaly_uml.gv.png # System architecture diagram
+│   ├── bgp_anomaly_uml.py           # Structural UML (system flow)
+│   ├── bgp_anomaly_uml.gv.png       # System architecture diagram
+│   ├── bgp_action_specification.py  # Action specification UML
+│   ├── bgp_action_specification.gv.png # Behavioral model & use cases
+│   ├── bgp_usecase_details.gv.png   # Detailed scenario flows
+│   └── README.md                    # Design documentation guide
 ├── development/       # Development documentation
 │   ├── program_alignment.md  # Course outcome mapping
 │   ├── thesis.md            # Thesis statement
@@ -27,7 +30,9 @@ docs/
 
 ### Essential Documents
 - **[References](research/references.md)** - Core academic literature
-- **[System Design](design/bgp_anomaly_uml.gv.png)** - Architecture overview  
+- **[System Architecture](design/bgp_anomaly_uml.gv.png)** - Structural flow diagram
+- **[Behavioral Model](design/bgp_action_specification.gv.png)** - Use cases & actions
+- **[Design Guide](design/README.md)** - Complete design documentation
 - **[Project Proposal](development/proposal.md)** - Problem statement and approach
 - **[Program Alignment](development/program_alignment.md)** - Course outcome mapping
 

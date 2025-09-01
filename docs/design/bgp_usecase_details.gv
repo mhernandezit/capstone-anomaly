@@ -1,0 +1,76 @@
+digraph BGP_UseCase_Details {
+	rankdir=TB size="12,16" splines=ortho
+	node [fontname=Arial fontsize=9]
+	precond -> trigger
+	trigger -> step1
+	step1 -> step2
+	step2 -> step3
+	step3 -> step4
+	step4 -> step5
+	step5 -> success [label="normal flow"]
+	step3 -> failure [label="detection fails" color=red style=dashed]
+	subgraph cluster_failure_scenario {
+		fillcolor=lightcyan label="Use Case: Network Failure Detection & Response" style=filled
+		uc_title [label="Use Case: Detect ToR-Spine Link Failure
+Actor: Network Operator
+Goal: Rapid failure localization" fillcolor=lightyellow shape=note style=filled]
+		precond [label="Preconditions:
+• BGP sessions established
+• Baseline traffic pattern learned
+• Dashboard accessible" shape=box]
+		trigger [label="Trigger:
+ToR-Spine link fails
+→ BGP withdrawals" fillcolor=orange shape=box style=filled]
+		step1 [label="Step 1:
+BGP collector receives
+withdrawal storm from ToR" shape=box]
+		step2 [label="Step 2:
+Feature aggregator detects
+high withdrawal rate" shape=box]
+		step3 [label="Step 3:
+Matrix Profile identifies
+discord in time series" shape=box]
+		step4 [label="Step 4:
+Triage analysis determines
+EDGE_LOCAL impact" shape=box]
+		step5 [label="Step 5:
+Dashboard shows localized
+failure with affected prefixes" shape=box]
+		success [label="Success Condition:
+Operator identifies failed link
+within 60 seconds" fillcolor=lightgreen shape=box style=filled]
+		failure [label="Failure Condition:
+False positive or
+missed detection" fillcolor=lightcoral shape=box style=filled]
+	}
+	step1 -> alt1 [label="if no direct session" style=dotted]
+	step3 -> alt2 [label="if high baseline noise" style=dotted]
+	step5 -> alt3 [label="if dashboard down" style=dotted]
+	subgraph cluster_alternatives {
+		fillcolor=mistyrose label="Alternative Flows" style=filled
+		alt1 [label="Alternative 1:
+No BGP session to affected ToR
+→ Infer from neighbor behavior" fillcolor=yellow shape=box style=filled]
+		alt2 [label="Alternative 2:
+High noise in baseline
+→ Adaptive threshold adjustment" fillcolor=yellow shape=box style=filled]
+		alt3 [label="Alternative 3:
+Dashboard unavailable
+→ Direct NATS subscription for alerts" fillcolor=yellow shape=box style=filled]
+	}
+	step1 -> exc1 [label="BGP session fails" color=red style=dashed]
+	step2 -> exc2 [label="NATS fails" color=red style=dashed]
+	step3 -> exc3 [label="MP computation fails" color=red style=dashed]
+	subgraph cluster_exceptions {
+		fillcolor=lavenderblush label="Exception Handling" style=filled
+		exc1 [label="Exception: BGP Session Loss
+Action: Attempt reconnection
+Fallback: Monitor via neighbors" fillcolor=red shape=box style=filled]
+		exc2 [label="Exception: NATS Connection Loss
+Action: Local buffering
+Fallback: Direct dashboard update" fillcolor=red shape=box style=filled]
+		exc3 [label="Exception: Matrix Profile Computation Failure
+Action: Fallback to simple thresholding
+Alert: Degraded mode active" fillcolor=red shape=box style=filled]
+	}
+}
