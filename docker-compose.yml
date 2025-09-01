@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  nats:
+    image: nats:2
+    command: ["-js"]
+    ports: ["4222:4222", "8222:8222"]
+
+  dash:
+    build: ./python
+    command: ["streamlit", "run", "python/dash/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    volumes:
+      - ./:/app
+    ports: ["8501:8501"]
+    depends_on: [nats]

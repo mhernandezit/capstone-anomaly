@@ -1,0 +1,8 @@
+pydantic>=2.6
+numpy
+pandas
+stumpy
+streamlit
+nats-py
+pyyaml
+scipy
