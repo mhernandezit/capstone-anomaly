@@ -72,3 +72,5 @@ data/public_traces/*.parquet
 
 # Docker
 .dockerignore
+.vscode/
+collector
