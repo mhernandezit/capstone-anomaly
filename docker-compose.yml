@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   nats:
     image: nats:2
@@ -6,7 +5,9 @@ services:
     ports: ["4222:4222", "8222:8222"]
 
   dash:
-    build: ./python
+    build:
+      context: .
+      dockerfile: python/Dockerfile
     command: ["streamlit", "run", "python/dash/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
     volumes:
       - ./:/app

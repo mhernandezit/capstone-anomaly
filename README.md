@@ -21,15 +21,20 @@ This system detects **failure‑induced** BGP anomalies on live streams and tria
    ```bash
    make up      # starts NATS + dashboard; run collector separately if you prefer bare-metal
    ```
-3. **Run collector** (Go)
+3. **Test with sample data** (Optional but recommended)
+   ```bash
+   make test-quick       # Send a few test BGP events immediately
+   make test-scenarios   # Interactive test runner with anomaly scenarios
+   ```
+4. **Run collector** (Go)
    ```bash
    make collector
    ```
-4. **Run pipeline** (Python)
+5. **Run pipeline** (Python)
    ```bash
    make pipeline  # feature aggregation + MP detector + triage + push to dashboard
    ```
-5. **Open dashboard**
+6. **Open dashboard**
    * Streamlit at [http://localhost:8501](http://localhost:8501)
 
 ## Components
@@ -42,16 +47,7 @@ This system detects **failure‑induced** BGP anomalies on live streams and tria
 
 ## Lab Tips
 
-* If physical lab isn't ready, use `cmd/failure-injector/exabgp.conf` to simulate withdraw storms and session resets.
-
-## Make Targets
-
-```bash
-make up         # NATS + Streamlit in Docker
-make down       # stop
-make collector  # build/run Go collector (reads configs/collector.yml)
-make pipeline   # run python pipeline (env from requirements.txt)
-```
+* If physical lab isn't ready, use `cmd/failure-injector/exabgp.conf` to simulate withdraw storms and session reset
 
 ## 🎓 Academic Context
 

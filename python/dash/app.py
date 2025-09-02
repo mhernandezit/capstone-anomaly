@@ -9,7 +9,7 @@ placeholder = st.empty()
 
 async def main():
     nc = NATS()
-    await nc.connect(servers=["nats://127.0.0.1:4222"])
+    await nc.connect(servers=["nats://nats:4222"])
     msgs = []
 
     async def cb(msg):
