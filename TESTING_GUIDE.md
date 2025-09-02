@@ -1,8 +1,8 @@
 # BGP Event Testing - Quick Start Guide
 
-## 🚀 Publishing Data to Your BGP Anomaly Detection System
+## 🚀 Publishing Data to the BGP Anomaly Detection System
 
-Your system is now set up with a comprehensive testing framework. Here's how to start publishing BGP events to test your anomaly detection pipeline.
+The system is configured with a comprehensive testing framework. This guide demonstrates how to publish BGP events to test the anomaly detection pipeline.
 
 ## Current System Status
 
@@ -13,17 +13,17 @@ Your system is now set up with a comprehensive testing framework. Here's how to 
 
 ## Quick Test (Start Here)
 
-To verify everything is working and see immediate results:
+To verify system functionality and observe immediate results:
 
 ```bash
-# 1. Make sure your system is running
+# 1. Ensure the system is running
 make up
 
 # 2. Send test events immediately  
 make test-quick
 ```
 
-This publishes 3 sample BGP events that should appear in your dashboard at `http://localhost:8501`.
+This publishes 3 sample BGP events that should appear in the dashboard at `http://localhost:8501`.
 
 ## Test Scenarios (Comprehensive Testing)
 
@@ -67,7 +67,7 @@ All events follow the BGP schema in `python/utils/schema.py`:
 }
 ```
 
-## Integration with Your Pipeline
+## Integration with the Processing Pipeline
 
 ```
 Test Publisher → NATS → Python Pipeline → Dashboard
@@ -102,7 +102,7 @@ make test-quick
 make test-scenarios
 ```
 
-You should see:
+Expected output includes:
 1. **Test Publisher**: Confirmation messages about published events
 2. **Pipeline Logs**: Processing output with anomaly scores and triage results
 3. **Dashboard**: Real-time display of events and analysis results
@@ -176,8 +176,8 @@ make down && make up
 
 ### Import/Path Issues
 ```bash
-# Make sure you're in the project root
-pwd  # Should show: /Users/mike/Documents/IS499/capstone-anomaly
+# Ensure working directory is project root
+pwd  # Should show: .../capstone-anomaly
 
 # Check virtual environment
 ls -la venv/bin/python
@@ -189,6 +189,6 @@ ls -la venv/bin/python
 2. 🧪 **Try scenarios**: `make test-scenarios` 
 3. 🔄 **Run pipeline**: `make pipeline` (in separate terminal)
 4. 📊 **Monitor dashboard**: `http://localhost:8501`
-5. 🎯 **Customize tests**: Edit files in `tests/` directory for your specific needs
+5. 🎯 **Customize tests**: Edit files in `tests/` directory for specific testing requirements
 
-Your BGP anomaly detection system is ready for comprehensive testing! 🎉
+The BGP anomaly detection system is ready for comprehensive testing! 🎉
