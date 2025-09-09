@@ -16,15 +16,15 @@
 
 ## Secondary (background & methods)
 
-5. Allagi, S., & Rachh, R. (2019). Analysis of network log data using machine learning. In *2019 IEEE 5th International Conference for Convergence in Technology (I2CT)* (pp. 466–469). IEEE.
+1. Allagi, S., & Rachh, R. (2019). Analysis of network log data using machine learning. In *2019 IEEE 5th International Conference for Convergence in Technology (I2CT)* (pp. 466–469). IEEE.
 
-6. Skazin, V. A., Pavlychev, A. V., & Zotov, S. S. (2021). Detection of network anomalies in log files using machine learning methods. *IOP Conference Series: Materials Science and Engineering, 1069*, 012021.
+2. Skazin, V. A., Pavlychev, A. V., & Zotov, S. S. (2021). Detection of network anomalies in log files using machine learning methods. *IOP Conference Series: Materials Science and Engineering, 1069*, 012021.
 
-7. Pradeepa, R., & Pushpalatha, M. (2019/2020). A hybrid OpenFlow with intelligent detection and prediction models for preventing BGP path hijack on SDN. *Soft Computing, 24*, 10205–10214.
+3. Pradeepa, R., & Pushpalatha, M. (2019/2020). A hybrid OpenFlow with intelligent detection and prediction models for preventing BGP path hijack on SDN. *Soft Computing, 24*, 10205–10214.
 
-8. Alqudah, N., & Yaseen, Q. (2020). Machine learning for traffic analysis: A review. *Procedia Computer Science, 170*, 911–916.
+4. Alqudah, N., & Yaseen, Q. (2020). Machine learning for traffic analysis: A review. *Procedia Computer Science, 170*, 911–916.
 
-9. Na, Y.‑H. (2022). Computer communication network fault detection based on improved neural network algorithm. *Electrica, 22*(3), 391–401.
+5. Na, Y.‑H. (2022). Computer communication network fault detection based on improved neural network algorithm. *Electrica, 22*(3), 391–401.
 
 ---
 

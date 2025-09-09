@@ -7,9 +7,9 @@ import (
 	"os"
 	"time"
 
+	"github.com/nats-io/nats.go"
 	api "github.com/osrg/gobgp/v3/api"
 	"github.com/osrg/gobgp/v3/pkg/server"
-	"github.com/nats-io/nats.go"
 	"gopkg.in/yaml.v3"
 )
 
@@ -82,11 +82,11 @@ func main() {
 	log.Println("BGP Collector started. In a real implementation, this would watch for BGP updates.")
 	log.Printf("Configured peers: %d", len(cfg.Peers))
 	log.Printf("Publishing to NATS subject: %s", cfg.NATS.Subject)
-	
+
 	// Simulate a test message every 30 seconds for development
 	ticker := time.NewTicker(30 * time.Second)
 	defer ticker.Stop()
-	
+
 	for range ticker.C {
 		testUpdate := BGPUpdate{
 			Timestamp: time.Now().Unix(),
