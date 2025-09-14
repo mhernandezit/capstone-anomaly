@@ -346,51 +346,96 @@ topology:
     # ===========================================
     
     # DC1 Spine-to-Spine (iBGP)
-    - endpoints: ["dc1-spine-01:eth1", "dc1-spine-02:eth1"]
+    - endpoints:
+        - node: dc1-spine-01
+          interface: e1
+        - node: dc1-spine-02
+          interface: e1
+      type: veth
       labels:
         type: "spine-spine"
         datacenter: "dc1"
         cost: "1"
 
     # DC1 Spine-to-Service-Leaf connections
-    - endpoints: ["dc1-spine-01:eth2", "dc1-svc-leaf-01:eth1"]
+    - endpoints:
+        - node: dc1-spine-01
+          interface: e2
+        - node: dc1-svc-leaf-01
+          interface: e1
+      type: veth
       labels:
         type: "spine-svc-leaf"
         datacenter: "dc1"
         cost: "1"
-    - endpoints: ["dc1-spine-01:eth3", "dc1-svc-leaf-02:eth1"]
+    - endpoints:
+        - node: dc1-spine-01
+          interface: e3
+        - node: dc1-svc-leaf-02
+          interface: e1
+      type: veth
       labels:
         type: "spine-svc-leaf"
         datacenter: "dc1"
         cost: "1"
-    - endpoints: ["dc1-spine-02:eth2", "dc1-svc-leaf-01:eth2"]
+    - endpoints:
+        - node: dc1-spine-02
+          interface: e2
+        - node: dc1-svc-leaf-01
+          interface: e2
+      type: veth
       labels:
         type: "spine-svc-leaf"
         datacenter: "dc1"
         cost: "1"
-    - endpoints: ["dc1-spine-02:eth3", "dc1-svc-leaf-02:eth2"]
+    - endpoints:
+        - node: dc1-spine-02
+          interface: e3
+        - node: dc1-svc-leaf-02
+          interface: e2
+      type: veth
       labels:
         type: "spine-svc-leaf"
         datacenter: "dc1"
         cost: "1"
 
     # DC1 Service-Leaf-to-Internet-Edge connections
-    - endpoints: ["dc1-svc-leaf-01:eth3", "dc1-inet-edge-01:eth1"]
+    - endpoints:
+        - node: dc1-svc-leaf-01
+          interface: e3
+        - node: dc1-inet-edge-01
+          interface: e1
+      type: veth
       labels:
         type: "svc-leaf-inet-edge"
         datacenter: "dc1"
         cost: "1"
-    - endpoints: ["dc1-svc-leaf-01:eth4", "dc1-inet-edge-02:eth1"]
+    - endpoints:
+        - node: dc1-svc-leaf-01
+          interface: e4
+        - node: dc1-inet-edge-02
+          interface: e1
+      type: veth
       labels:
         type: "svc-leaf-inet-edge"
         datacenter: "dc1"
         cost: "1"
-    - endpoints: ["dc1-svc-leaf-02:eth3", "dc1-inet-edge-01:eth2"]
+    - endpoints:
+        - node: dc1-svc-leaf-02
+          interface: e3
+        - node: dc1-inet-edge-01
+          interface: e2
+      type: veth
       labels:
         type: "svc-leaf-inet-edge"
         datacenter: "dc1"
         cost: "1"
-    - endpoints: ["dc1-svc-leaf-02:eth4", "dc1-inet-edge-02:eth2"]
+    - endpoints:
+        - node: dc1-svc-leaf-02
+          interface: e4
+        - node: dc1-inet-edge-02
+          interface: e2
+      type: veth
       labels:
         type: "svc-leaf-inet-edge"
         datacenter: "dc1"
@@ -401,51 +446,96 @@ topology:
     # ===========================================
     
     # DC2 Spine-to-Spine (iBGP)
-    - endpoints: ["dc2-spine-01:eth1", "dc2-spine-02:eth1"]
+    - endpoints:
+        - node: dc2-spine-01
+          interface: e1
+        - node: dc2-spine-02
+          interface: e1
+      type: veth
       labels:
         type: "spine-spine"
         datacenter: "dc2"
         cost: "1"
 
     # DC2 Spine-to-Service-Leaf connections
-    - endpoints: ["dc2-spine-01:eth2", "dc2-svc-leaf-01:eth1"]
+    - endpoints:
+        - node: dc2-spine-01
+          interface: e2
+        - node: dc2-svc-leaf-01
+          interface: e1
+      type: veth
       labels:
         type: "spine-svc-leaf"
         datacenter: "dc2"
         cost: "1"
-    - endpoints: ["dc2-spine-01:eth3", "dc2-svc-leaf-02:eth1"]
+    - endpoints:
+        - node: dc2-spine-01
+          interface: e3
+        - node: dc2-svc-leaf-02
+          interface: e1
+      type: veth
       labels:
         type: "spine-svc-leaf"
         datacenter: "dc2"
         cost: "1"
-    - endpoints: ["dc2-spine-02:eth2", "dc2-svc-leaf-01:eth2"]
+    - endpoints:
+        - node: dc2-spine-02
+          interface: e2
+        - node: dc2-svc-leaf-01
+          interface: e2
+      type: veth
       labels:
         type: "spine-svc-leaf"
         datacenter: "dc2"
         cost: "1"
-    - endpoints: ["dc2-spine-02:eth3", "dc2-svc-leaf-02:eth2"]
+    - endpoints:
+        - node: dc2-spine-02
+          interface: e3
+        - node: dc2-svc-leaf-02
+          interface: e2
+      type: veth
       labels:
         type: "spine-svc-leaf"
         datacenter: "dc2"
         cost: "1"
 
     # DC2 Service-Leaf-to-Internet-Edge connections
-    - endpoints: ["dc2-svc-leaf-01:eth3", "dc2-inet-edge-01:eth1"]
+    - endpoints:
+        - node: dc2-svc-leaf-01
+          interface: e3
+        - node: dc2-inet-edge-01
+          interface: e1
+      type: veth
       labels:
         type: "svc-leaf-inet-edge"
         datacenter: "dc2"
         cost: "1"
-    - endpoints: ["dc2-svc-leaf-01:eth4", "dc2-inet-edge-02:eth1"]
+    - endpoints:
+        - node: dc2-svc-leaf-01
+          interface: e4
+        - node: dc2-inet-edge-02
+          interface: e1
+      type: veth
       labels:
         type: "svc-leaf-inet-edge"
         datacenter: "dc2"
         cost: "1"
-    - endpoints: ["dc2-svc-leaf-02:eth3", "dc2-inet-edge-01:eth2"]
+    - endpoints:
+        - node: dc2-svc-leaf-02
+          interface: e3
+        - node: dc2-inet-edge-01
+          interface: e2
+      type: veth
       labels:
         type: "svc-leaf-inet-edge"
         datacenter: "dc2"
         cost: "1"
-    - endpoints: ["dc2-svc-leaf-02:eth4", "dc2-inet-edge-02:eth2"]
+    - endpoints:
+        - node: dc2-svc-leaf-02
+          interface: e4
+        - node: dc2-inet-edge-02
+          interface: e2
+      type: veth
       labels:
         type: "svc-leaf-inet-edge"
         datacenter: "dc2"
@@ -456,12 +546,22 @@ topology:
     # ===========================================
     
     # DCI Links between spines
-    - endpoints: ["dc1-spine-01:eth4", "dc2-spine-01:eth4"]
+    - endpoints:
+        - node: dc1-spine-01
+          interface: e4
+        - node: dc2-spine-01
+          interface: e4
+      type: veth
       labels:
         type: "dci"
         purpose: "inter-dc-connectivity"
         cost: "10"
-    - endpoints: ["dc1-spine-02:eth4", "dc2-spine-02:eth4"]
+    - endpoints:
+        - node: dc1-spine-02
+          interface: e4
+        - node: dc2-spine-02
+          interface: e4
+      type: veth
       labels:
         type: "dci"
         purpose: "inter-dc-connectivity"
@@ -472,24 +572,44 @@ topology:
     # ===========================================
     
     # DC1 Internet Edge to ISP connections
-    - endpoints: ["dc1-inet-edge-01:eth3", "isp-01:eth1"]
+    - endpoints:
+        - node: dc1-inet-edge-01
+          interface: e3
+        - node: isp-01
+          interface: e1
+      type: veth
       labels:
         type: "internet"
         datacenter: "dc1"
         cost: "5"
-    - endpoints: ["dc1-inet-edge-02:eth3", "isp-02:eth1"]
+    - endpoints:
+        - node: dc1-inet-edge-02
+          interface: e3
+        - node: isp-02
+          interface: e1
+      type: veth
       labels:
         type: "internet"
         datacenter: "dc1"
         cost: "5"
 
     # DC2 Internet Edge to ISP connections
-    - endpoints: ["dc2-inet-edge-01:eth3", "isp-01:eth2"]
+    - endpoints:
+        - node: dc2-inet-edge-01
+          interface: e3
+        - node: isp-01
+          interface: e2
+      type: veth
       labels:
         type: "internet"
         datacenter: "dc2"
         cost: "5"
-    - endpoints: ["dc2-inet-edge-02:eth3", "isp-02:eth2"]
+    - endpoints:
+        - node: dc2-inet-edge-02
+          interface: e3
+        - node: isp-02
+          interface: e2
+      type: veth
       labels:
         type: "internet"
         datacenter: "dc2"
@@ -500,22 +620,42 @@ topology:
     # ===========================================
     
     # Extranet connections to counterparties
-    - endpoints: ["dc1-svc-leaf-01:eth5", "extranet-cp-01:eth1"]
+    - endpoints:
+        - node: dc1-svc-leaf-01
+          interface: e5
+        - node: extranet-cp-01
+          interface: e1
+      type: veth
       labels:
         type: "extranet"
         purpose: "counterparty-connectivity"
         cost: "3"
-    - endpoints: ["dc1-svc-leaf-02:eth5", "extranet-cp-02:eth1"]
+    - endpoints:
+        - node: dc1-svc-leaf-02
+          interface: e5
+        - node: extranet-cp-02
+          interface: e1
+      type: veth
       labels:
         type: "extranet"
         purpose: "counterparty-connectivity"
         cost: "3"
-    - endpoints: ["dc2-svc-leaf-01:eth5", "extranet-cp-01:eth2"]
+    - endpoints:
+        - node: dc2-svc-leaf-01
+          interface: e5
+        - node: extranet-cp-01
+          interface: e2
+      type: veth
       labels:
         type: "extranet"
         purpose: "counterparty-connectivity"
         cost: "3"
-    - endpoints: ["dc2-svc-leaf-02:eth5", "extranet-cp-02:eth2"]
+    - endpoints:
+        - node: dc2-svc-leaf-02
+          interface: e5
+        - node: extranet-cp-02
+          interface: e2
+      type: veth
       labels:
         type: "extranet"
         purpose: "counterparty-connectivity"
@@ -526,19 +666,39 @@ topology:
     # ===========================================
     
     # Collector connections (monitoring all critical nodes)
-    - endpoints: ["collector:eth1", "dc1-spine-01:eth5"]
+    - endpoints:
+        - node: collector
+          interface: e1
+        - node: dc1-spine-01
+          interface: e5
+      type: veth
       labels:
         type: "monitoring"
         purpose: "bgp-collection"
-    - endpoints: ["collector:eth2", "dc1-spine-02:eth5"]
+    - endpoints:
+        - node: collector
+          interface: e2
+        - node: dc1-spine-02
+          interface: e5
+      type: veth
       labels:
         type: "monitoring"
         purpose: "bgp-collection"
-    - endpoints: ["collector:eth3", "dc2-spine-01:eth5"]
+    - endpoints:
+        - node: collector
+          interface: e3
+        - node: dc2-spine-01
+          interface: e5
+      type: veth
       labels:
         type: "monitoring"
         purpose: "bgp-collection"
-    - endpoints: ["collector:eth4", "dc2-spine-02:eth5"]
+    - endpoints:
+        - node: collector
+          interface: e4
+        - node: dc2-spine-02
+          interface: e5
+      type: veth
       labels:
         type: "monitoring"
         purpose: "bgp-collection"
