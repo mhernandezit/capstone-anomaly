@@ -69,7 +69,7 @@ All events follow the BGP schema in `python/utils/schema.py`:
 
 ## Integration with the Processing Pipeline
 
-```
+```text
 Test Publisher → NATS → Python Pipeline → Dashboard
                    ↓
                bgp.updates
@@ -103,6 +103,7 @@ make test-scenarios
 ```
 
 Expected output includes:
+
 1. **Test Publisher**: Confirmation messages about published events
 2. **Pipeline Logs**: Processing output with anomaly scores and triage results
 3. **Dashboard**: Real-time display of events and analysis results
@@ -157,6 +158,7 @@ echo '{"ts":1693526401,"peer":"10.0.1.1","type":"UPDATE","announce":["192.168.1.
 ## Troubleshooting
 
 ### Connection Issues
+
 ```bash
 # Check NATS is running
 docker ps | grep nats
@@ -166,6 +168,7 @@ telnet localhost 4222
 ```
 
 ### Dashboard Not Updating
+
 ```bash
 # Check dashboard logs
 docker logs capstone-anomaly-dash-1
@@ -175,6 +178,7 @@ make down && make up
 ```
 
 ### Import/Path Issues
+
 ```bash
 # Ensure working directory is project root
 pwd  # Should show: .../capstone-anomaly
@@ -186,7 +190,7 @@ ls -la venv/bin/python
 ## Next Steps
 
 1. ✅ **Start with quick test**: `make test-quick`
-2. 🧪 **Try scenarios**: `make test-scenarios` 
+2. 🧪 **Try scenarios**: `make test-scenarios`
 3. 🔄 **Run pipeline**: `make pipeline` (in separate terminal)
 4. 📊 **Monitor dashboard**: `http://localhost:8501`
 5. 🎯 **Customize tests**: Edit files in `tests/` directory for specific testing requirements

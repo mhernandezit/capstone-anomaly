@@ -4,7 +4,7 @@ A complete containerlab-based virtual lab environment for testing BGP anomaly de
 
 ## 🏗️ Lab Architecture
 
-```
+```text
 ┌─────────────┐    ┌─────────────┐
 │   Spine-01  │────│   Spine-02  │
 │   (AS65001) │    │   (AS65001) │
@@ -64,12 +64,14 @@ python scripts/integrate-with-ml.py
 ## 🔧 Lab Components
 
 ### Network Devices
+
 - **2x Spine Switches** (AS 65001) - Core layer with iBGP
 - **2x ToR Switches** (AS 65002) - Aggregation layer
 - **2x Edge Routers** (AS 65003) - Edge layer
 - **4x Servers** (AS 65010-65013) - Host layer with test prefixes
 
 ### Monitoring & Collection
+
 - **BGP Collector** - GoBGP-based collector for BGP updates
 - **Fluent Bit** - Log collection and forwarding
 - **Log Aggregation** - Centralized logging for all devices
@@ -77,18 +79,21 @@ python scripts/integrate-with-ml.py
 ## 📊 What You Get
 
 ### Real BGP Data
+
 - **Authentic BGP sessions** between real FRR instances
 - **Real BGP updates** with proper message formats
 - **Actual routing tables** and path information
 - **True BGP timers** and session management
 
 ### Realistic Syslog
+
 - **FRR daemon logs** with authentic message formats
 - **Interface status changes** and BGP neighbor events
 - **System events** and error conditions
 - **Proper severity levels** and timestamps
 
 ### Failure Scenarios
+
 - **Link failures** - Interface down/up events
 - **Router crashes** - Complete device failures
 - **BGP session resets** - Neighbor relationship issues
@@ -97,7 +102,9 @@ python scripts/integrate-with-ml.py
 ## 🎯 Usage Scenarios
 
 ### 1. **Algorithm Testing**
+
 Test your ML models with real BGP data:
+
 ```bash
 # Deploy lab
 ./scripts/deploy.sh
@@ -110,7 +117,9 @@ python scripts/integrate-with-ml.py
 ```
 
 ### 2. **Performance Benchmarking**
+
 Measure detection accuracy and speed:
+
 ```bash
 # Monitor performance metrics
 ./scripts/monitor-logs.sh
@@ -120,7 +129,9 @@ Measure detection accuracy and speed:
 ```
 
 ### 3. **Feature Validation**
+
 Validate feature extraction approaches:
+
 ```bash
 # Monitor specific BGP events
 grep "BGP" logs/*/frr.log
@@ -130,7 +141,9 @@ grep "interface" logs/*/frr.log
 ```
 
 ### 4. **Anomaly Injection**
+
 Test with known failure patterns:
+
 ```bash
 # Interactive failure injection
 ./scripts/inject-failures.sh
@@ -142,6 +155,7 @@ Test with known failure patterns:
 ## 🔍 Monitoring & Debugging
 
 ### Check Lab Status
+
 ```bash
 # BGP neighbor status
 ./scripts/check-bgp.sh
@@ -154,6 +168,7 @@ docker exec clab-bgp-anomaly-lab-spine-01 ip link show
 ```
 
 ### Monitor Logs
+
 ```bash
 # All logs in real-time
 ./scripts/monitor-logs.sh
@@ -166,6 +181,7 @@ grep "BGP" logs/*/frr.log
 ```
 
 ### Debug BGP Sessions
+
 ```bash
 # Check BGP neighbors
 docker exec clab-bgp-anomaly-lab-spine-01 vtysh -c "show bgp summary"
@@ -180,28 +196,34 @@ docker exec clab-bgp-anomaly-lab-spine-01 vtysh -c "show running-config"
 ## 🛠️ Customization
 
 ### Modify Network Topology
+
 Edit `topo.clab.yml` to:
+
 - Add more devices
 - Change AS numbers
 - Modify network addressing
 - Add additional links
 
 ### Customize BGP Configuration
+
 Edit `configs/*/frr.conf` to:
+
 - Change BGP policies
 - Modify route advertisements
 - Adjust BGP timers
 - Add route filters
 
 ### Add Custom Failure Scenarios
+
 Edit `scripts/inject-failures.sh` to:
+
 - Add new failure types
 - Create automated sequences
 - Implement custom test scenarios
 
 ## 📁 Directory Structure
 
-```
+```text
 lab/
 ├── topo.clab.yml              # Containerlab topology
 ├── configs/                   # FRR configurations
@@ -283,6 +305,7 @@ This lab is perfect for:
 ## 🤝 Contributing
 
 To extend the lab:
+
 1. **Add new devices** - Modify `topo.clab.yml`
 2. **Create new failure scenarios** - Edit `scripts/inject-failures.sh`
 3. **Add monitoring** - Extend `monitoring/` directory

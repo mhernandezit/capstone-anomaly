@@ -14,7 +14,7 @@ topology:
         - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
         - ./logs/spine-01:/var/log/frr:rw
       env:
-        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+        FRR_DAEMONS: "zebra,bgpd"
       labels:
         role: "spine"
         asn: "65001"
@@ -31,7 +31,7 @@ topology:
         - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
         - ./logs/spine-02:/var/log/frr:rw
       env:
-        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+        FRR_DAEMONS: "zebra,bgpd"
       labels:
         role: "spine"
         asn: "65001"
@@ -49,7 +49,7 @@ topology:
         - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
         - ./logs/tor-01:/var/log/frr:rw
       env:
-        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+        FRR_DAEMONS: "zebra,bgpd"
       labels:
         role: "tor"
         asn: "65002"
@@ -66,7 +66,7 @@ topology:
         - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
         - ./logs/tor-02:/var/log/frr:rw
       env:
-        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+        FRR_DAEMONS: "zebra,bgpd"
       labels:
         role: "tor"
         asn: "65002"
@@ -84,7 +84,7 @@ topology:
         - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
         - ./logs/edge-01:/var/log/frr:rw
       env:
-        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+        FRR_DAEMONS: "zebra,bgpd"
       labels:
         role: "edge"
         asn: "65003"
@@ -101,7 +101,7 @@ topology:
         - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
         - ./logs/edge-02:/var/log/frr:rw
       env:
-        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+        FRR_DAEMONS: "zebra,bgpd"
       labels:
         role: "edge"
         asn: "65003"
@@ -119,7 +119,7 @@ topology:
         - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
         - ./logs/server-01:/var/log/frr:rw
       env:
-        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+        FRR_DAEMONS: "zebra,bgpd"
       labels:
         role: "server"
         asn: "65010"
@@ -136,7 +136,7 @@ topology:
         - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
         - ./logs/server-02:/var/log/frr:rw
       env:
-        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+        FRR_DAEMONS: "zebra,bgpd"
       labels:
         role: "server"
         asn: "65011"
@@ -153,7 +153,7 @@ topology:
         - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
         - ./logs/server-03:/var/log/frr:rw
       env:
-        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+        FRR_DAEMONS: "zebra,bgpd"
       labels:
         role: "server"
         asn: "65012"
@@ -170,7 +170,7 @@ topology:
         - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
         - ./logs/server-04:/var/log/frr:rw
       env:
-        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+        FRR_DAEMONS: "zebra,bgpd"
       labels:
         role: "server"
         asn: "65013"
