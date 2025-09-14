@@ -1,66 +1,72 @@
-# Virtual Lab for BGP Anomaly Detection
+# BGP Anomaly Detection ML Pipeline
 
-This virtual lab environment provides a comprehensive testing platform for BGP anomaly detection systems. It generates realistic network telemetry data, processes it through a feature extraction pipeline, and tests the ML pipeline under progressively increasing load conditions.
+This Python-based ML pipeline provides real-time BGP anomaly detection using streaming data from a containerlab network environment. It processes BGP updates via NATS messaging, extracts features, and performs anomaly detection using Matrix Profile and other ML techniques.
 
 ## 🏗️ Architecture
 
-The virtual lab consists of several key components:
+The ML pipeline consists of several key components:
 
-### 1. Network Switch Emulator (`switch_emulator/`)
-- **Purpose**: Emulates realistic network switches (spine, TOR, leaf)
-- **Features**: 
-  - BGP peer relationships and updates
-  - Interface status changes
-  - System events and errors
-  - Anomaly injection capabilities
+### 1. Data Ingestion (`ingest/`)
 
-### 2. Data Generators (`data_generators/`)
-- **Purpose**: Generates realistic telemetry data streams
-- **Types**:
-  - BGP updates and withdrawals
-  - Syslog messages with various severities
-  - System metrics (CPU, memory, temperature)
-  - Interface statistics
-  - BGP-specific metrics
+- **Purpose**: Receives BGP data from the containerlab environment
+- **Technology**: NATS message bus integration
+- **Sources**:
+  - BGP updates from Go BMP collector
+  - Syslog messages from Fluent Bit
+  - Real-time streaming data
+
+### 2. Feature Extraction (`features/`)
+
+- **Purpose**: Extracts and aggregates features from BGP data
+- **Technology**: `FeatureAggregator` class
+- **Features**:
+  - BGP announcement/withdrawal rates
+  - AS path analysis and churn
+  - Peer diversity metrics
+  - Temporal feature bins
 
 ### 3. Message Bus (`message_bus/`)
+
 - **Purpose**: Handles data streaming between components
 - **Technology**: NATS message bus
 - **Subjects**:
-  - `bgp.updates` - BGP update messages
-  - `syslog.messages` - Syslog messages
-  - `telemetry.data` - System and interface metrics
-  - `features.processed` - Extracted features
-  - `anomaly.alerts` - Anomaly alerts
+  - `bgp.updates` - BGP update messages from BMP collector
+  - `syslog.messages` - Syslog messages from Fluent Bit
+  - `bgp.events` - Anomaly detection events
+  - `anomaly.alerts` - Alert notifications
 
-### 4. Preprocessing Pipeline (`preprocessing/`)
-- **Purpose**: Feature extraction and data preprocessing
-- **Based on**: Feltin 2023 paper on feature selection for network telemetry
+### 4. ML Models (`models/`)
+
+- **Purpose**: Anomaly detection using various ML techniques
+- **Technologies**:
+  - Matrix Profile (GPU-accelerated)
+  - LSTM networks
+  - Isolation Forest
 - **Features**:
-  - Multi-scale temporal feature extraction
-  - Semantic understanding of network events
-  - Correlation analysis between data sources
-  - Feature selection using mutual information
+  - Real-time streaming detection
+  - GPU acceleration support
+  - Multiple detection algorithms
 
-### 5. Scaling Controller (`scripts/`)
-- **Purpose**: Manages progressive scaling of data generation
-- **Phases**:
-  - Baseline (1x load)
-  - Light load (2x BGP, 1.5x syslog)
-  - Medium load (5x BGP, 3x syslog)
-  - Heavy load (10x BGP, 5x syslog)
-  - Stress test (20x BGP, 10x syslog)
+### 5. Dual-Signal Pipeline (`dual_signal_pipeline.py`)
+
+- **Purpose**: Combines BGP and syslog data for enhanced detection
+- **Features**:
+  - Correlates BGP updates with syslog messages
+  - Enhanced failure detection accuracy
+  - Improved localization capabilities
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
 1. **Python 3.8+** with required packages:
+
    ```bash
    pip install -r requirements.txt
    ```
 
 2. **NATS Server** (optional, for message bus):
+
    ```bash
    # Using Docker
    docker run -p 4222:4222 nats:latest
@@ -69,26 +75,33 @@ The virtual lab consists of several key components:
    # See: https://docs.nats.io/running-a-nats-service/introduction/installation
    ```
 
-### Running the Lab
+### Running the Pipeline
 
-1. **Test Components** (recommended first):
+1. **Start the containerlab environment**:
+
    ```bash
-   python virtual_lab/scripts/test_components.py
+   cd ../lab
+   ./scripts/deploy.sh
    ```
 
-2. **Quick Start** (5-minute test run):
+2. **Run the dual-signal pipeline**:
+
    ```bash
-   python virtual_lab/scripts/start_lab.py
+   python dual_signal_pipeline.py
    ```
 
-3. **Full Lab Run**:
+3. **Run with lab integration**:
+
    ```bash
-   # Use real FRR routers with Containerlab instead
+   cd ../lab
+   python scripts/integrate-with-ml.py
    ```
 
-4. **Custom Configuration**:
+4. **Access the dashboard**:
+
    ```bash
-   # Use real FRR routers with Containerlab instead
+   # Start the dashboard
+   streamlit run dash/simple_dashboard.py
    ```
 
 ## 📊 Configuration
@@ -96,6 +109,7 @@ The virtual lab consists of several key components:
 The lab is configured via `configs/lab_config.yml`. Key configuration sections:
 
 ### Network Topology
+
 ```yaml
 topology:
   devices:
@@ -111,6 +125,7 @@ topology:
 ```
 
 ### Data Generation
+
 ```yaml
 data_generation:
   bgp_telemetry:
@@ -127,6 +142,7 @@ data_generation:
 ```
 
 ### Scaling Phases
+
 ```yaml
 scaling:
   phases:
@@ -145,23 +161,27 @@ scaling:
 The preprocessing pipeline implements the approach from the Feltin 2023 paper:
 
 ### BGP Features
+
 - Announcement/withdrawal rates
 - AS path analysis (length, variance, churn)
 - Peer diversity and update patterns
 - Temporal burstiness analysis
 
 ### Syslog Features
+
 - Severity distribution analysis
 - Message type diversity
 - Temporal patterns and burstiness
 - Semantic event pattern detection
 
 ### System Features
+
 - CPU, memory, temperature trends
 - Resource utilization patterns
 - Performance degradation indicators
 
 ### Correlation Features
+
 - Cross-correlation between BGP and syslog
 - Temporal alignment analysis
 - Event sequence scoring
@@ -171,12 +191,14 @@ The preprocessing pipeline implements the approach from the Feltin 2023 paper:
 The lab provides comprehensive monitoring:
 
 ### Real-time Metrics
+
 - Data generation rates
 - Feature extraction throughput
 - Message bus performance
 - Scaling phase progress
 
 ### Exportable Results
+
 - Complete phase history
 - Performance statistics
 - Feature importance scores
@@ -185,17 +207,21 @@ The lab provides comprehensive monitoring:
 ## 🧪 Testing
 
 ### Component Tests
+
 ```bash
 python virtual_lab/scripts/test_components.py
 ```
 
 ### Integration Tests
+
 ```bash
 # Use real FRR routers with Containerlab instead
 ```
 
 ### Custom Test Scenarios
+
 Modify `configs/lab_config.yml` to create custom test scenarios:
+
 - Different network topologies
 - Varying data generation rates
 - Custom scaling phases
@@ -246,6 +272,7 @@ virtual_lab/
 ### Debug Mode
 
 Run with debug logging:
+
 ```bash
 # Use real FRR routers with Containerlab instead
 ```
