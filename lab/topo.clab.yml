@@ -203,71 +203,101 @@ topology:
 
   links:
     # Spine-to-Spine (iBGP)
-    - endpoints: ["spine-01:eth1", "spine-02:eth1"]
-      labels:
-        type: "spine-spine"
-        cost: "1"
+    - endpoints:
+        - node: spine-01
+          interface: e1
+        - node: spine-02
+          interface: e1
+      type: veth
 
     # Spine-to-ToR connections
-    - endpoints: ["spine-01:eth2", "tor-01:eth1"]
-      labels:
-        type: "spine-tor"
-        cost: "1"
-    - endpoints: ["spine-01:eth3", "tor-02:eth1"]
-      labels:
-        type: "spine-tor"
-        cost: "1"
-    - endpoints: ["spine-02:eth2", "tor-01:eth2"]
-      labels:
-        type: "spine-tor"
-        cost: "1"
-    - endpoints: ["spine-02:eth3", "tor-02:eth2"]
-      labels:
-        type: "spine-tor"
-        cost: "1"
+    - endpoints:
+        - node: spine-01
+          interface: e2
+        - node: tor-01
+          interface: e1
+      type: veth
+    - endpoints:
+        - node: spine-01
+          interface: e3
+        - node: tor-02
+          interface: e1
+      type: veth
+    - endpoints:
+        - node: spine-02
+          interface: e2
+        - node: tor-01
+          interface: e2
+      type: veth
+    - endpoints:
+        - node: spine-02
+          interface: e3
+        - node: tor-02
+          interface: e2
+      type: veth
 
     # ToR-to-Edge connections
-    - endpoints: ["tor-01:eth3", "edge-01:eth1"]
-      labels:
-        type: "tor-edge"
-        cost: "1"
-    - endpoints: ["tor-01:eth4", "edge-02:eth1"]
-      labels:
-        type: "tor-edge"
-        cost: "1"
-    - endpoints: ["tor-02:eth3", "edge-01:eth2"]
-      labels:
-        type: "tor-edge"
-        cost: "1"
-    - endpoints: ["tor-02:eth4", "edge-02:eth2"]
-      labels:
-        type: "tor-edge"
-        cost: "1"
+    - endpoints:
+        - node: tor-01
+          interface: e3
+        - node: edge-01
+          interface: e1
+      type: veth
+    - endpoints:
+        - node: tor-01
+          interface: e4
+        - node: edge-02
+          interface: e1
+      type: veth
+    - endpoints:
+        - node: tor-02
+          interface: e3
+        - node: edge-01
+          interface: e2
+      type: veth
+    - endpoints:
+        - node: tor-02
+          interface: e4
+        - node: edge-02
+          interface: e2
+      type: veth
 
     # Edge-to-Server connections
-    - endpoints: ["edge-01:eth3", "server-01:eth1"]
-      labels:
-        type: "edge-server"
-        cost: "1"
-    - endpoints: ["edge-01:eth4", "server-02:eth1"]
-      labels:
-        type: "edge-server"
-        cost: "1"
-    - endpoints: ["edge-02:eth3", "server-03:eth1"]
-      labels:
-        type: "edge-server"
-        cost: "1"
-    - endpoints: ["edge-02:eth4", "server-04:eth1"]
-      labels:
-        type: "edge-server"
-        cost: "1"
+    - endpoints:
+        - node: edge-01
+          interface: e3
+        - node: server-01
+          interface: e1
+      type: veth
+    - endpoints:
+        - node: edge-01
+          interface: e4
+        - node: server-02
+          interface: e1
+      type: veth
+    - endpoints:
+        - node: edge-02
+          interface: e3
+        - node: server-03
+          interface: e1
+      type: veth
+    - endpoints:
+        - node: edge-02
+          interface: e4
+        - node: server-04
+          interface: e1
+      type: veth
 
     # Collector connections (monitoring)
-    - endpoints: ["collector:eth1", "spine-01:eth4"]
-      labels:
-        type: "monitoring"
-        purpose: "bgp-collection"
-    - endpoints: ["collector:eth2", "spine-02:eth4"]
-      labels:
-        type: "monitoring"
-        purpose: "bgp-collection"
+    - endpoints:
+        - node: collector
+          interface: e1
+        - node: spine-01
+          interface: e4
+      type: veth
+    - endpoints:
+        - node: collector
+          interface: e2
+        - node: spine-02
+          interface: e4
+      type: veth
