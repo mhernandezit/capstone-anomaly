@@ -148,8 +148,6 @@ asyncio.run(publish_custom_event())
 Using the NATS CLI (if installed):
 
 ```bash
-# Install NATS CLI
-go install github.com/nats-io/natscli/nats@latest
 
 # Publish a test event
 echo '{"ts":1693526401,"peer":"10.0.1.1","type":"UPDATE","announce":["192.168.1.0/24"]}' | nats pub bgp.updates
@@ -189,10 +187,10 @@ ls -la venv/bin/python
 
 ## Next Steps
 
-1. ✅ **Start with quick test**: `make test-quick`
-2. 🧪 **Try scenarios**: `make test-scenarios`
-3. 🔄 **Run pipeline**: `make pipeline` (in separate terminal)
-4. 📊 **Monitor dashboard**: `http://localhost:8501`
-5. 🎯 **Customize tests**: Edit files in `tests/` directory for specific testing requirements
+1. **Start with quick test**: `make test-quick`
+2. **Try scenarios**: `make test-scenarios`
+3. **Run pipeline**: `make pipeline` (in separate terminal)
+4. **Monitor dashboard**: `http://localhost:8501`
+5. **Customize tests**: Edit files in `tests/` directory for specific testing requirements
 
 The BGP anomaly detection system is ready for comprehensive testing! 🎉

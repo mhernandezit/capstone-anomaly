@@ -68,10 +68,10 @@ class LabMLIntegration:
             'start_time': time.time()
         }
     
-    def parse_gobgp_output(self, line):
-        """Parse GoBGP monitoring output and convert to BGPUpdate format."""
+    def parse_bgp_output(self, line):
+        """Parse BGP monitoring output and convert to BGPUpdate format."""
         try:
-            # Parse JSON output from GoBGP
+            # Parse JSON output from BGP monitoring
             data = json.loads(line.strip())
             
             # Extract BGP update information
@@ -104,37 +104,49 @@ class LabMLIntegration:
                 return bgp_update
                 
         except Exception as e:
-            logger.debug(f"Failed to parse GoBGP output: {e}")
+            logger.debug(f"Failed to parse BGP output: {e}")
             return None
     
     async def process_bgp_updates(self):
         """Process BGP updates from the lab environment."""
         logger.info("🔄 Starting BGP update processing...")
         
-        # Start GoBGP monitoring process
-        process = subprocess.Popen(
-            ['gobgp', 'monitor', 'global', 'rib', '-j'],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
+        # Connect to NATS to receive BGP updates from BMP collector
+        try:
+            import nats
+            nc = await nats.connect("nats://localhost:4222")
+            logger.info("Connected to NATS for BGP updates from BMP collector")
+        except Exception as e:
+            logger.error(f"Failed to connect to NATS: {e}")
+            return
         
         try:
-            while True:
-                line = process.stdout.readline()
-                if not line:
-                    break
-                
-                # Parse the BGP update
-                bgp_update = self.parse_gobgp_output(line)
-                if bgp_update:
+            # Subscribe to BGP updates from BMP collector
+            logger.info("Subscribing to BGP updates from BMP collector...")
+            
+            async def message_handler(msg):
+                try:
+                    # Parse BGP update from NATS message
+                    bgp_data = json.loads(msg.data.decode())
+                    
+                    # Create BGP update object
+                    bgp_update = BGPUpdate(
+                        timestamp=bgp_data['timestamp'],
+                        peer=bgp_data['peer'],
+                        type=bgp_data['type'],
+                        announce=bgp_data.get('announce'),
+                        withdraw=bgp_data.get('withdraw'),
+                        as_path=bgp_data.get('as_path'),
+                        next_hop=bgp_data.get('next_hop')
+                    )
+                    
                     # Add to feature aggregator
                     self.feature_aggregator.add_update(bgp_update)
                     self.stats['updates_processed'] += 1
                     
-                    logger.debug(f"Processed BGP update: {bgp_update.type} {bgp_update.announce or bgp_update.withdraw}")
+                    logger.debug(f"Processed BGP update: {bgp_update.type} from {bgp_update.peer}")
                     
-                    # Check for closed bins
+                    # Check for closed bins and run anomaly detection
                     while self.feature_aggregator.has_closed_bin():
                         feature_bin = self.feature_aggregator.pop_closed_bin()
                         logger.info(f"Processing feature bin: {feature_bin.bin_start} - {feature_bin.bin_end}")
@@ -143,7 +155,7 @@ class LabMLIntegration:
                         mp_result = self.mp_detector.update(feature_bin)
                         
                         if mp_result.get('is_anomaly', False):
-                            logger.warning(" ANOMALY DETECTED!")
+                            logger.warning("🚨 ANOMALY DETECTED!")
                             logger.warning(f"  Confidence: {mp_result.get('anomaly_confidence', 0):.2f}")
                             logger.warning(f"  Detected series: {mp_result.get('detected_series', [])}")
                             logger.warning(f"  Overall score: {mp_result.get('overall_score', {}).get('score', 0):.2f}")
@@ -161,14 +173,25 @@ class LabMLIntegration:
                             logger.info(f"  Normal operation - Score: {mp_result.get('overall_score', {}).get('score', 0):.2f}")
                         
                         self.stats['features_extracted'] += 1
-                
-                # Print statistics every 100 updates
-                if self.stats['updates_processed'] % 100 == 0:
-                    elapsed_time = time.time() - self.stats['start_time']
-                    logger.info(f"Stats: {self.stats['updates_processed']} updates, "
-                              f"{self.stats['features_extracted']} features, "
-                              f"{self.stats['anomalies_detected']} anomalies, "
-                              f"{self.stats['updates_processed']/elapsed_time:.1f} updates/sec")
+                    
+                    # Print statistics every 100 updates
+                    if self.stats['updates_processed'] % 100 == 0:
+                        elapsed_time = time.time() - self.stats['start_time']
+                        logger.info(f"Stats: {self.stats['updates_processed']} updates, "
+                                  f"{self.stats['features_extracted']} features, "
+                                  f"{self.stats['anomalies_detected']} anomalies, "
+                                  f"{self.stats['updates_processed']/elapsed_time:.1f} updates/sec")
+                    
+                except Exception as e:
+                    logger.error(f"Error processing BGP update: {e}")
+            
+            # Subscribe to BGP updates
+            await nc.subscribe("bgp.updates", cb=message_handler)
+            logger.info("Subscribed to bgp.updates channel")
+            
+            # Keep the connection alive
+            while True:
+                await asyncio.sleep(1)
         
         except KeyboardInterrupt:
             logger.info("Processing interrupted by user")

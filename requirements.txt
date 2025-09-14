@@ -1,7 +1,7 @@
 pydantic>=2.6
 numpy
 pandas
-stumpy
+stumpy>=1.12.0
 streamlit
 nats-py
 pyyaml
@@ -9,8 +9,5 @@ scipy
 graphviz
 ruff
 black
-# Matrix Profile libraries (CPU-optimized)
-matrixprofile>=1.1.10
-stumpy>=1.12.0
-# Alternative: matrixprofile-ts for more features
-# matrixprofile-ts>=0.4.0
+# Matrix Profile libraries - using only stumpy for now
+# matrixprofile has Cython compilation issues with newer Python versions

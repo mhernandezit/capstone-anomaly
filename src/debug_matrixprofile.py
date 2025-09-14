@@ -1,18 +1,18 @@
 """
-Debug script to test matrixprofile functionality
+Debug script to test stumpy Matrix Profile functionality
 """
 
-def test_matrixprofile():
-    """Test matrixprofile import and basic functionality."""
+def test_stumpy():
+    """Test stumpy import and basic functionality."""
     try:
-        print("Testing matrixprofile import...")
-        import matrixprofile as mp
-        print("✓ matrixprofile imported successfully")
+        print("Testing stumpy import...")
+        import stumpy as mp
+        print("✓ stumpy imported successfully")
         
-        print("Testing matrixprofile version...")
+        print("Testing stumpy version...")
         try:
             version = mp.__version__
-            print(f"✓ matrixprofile version: {version}")
+            print(f"✓ stumpy version: {version}")
         except AttributeError:
             print("⚠ No version info available")
         
@@ -25,7 +25,7 @@ def test_matrixprofile():
         
         # Test computation
         result = mp.compute(test_data, windows=3)
-        print("✓ matrixprofile computation successful")
+        print("✓ stumpy computation successful")
         print(f"Matrix Profile values: {result['mp']}")
         print(f"Discord score: {np.max(result['mp'])}")
         
@@ -62,13 +62,13 @@ def test_alternatives():
         print(f"✗ stumpy computation error: {e}")
 
 if __name__ == "__main__":
-    print("MatrixProfile Debug Test")
+    print("Stumpy Matrix Profile Debug Test")
     print("=" * 40)
     
-    success = test_matrixprofile()
+    success = test_stumpy()
     test_alternatives()
     
     if success:
-        print("\n✓ MatrixProfile is working correctly!")
+        print("\n✓ Stumpy Matrix Profile is working correctly!")
     else:
-        print("\n✗ MatrixProfile has issues, but alternatives are available.")
+        print("\n✗ Stumpy Matrix Profile has issues, but alternatives are available.")

@@ -8,19 +8,16 @@ up:
 down:
 	docker compose down -v
 
-collector:
-	go run ./cmd/collector
-
 pipeline:
-	./venv/bin/python -m python.ingest.nats_consumer
+	./venv/bin/python -m src.ingest.nats_consumer
 
 fmt:
-	gofmt -w .
-	./venv/bin/black python || true
+	# gofmt -w . (disabled - no Go code)
+	./venv/bin/black src || true
 
 lint:
-	golangci-lint run || true
-	ruff check python || true
+	# golangci-lint run || true (disabled - no Go code)
+	ruff check src || true
 
 test-quick:
 	./venv/bin/python tests/quick_test.py

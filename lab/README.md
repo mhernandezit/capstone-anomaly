@@ -57,6 +57,12 @@ cd lab
 ### Connect to Your ML Pipeline
 
 ```bash
+# Build BMP collector Docker image
+./scripts/build-bmp-collector.sh
+
+# Deploy the lab (includes BMP collector)
+./scripts/deploy.sh
+
 # Run the integration script
 python scripts/integrate-with-ml.py
 ```
@@ -72,7 +78,7 @@ python scripts/integrate-with-ml.py
 
 ### Monitoring & Collection
 
-- **BGP Collector** - GoBGP-based collector for BGP updates
+- **BMP Collector** - Go-based BGP Monitoring Protocol collector for real-time BGP updates
 - **Fluent Bit** - Log collection and forwarding
 - **Log Aggregation** - Centralized logging for all devices
 
@@ -81,9 +87,10 @@ python scripts/integrate-with-ml.py
 ### Real BGP Data
 
 - **Authentic BGP sessions** between real FRR instances
-- **Real BGP updates** with proper message formats
+- **Real-time BGP updates** via BMP (BGP Monitoring Protocol)
 - **Actual routing tables** and path information
 - **True BGP timers** and session management
+- **Live BGP monitoring** with Go-based BMP collector
 
 ### Realistic Syslog
 
@@ -244,7 +251,8 @@ lab/
 │   ├── check-bgp.sh
 │   ├── inject-failures.sh
 │   ├── monitor-logs.sh
-│   ├── collector.sh
+│   ├── bgp_collector.py
+│   ├── build-bmp-collector.sh
 │   └── integrate-with-ml.py
 ├── monitoring/                # Monitoring configs
 │   └── fluent-bit.conf
