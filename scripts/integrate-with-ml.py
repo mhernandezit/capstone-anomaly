@@ -68,10 +68,10 @@ class LabMLIntegration:
             'start_time': time.time()
         }
     
-    def parse_gobgp_output(self, line):
-        """Parse GoBGP monitoring output and convert to BGPUpdate format."""
+    def parse_bgp_output(self, line):
+        """Parse BGP monitoring output and convert to BGPUpdate format."""
         try:
-            # Parse JSON output from GoBGP
+            # Parse JSON output from BGP monitoring
             data = json.loads(line.strip())
             
             # Extract BGP update information
@@ -104,71 +104,115 @@ class LabMLIntegration:
                 return bgp_update
                 
         except Exception as e:
-            logger.debug(f"Failed to parse GoBGP output: {e}")
+            logger.debug(f"Failed to parse BGP output: {e}")
             return None
     
     async def process_bgp_updates(self):
         """Process BGP updates from the lab environment."""
         logger.info("🔄 Starting BGP update processing...")
         
-        # Start GoBGP monitoring process
-        process = subprocess.Popen(
-            ['gobgp', 'monitor', 'global', 'rib', '-j'],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
+        # Start BGP monitoring process
+        # Note: This would need to be replaced with actual BGP monitoring
+        # For now, we'll simulate with a placeholder
+        logger.warning("BGP monitoring not implemented - using placeholder")
+        process = None
         
         try:
+            # Import the BGP collector
+            try:
+                import sys
+                import os
+                sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'lab', 'scripts'))
+                from bgp_collector import BGPCollector
+                collector = BGPCollector()
+            except ImportError:
+                logger.error("BGP collector not found. Please ensure bgp_collector.py is available.")
+                return
+            
+            # Start BGP monitoring
+            logger.info("Starting BGP monitoring from FRR routers...")
+            
             while True:
-                line = process.stdout.readline()
-                if not line:
-                    break
+                # Collect BGP data from all devices
+                bgp_data = await collector.collect_bgp_data()
                 
-                # Parse the BGP update
-                bgp_update = self.parse_gobgp_output(line)
-                if bgp_update:
+                # Process BGP neighbors as updates
+                for neighbor in bgp_data['neighbors']:
+                    if neighbor['state'] == 'Established':
+                        # Create a BGP update from neighbor data
+                        bgp_update = BGPUpdate(
+                            timestamp=neighbor['timestamp'],
+                            peer=neighbor['peer_ip'],
+                            type='NEIGHBOR_UP',
+                            announce=None,
+                            withdraw=None,
+                            as_path=str(neighbor['asn']),
+                            next_hop=neighbor['peer_ip']
+                        )
+                        
+                        # Add to feature aggregator
+                        self.feature_aggregator.add_update(bgp_update)
+                        self.stats['updates_processed'] += 1
+                        
+                        logger.debug(f"Processed BGP neighbor: {neighbor['device']} -> {neighbor['peer_ip']}")
+                
+                # Process BGP routes as updates
+                for route in bgp_data['routes']:
+                    # Create a BGP update from route data
+                    bgp_update = BGPUpdate(
+                        timestamp=route['timestamp'],
+                        peer=route['next_hop'],
+                        type='ROUTE_UPDATE',
+                        announce=[route['prefix']],
+                        withdraw=None,
+                        as_path=route['as_path'],
+                        next_hop=route['next_hop']
+                    )
+                    
                     # Add to feature aggregator
                     self.feature_aggregator.add_update(bgp_update)
                     self.stats['updates_processed'] += 1
                     
-                    logger.debug(f"Processed BGP update: {bgp_update.type} {bgp_update.announce or bgp_update.withdraw}")
-                    
-                    # Check for closed bins
-                    while self.feature_aggregator.has_closed_bin():
-                        feature_bin = self.feature_aggregator.pop_closed_bin()
-                        logger.info(f"Processing feature bin: {feature_bin.bin_start} - {feature_bin.bin_end}")
-                        
-                        # Run Matrix Profile detection
-                        mp_result = self.mp_detector.update(feature_bin)
-                        
-                        if mp_result.get('is_anomaly', False):
-                            logger.warning(f" ANOMALY DETECTED!")
-                            logger.warning(f"  Confidence: {mp_result.get('anomaly_confidence', 0):.2f}")
-                            logger.warning(f"  Detected series: {mp_result.get('detected_series', [])}")
-                            logger.warning(f"  Overall score: {mp_result.get('overall_score', {}).get('score', 0):.2f}")
-                            
-                            # Run impact scoring if available
-                            if self.impact_scorer:
-                                try:
-                                    impact_result = self.impact_scorer.classify(feature_bin, mp_result)
-                                    logger.warning(f"  Impact: {impact_result}")
-                                except Exception as e:
-                                    logger.warning(f"  Impact scoring failed: {e}")
-                            
-                            self.stats['anomalies_detected'] += 1
-                        else:
-                            logger.info(f"  Normal operation - Score: {mp_result.get('overall_score', {}).get('score', 0):.2f}")
-                        
-                        self.stats['features_extracted'] += 1
+                    logger.debug(f"Processed BGP route: {route['prefix']} via {route['next_hop']}")
                 
-                # Print statistics every 100 updates
-                if self.stats['updates_processed'] % 100 == 0:
+                # Check for closed bins and run anomaly detection
+                while self.feature_aggregator.has_closed_bin():
+                    feature_bin = self.feature_aggregator.pop_closed_bin()
+                    logger.info(f"Processing feature bin: {feature_bin.bin_start} - {feature_bin.bin_end}")
+                    
+                    # Run Matrix Profile detection
+                    mp_result = self.mp_detector.update(feature_bin)
+                    
+                    if mp_result.get('is_anomaly', False):
+                        logger.warning("🚨 ANOMALY DETECTED!")
+                        logger.warning(f"  Confidence: {mp_result.get('anomaly_confidence', 0):.2f}")
+                        logger.warning(f"  Detected series: {mp_result.get('detected_series', [])}")
+                        logger.warning(f"  Overall score: {mp_result.get('overall_score', {}).get('score', 0):.2f}")
+                        
+                        # Run impact scoring if available
+                        if self.impact_scorer:
+                            try:
+                                impact_result = self.impact_scorer.classify(feature_bin, mp_result)
+                                logger.warning(f"  Impact: {impact_result}")
+                            except Exception as e:
+                                logger.warning(f"  Impact scoring failed: {e}")
+                        
+                        self.stats['anomalies_detected'] += 1
+                    else:
+                        logger.info(f"  Normal operation - Score: {mp_result.get('overall_score', {}).get('score', 0):.2f}")
+                    
+                    self.stats['features_extracted'] += 1
+                
+                # Print statistics every 10 collections
+                if self.stats['updates_processed'] % 10 == 0:
                     elapsed_time = time.time() - self.stats['start_time']
-                    logger.info(f" Stats: {self.stats['updates_processed']} updates, "
+                    logger.info(f"Stats: {self.stats['updates_processed']} updates, "
                               f"{self.stats['features_extracted']} features, "
                               f"{self.stats['anomalies_detected']} anomalies, "
                               f"{self.stats['updates_processed']/elapsed_time:.1f} updates/sec")
+                
+                # Wait before next collection
+                await asyncio.sleep(30)  # Collect every 30 seconds
         
         except KeyboardInterrupt:
             logger.info(" Processing interrupted by user")

@@ -9,12 +9,12 @@ dot.attr(rankdir='TB', splines='ortho')  # Top-to-bottom layout with orthogonal 
 dot.node('start', '', shape='circle', style='filled', fillcolor='black')
 dot.node('load_configs', 'Load Configurations:\nroles.yml & collector.yml', shape='box')
 dot.node('start_nats', 'Start NATS Message Broker', shape='box')
-dot.node('start_collector', 'Start BGP Collector (Go)', shape='box')
+dot.node('start_collector', 'Start BGP Collector', shape='box')
 dot.node('start_pipeline', 'Start Python Pipeline', shape='box')
 dot.node('start_dashboard', 'Start Streamlit Dashboard', shape='box')
 
 # BGP Collector Flow
-dot.node('init_gobgp', 'Initialize GoBGP Server', shape='box')
+dot.node('init_bgp', 'Initialize BGP Server', shape='box')
 dot.node('add_peers', 'Add BGP Peers\n(ToR, Spine, Edge, RR)', shape='box')
 dot.node('establish_sessions', 'Establish BGP Sessions', shape='box')
 dot.node('session_check', 'BGP Sessions\nEstablished?', shape='diamond')
@@ -63,8 +63,8 @@ dot.edge('start_collector', 'start_pipeline')
 dot.edge('start_pipeline', 'start_dashboard')
 
 # BGP Collector Setup
-dot.edge('start_dashboard', 'init_gobgp')
-dot.edge('init_gobgp', 'add_peers')
+dot.edge('start_dashboard', 'init_bgp')
+dot.edge('init_bgp', 'add_peers')
 dot.edge('add_peers', 'establish_sessions')
 dot.edge('establish_sessions', 'session_check')
 dot.edge('session_check', 'session_fail', label='No')

@@ -315,16 +315,15 @@ topology:
     # MONITORING & COLLECTION
     # ===========================================
     
-    # BGP Collector (for ML pipeline)
-    collector:
+    # BMP Collector (Go-based BGP monitoring)
+    bmp-collector:
       kind: linux
-      image: alpine:latest
-      cmd: /bin/sh -c "apk add --no-cache gobgp && sleep infinity"
-      binds:
-        - ./scripts/collector.sh:/collector.sh:ro
-        - ./logs/collector:/var/log:rw
+      image: capstone-bmp-collector:latest
+      cmd: "./bmp-collector"
+      ports:
+        - 1790:1790
       labels:
-        role: "collector"
+        role: "bmp-collector"
         purpose: "bgp-monitoring"
 
     # Fluent Bit for log collection
@@ -667,7 +666,7 @@ topology:
     
     # Collector connections (monitoring all critical nodes)
     - endpoints:
-        - node: collector
+        - node: bmp-collector
           interface: e1
         - node: dc1-spine-01
           interface: e5
@@ -676,7 +675,7 @@ topology:
         type: "monitoring"
         purpose: "bgp-collection"
     - endpoints:
-        - node: collector
+        - node: bmp-collector
           interface: e2
         - node: dc1-spine-02
           interface: e5
@@ -685,7 +684,7 @@ topology:
         type: "monitoring"
         purpose: "bgp-collection"
     - endpoints:
-        - node: collector
+        - node: bmp-collector
           interface: e3
         - node: dc2-spine-01
           interface: e5
@@ -694,7 +693,7 @@ topology:
         type: "monitoring"
         purpose: "bgp-collection"
     - endpoints:
-        - node: collector
+        - node: bmp-collector
           interface: e4
         - node: dc2-spine-02
           interface: e5

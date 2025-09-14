@@ -1,78 +1,79 @@
-\documentclass[11pt,letterpaper]{article}
-\usepackage[utf8]{inputenc}
+\documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
-\usepackage{times}
-\usepackage{setspace}
 \usepackage{apacite}
 \usepackage{url}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
 
-% Set line spacing
-\doublespacing
-
-% Title page
-\title{Machine Learning for Real-Time Detection and Localization of Network Failures}
+\title{Machine Learning for Real-Time Network Failure Detection and Localization}
 \author{Michael Hernandez}
 \date{September 12, 2025}
 
 \begin{document}
 
-% Cover page
+% Cover Page
 \begin{titlepage}
-    \centering
-    \vspace*{2in}
-    {\LARGE \textbf{Machine Learning for Real-Time Detection and Localization of Network Failures}}
-    
-    \vspace{1in}
-    {\large CUNY School of Professional Studies}
-    
-    \vspace{0.5in}
-    {\large Michael Hernandez}
-    
-    \vspace{0.5in}
-    {\large September 12, 2025}
-    
-    \vfill
-\end{titlepage}
+\centering
+\vspace*{2cm}
 
-% Reset page numbering after title page
-\setcounter{page}{1}
+{\Large \textbf{Machine Learning for Real-Time Network Failure Detection and Localization}}
+
+\vspace{1.5cm}
+
+{\large CUNY School of Professional Studies}
+
+\vspace{0.5cm}
+
+{\large Michael Hernandez}
+
+\vspace{0.5cm}
+
+{\large IS 499 Information Systems Capstone}
+
+\vspace{0.5cm}
+
+{\large Professor John Bouma}
+
+\vspace{0.5cm}
+
+{\large September 12, 2025}
+
+\vfill
+
+\end{titlepage}
 
 \section{Topic Description}
 
-This project develops a pragmatic system that ingests two operational signals—BGP routing updates and device logs—and applies approachable machine-learning to detect failure-induced incidents quickly and infer where they most likely originate (e.g., top-of-rack, spine/route-reflector, or edge/provider). The emphasis is operator value: fewer noisy alerts, faster first actions, and an explanation of "what broke and where."
+This project builds a practical system that processes live BGP updates and device logs, using accessible machine learning to quickly detect failure-induced incidents and pinpoint likely origins (e.g., top-of-rack switch, spine/route reflector, or edge/provider device). The focus is operator value: fewer false alerts, faster action, and clear explanations of what broke and where.
 
 \section{Problem Description}
 
-Large BGP-routed environments generate many alarms but little immediate guidance about what truly matters or where to begin. Traditional SNMP/syslog thresholds alert on hard failures yet often over-page on benign edge-local events and under-explain control-plane or egress faults, leading to manual correlation and delays. In a production setting with thousands of switches and anycast/VXLAN, this increases time to detect and time to resolve. A system that correlates control-plane churn with structured log patterns and a simple role-based topology can reduce detection delay, provide a first-guess fault location, and suppress noise that is confined to a single rack or host.
+Large BGP-routed environments generate many alarms but little guidance on what matters or where to start. SNMP and syslog thresholds flag hard failures but often over-page on benign local events and under-explain control-plane or egress faults \cite{mohammed2021}. Engineers then manually sift through logs and correlate devices, increasing detection and resolution times. In large-scale networks, this delay impacts availability and on-call workload. A system that links control-plane churn with structured log patterns and understands network role topology can cut detection time, suggest likely fault locations, and suppress noise isolated to a rack or host.
 
-\section{Solution Description}
+\section{Solution Approach}
 
-The system extracts simple features from BGP updates (withdrawals, AS-path churn, next-hop shifts) and log templates (counts, severity, burstiness), then applies lightweight, well-documented methods: Matrix Profile for time-series anomaly cues on BGP streams and Isolation Forest for device-level log vectors \cite{scott2024, cheng2021}. Scores are normalized and fused, then passed through a topology-aware localization step that uses the network's role map (server, ToR, spine/RR, edge) to propose a likely origin and to down-rank edge-local flaps \cite{tan2024}. A small Streamlit dashboard presents the alert, the suspected location, and the top contributing signals; the goal is earlier, clearer action rather than another raw alarm. To tie the work to operator outcomes, the evaluation compares this system to manual SNMP/syslog triage and reports detection delay, event-level precision/recall/F1, localization accuracy (Hit@k), and page reduction \cite{mohammed2021}.
+The system extracts features from BGP updates (withdrawals, AS-path churn, next-hop shifts) and device logs (template counts, severity, burstiness). It applies a time-series anomaly detector to BGP data \cite{scott2024} and an unsupervised model to per-device log vectors \cite{cheng2021}. Scores are normalized, fused, and analyzed by a topology-aware localizer using a role map (server, ToR, spine/RR, edge) to identify origins and down-rank edge-local flaps \cite{tan2024}. A dashboard displays each alert with the suspected location and top signals, aiming for accuracy and clarity without heavy labeling or complex models.
 
-\section{Research}
+\section{Coursework Foundations}
 
-\subsection{Coursework Foundations}
+My coursework provided the foundation, while industry experience added domain depth. In Python, data structures, and databases (IS 210/211, IS 361, IS 362), I learned to build parsers, design queryable schemas, and process streaming records. Networks and infrastructure (IS 205, IS 260) gave me context to define BGP failure modes and set an SNMP/syslog baseline. Systems analysis, enterprise architectures, and project management (IS 320, IS 300, PROM 210) shaped my layered design (ingest → features → models → localization → UI), requirements, UMLs, and semester plan. Security and strategy (IS 250, IS 350) guided my use of lab-based data, secure telemetry handling, and clear communication of operator value. Where the degree built general skills, my work experience provided operational specifics like BGP-routed fabrics, anycast, VXLAN, and incident response which makes the project feasible and relevant.
 
-My degree provided the \textbf{foundations} for this project while my work experience supplies domain depth.
+\section{Development \& Evaluation Plan}
 
-\begin{itemize}
-    \item \textbf{Python, data structures, and databases} (IS 210/211, IS 361, IS 362) support streaming parsers, clean feature extraction, and simple event/metric schemas.
-    \item \textbf{Networks and infrastructure} (IS 205, IS 260) ground the failure taxonomy and the SNMP/syslog baseline.
-    \item \textbf{Systems analysis, enterprise architectures, and project management} (IS 320, IS 300, PROM 210) inform requirements, a layered design (ingest → features → models → localization → UI), and a semester plan.
-    \item \textbf{Security and strategy} (IS 250, IS 350) guide secure telemetry handling, RBAC for the dashboard, and value framing.
-\end{itemize}
+Implementation will be in Python, using libraries for streaming feature extraction and unsupervised detection, with a containerized virtual lab generating realistic BGP updates and logs. The lab includes two spines, two top-of-rack switches, two edges, and multiple "server" peers. I will inject failures—one-way signal loss, a route-reflector crash, an edge/provider outage, and a server crash—and compare alerts against a baseline of manual SNMP/syslog triage. The repository contains the dashboard, ingestion scripts, experiment notebooks, diagrams, and a LaTeX/BibTeX setup for citation and PDF export.
 
-\subsection{Scholarly and Technical Resources}
+\subsection{Evaluation Metrics}
 
-I will use recent papers and accessible methods: Matrix Profile for BGP time series \cite{scott2024}, multi-scale sequence models as a supervised baseline \cite{cheng2021}, topology-aware analyses for structure \cite{tan2024}, and an operations-oriented study tying analytics to operator decisions \cite{mohammed2021}. For logs, approachable unsupervised techniques (e.g., Isolation Forest / One-Class SVM) provide simple, interpretable starting points. Clear UML and architecture diagrams will keep the narrative plain and direct.
+To show practical value, I will report three measures against the baseline. F1 reflects alert quality by balancing real failures caught (recall) with false alarms avoided (precision). Detection delay is the time from failure onset to the first alert, given as a median with interquartile range, and compared with the baseline's delay for the same runs. Hit@k measures localization accuracy by checking if the true failure origin is among the top-k suspects (e.g., Hit@1, Hit@3). These metrics capture fewer false alerts, quicker detection, and clearer first actions.
 
-\subsection{Development \& Evaluation Resources}
+\section{Deliverables \& Timeline}
 
-A containerized \textbf{virtual lab} (FRRouting with two spines, two ToRs, two edges, and multiple "server" peers) will generate realistic BGP updates and logs. I will inject four representative failures—\textbf{one-way loss of signal, route-reflector crash, edge/provider outage, and server crash}—then compare the system's alerts against a \textbf{baseline of manual SNMP/syslog triage}. Event-level precision, recall, and \textbf{F1} will be reported along with the \textbf{detection delay} to first alert and localization \textbf{Hit@k}; results will be summarized in a short paper, an 18-slide presentation, and a live demo.
+The final submission will include a paper, a presentation, a live demo against the virtual lab, and a public repository with code, documentation, and weekly updates. Early work centers on stabilizing the lab and data plumbing, then moves to feature extraction, unsupervised scoring, topology-aware localization, and the dashboard. The final phase focuses on experiments, ablations, results packaging, and presentation polish. The scope is sized for a semester, aiming for measurable outcomes and a working proof of concept.
 
 \section{Writing \& Formatting}
 
-The paper will use \textbf{plain, professional language} and avoid jargon where possible, defining terms when needed (e.g., "BGP updates" as "routing change messages"). In-text \textbf{APA citations} will be included with a reference list to meet formatting expectations.
+The paper will use plain, professional language and avoid jargon where possible, defining terms when needed (e.g., "BGP updates" as "routing change messages"). In-text APA citations will be included with a reference list.
 
 % References
 \bibliographystyle{apacite}

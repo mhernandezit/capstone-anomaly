@@ -111,7 +111,7 @@ Containerlab Environment
         ↓
    Real FRR Routers (BGP sessions)
         ↓
-   BGP Collector (GoBGP)
+   BGP Collector
         ↓
    Format Conversion (BGPUpdate)
         ↓

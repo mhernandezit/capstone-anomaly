@@ -7,15 +7,15 @@ A comprehensive machine learning system for real-time detection and localization
 ```text
 capstone-anomaly/
 ├── src/                          # Source code
-│   ├── python/                   # Python ML pipeline components
-│   │   ├── models/              # ML models (Matrix Profile, LSTM, etc.)
-│   │   ├── features/            # Feature extraction
-│   │   ├── ingest/              # Data ingestion (NATS, BGP)
-│   │   ├── dash/                # Streamlit dashboards
-│   │   ├── alerting/            # Alert management
-│   │   └── triage/              # Impact classification
-│   ├── cmd/                     # Go-based BGP collector
-│   └── virtual_lab/             # Lab simulation components
+│   ├── models/                   # ML models (Matrix Profile, LSTM, etc.)
+│   ├── features/                 # Feature extraction
+│   ├── ingest/                   # Data ingestion (NATS, BGP)
+│   ├── dash/                     # Streamlit dashboards
+│   ├── alerting/                 # Alert management
+│   ├── triage/                   # Impact classification
+│   ├── preprocessing/            # Data preprocessing
+│   ├── integration/              # ML pipeline integration
+│   └── scripts/                  # Utility scripts
 ├── lab/                         # Containerlab virtual lab environment
 │   ├── topo.clab.yml           # Lab topology definition
 │   ├── configs/                # FRR router configurations
@@ -42,7 +42,6 @@ capstone-anomaly/
 
 - Docker and Docker Compose
 - Python 3.8+
-- Go 1.19+ (for BGP collector)
 - Containerlab (for virtual lab)
 
 ### Running the System
