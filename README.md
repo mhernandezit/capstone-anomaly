@@ -6,34 +6,38 @@ A comprehensive machine learning system for real-time detection and localization
 
 ```text
 capstone-anomaly/
-├── src/                          # Source code
+├── src/                          # Python ML pipeline source code
 │   ├── models/                   # ML models (Matrix Profile, LSTM, etc.)
-│   ├── features/                 # Feature extraction
-│   ├── ingest/                   # Data ingestion (NATS, BGP)
+│   ├── features/                 # Feature extraction and aggregation
+│   ├── ingest/                   # Data ingestion from NATS
 │   ├── dash/                     # Streamlit dashboards
 │   ├── alerting/                 # Alert management
 │   ├── triage/                   # Impact classification
 │   ├── preprocessing/            # Data preprocessing
 │   ├── integration/              # ML pipeline integration
-│   └── scripts/                  # Utility scripts
-├── lab/                         # Containerlab virtual lab environment
-│   ├── topo.clab.yml           # Lab topology definition
+│   ├── message_bus/              # NATS message bus integration
+│   └── utils/                    # Utility functions and schemas
+├── cmd/                          # Go-based components
+│   └── bmp-collector/            # BGP Monitoring Protocol collector
+├── lab/                         # Containerlab network environment
+│   ├── topo.clab.yml           # Basic lab topology
+│   ├── topo-dc-expanded.clab.yml # Expanded datacenter topology
 │   ├── configs/                # FRR router configurations
-│   └── scripts/                # Lab management scripts
-├── scripts/                     # Management and deployment scripts
+│   ├── scripts/                # Lab management scripts
+│   └── monitoring/             # Fluent Bit log collection
 ├── config/                      # Configuration files
 │   └── configs/                # System configurations
 ├── tests/                       # Test files and test data
 ├── data/                        # Data storage
 │   ├── lab_traces/             # Lab-generated traces
 │   └── public_traces/          # Public BGP traces
-├── results/                     # Analysis results and outputs
 ├── docs/                        # Documentation
 │   ├── project_proposal/       # LaTeX proposal documents
 │   ├── design/                 # System design diagrams
 │   ├── papers/                 # Research papers
 │   └── development/            # Development documentation
-└── docker-compose.yml          # Container orchestration
+├── docker-compose.yml          # Container orchestration
+└── go.mod                       # Go module dependencies
 ```
 
 ## 🚀 Quick Start
@@ -42,7 +46,9 @@ capstone-anomaly/
 
 - Docker and Docker Compose
 - Python 3.8+
-- Containerlab (for virtual lab)
+- Go 1.21+ (for BMP collector)
+- Containerlab (for network lab)
+- NATS server
 
 ### Running the System
 
@@ -53,14 +59,23 @@ capstone-anomaly/
    ./scripts/deploy.sh
    ```
 
-2. **Run the ML pipeline:**
+2. **Build and run the BMP collector:**
 
    ```bash
-   cd src/python
+   # Build the Go BMP collector
+   docker build -t capstone-bmp-collector:latest -f cmd/bmp-collector/Dockerfile .
+   
+   # The collector is automatically started with the lab
+   ```
+
+3. **Run the ML pipeline:**
+
+   ```bash
+   cd src
    python dual_signal_pipeline.py
    ```
 
-3. **Access the dashboard:**
+4. **Access the dashboard:**
    - Open `http://localhost:8501` in your browser
 
 ### Testing
@@ -105,9 +120,9 @@ make test-scenarios
 
 ### Code Organization
 
-- **`src/python/`**: Main ML pipeline and analysis code
-- **`src/cmd/`**: Go-based BGP collector and utilities
-- **`lab/`**: Virtual lab environment for testing
+- **`src/`**: Python ML pipeline and analysis code
+- **`cmd/bmp-collector/`**: Go-based BGP Monitoring Protocol collector
+- **`lab/`**: Containerlab network environment with real FRR routers
 - **`scripts/`**: Deployment and management automation
 
 ### Key Features
