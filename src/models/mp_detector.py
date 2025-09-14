@@ -1,6 +1,6 @@
 import numpy as np
 from collections import deque
-from python.utils.schema import FeatureBin
+from src.utils.schema import FeatureBin
 
 
 class MPDetector:

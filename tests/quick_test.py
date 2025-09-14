@@ -3,7 +3,7 @@
 Quick BGP Event Publisher
 
 A simple script to publish a few test BGP events immediately.
-Perfect for testing if the dashboard is receiving data.
+Suitable for testing if the dashboard is receiving data.
 """
 
 import asyncio
@@ -16,7 +16,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from nats.aio.client import Client as NATS
-from python.utils.schema import BGPUpdate
+from src.utils.schema import BGPUpdate
 
 
 async def publish_test_events():
@@ -25,7 +25,7 @@ async def publish_test_events():
     # Connect to NATS
     nc = NATS()
     await nc.connect(servers=["nats://localhost:4222"])
-    print("✅ Connected to NATS")
+    print("Connected to NATS")
     
     # Create some test BGP events
     test_events = [
@@ -78,8 +78,8 @@ async def publish_test_events():
     # Wait a moment then disconnect
     await asyncio.sleep(2)
     await nc.drain()
-    print("✅ Test events published successfully!")
-    print("📊 Check your dashboard at http://localhost:8501")
+    print("Test events published successfully!")
+    print("Check dashboard at http://localhost:8501")
 
 
 if __name__ == "__main__":

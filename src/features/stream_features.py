@@ -1,6 +1,6 @@
 from collections import defaultdict, deque
 from typing import Dict
-from python.utils.schema import BGPUpdate, FeatureBin
+from src.utils.schema import BGPUpdate, FeatureBin
 
 
 class FeatureAggregator:

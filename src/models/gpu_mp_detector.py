@@ -2,7 +2,7 @@
 GPU-Accelerated Matrix Profile Detector for BGP Anomaly Detection
 
 This module implements a streaming Matrix Profile detector using GPU acceleration
-via CuPy and the Matrix Profile Foundation library. It's designed for real-time
+via CuPy and the stumpy library. It's designed for real-time
 BGP anomaly detection with topology-aware failure localization.
 """
 
@@ -11,7 +11,7 @@ import cupy as cp
 from collections import deque
 from typing import Optional, Dict, Any, List
 import logging
-from python.utils.schema import FeatureBin
+from src.utils.schema import FeatureBin
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

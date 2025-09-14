@@ -1,5 +1,5 @@
 from typing import Dict
-from python.utils.schema import FeatureBin
+from src.utils.schema import FeatureBin
 
 
 class ImpactScorer:

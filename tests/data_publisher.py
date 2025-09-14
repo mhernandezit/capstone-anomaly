@@ -19,7 +19,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from nats.aio.client import Client as NATS
-from python.utils.schema import BGPUpdate
+from src.utils.schema import BGPUpdate
 
 
 @dataclass
@@ -38,7 +38,7 @@ class BGPEventGenerator:
     """Generates realistic BGP events for testing"""
     
     def __init__(self):
-        # Common BGP peers based on your roles.yml structure
+        # Common BGP peers based on roles.yml structure
         self.default_peers = [
             "10.0.1.1",    # ToR switches
             "10.0.1.2", 
@@ -162,13 +162,13 @@ class DataPublisher:
         """Connect to NATS"""
         self.nc = NATS()
         await self.nc.connect(servers=[self.nats_url])
-        print(f"✅ Connected to NATS at {self.nats_url}")
+        print(f"Connected to NATS at {self.nats_url}")
 
     async def disconnect(self):
         """Disconnect from NATS"""
         if self.nc:
             await self.nc.drain()
-            print("✅ Disconnected from NATS")
+            print("Disconnected from NATS")
 
     async def publish_event(self, event: BGPUpdate, subject: str = "bgp.updates"):
         """Publish a single BGP event"""
@@ -185,10 +185,10 @@ class DataPublisher:
 
     async def run_scenario(self, scenario: TestScenario):
         """Run a complete test scenario"""
-        print(f"\n🚀 Starting scenario: {scenario.name}")
+        print(f"\nStarting scenario: {scenario.name}")
         print(f"📄 Description: {scenario.description}")
         print(f"⏱️  Duration: {scenario.duration_seconds}s")
-        print(f"📊 Event rate: {scenario.event_rate_per_second}/s")
+        print(f"Event rate: {scenario.event_rate_per_second}/s")
         
         start_time = time.time()
         event_count = 0
@@ -201,7 +201,7 @@ class DataPublisher:
                     peer = random.choice(scenario.peers)
                     events = self.generator.generate_route_leak(peer, scenario.prefixes)
                     await self.publish_events(events)
-                    print(f"🚨 Injected route leak from {peer}")
+                    print(f" Injected route leak from {peer}")
                 else:
                     # Normal traffic
                     peer = random.choice(scenario.peers)
@@ -215,7 +215,7 @@ class DataPublisher:
                     prefix = random.choice(scenario.prefixes)
                     event = self.generator.generate_prefix_hijack(peer, prefix)
                     await self.publish_event(event)
-                    print(f"🚨 Injected prefix hijack: {peer} -> {prefix}")
+                    print(f" Injected prefix hijack: {peer} -> {prefix}")
                 else:
                     # Normal traffic
                     peer = random.choice(scenario.peers)
@@ -228,7 +228,7 @@ class DataPublisher:
                     peer = random.choice(scenario.peers)
                     events = self.generator.generate_massive_withdrawal(peer, scenario.prefixes)
                     await self.publish_events(events)
-                    print(f"🚨 Injected massive withdrawal from {peer}")
+                    print(f" Injected massive withdrawal from {peer}")
                 else:
                     # Normal traffic
                     peer = random.choice(scenario.peers)
@@ -248,9 +248,9 @@ class DataPublisher:
             # Progress indicator
             if event_count % int(scenario.event_rate_per_second * 10) == 0:
                 elapsed = time.time() - start_time
-                print(f"📈 Published {event_count} events in {elapsed:.1f}s")
+                print(f" Published {event_count} events in {elapsed:.1f}s")
         
-        print(f"✅ Completed scenario: {scenario.name} ({event_count} events)")
+        print(f"Completed scenario: {scenario.name} ({event_count} events)")
 
 
 # Pre-defined test scenarios

@@ -2,28 +2,28 @@
 CPU-Optimized Matrix Profile Detector for BGP Anomaly Detection
 
 This module implements a high-performance CPU-based Matrix Profile detector
-using the Matrix Profile Foundation library. It's designed for real-time
+using the stumpy library. It's designed for real-time
 BGP anomaly detection with topology-aware failure localization.
 """
 
 import numpy as np
 from collections import deque
-from typing import Optional, Dict, Any, List
+from typing import Dict, Any, List
 import logging
-from python.utils.schema import FeatureBin
+from utils.schema import FeatureBin
 
-# Try to import Matrix Profile Foundation, fall back to stumpy if not available
+# Use stumpy as the primary Matrix Profile library
 try:
-    import matrixprofile as mp
+    import stumpy  # noqa: F401
     MP_AVAILABLE = True
     logger = logging.getLogger(__name__)
-    logger.info("Using Matrix Profile Foundation library")
+    logger.info("Using stumpy Matrix Profile library")
 except ImportError:
     try:
-        import stumpy
+        import matrixprofile as mp  # type: ignore
         MP_AVAILABLE = False
         logger = logging.getLogger(__name__)
-        logger.info("Using stumpy library (Matrix Profile Foundation not available)")
+        logger.info("Using matrixprofile library (stumpy not available)")
     except ImportError:
         MP_AVAILABLE = False
         logger = logging.getLogger(__name__)
@@ -95,7 +95,7 @@ class CPUMPDetector:
             return "mpf"
         elif mp_library == "stumpy":
             try:
-                import stumpy
+                import stumpy  # noqa: F401
                 return "stumpy"
             except ImportError:
                 logger.warning("stumpy not available, falling back to simplified method")
@@ -104,7 +104,7 @@ class CPUMPDetector:
             return "fallback"
     
     def _calculate_matrix_profile_mpf(self, ts: np.ndarray) -> Dict[str, float]:
-        """Calculate Matrix Profile using Matrix Profile Foundation library."""
+        """Calculate Matrix Profile using stumpy library."""
         try:
             # Calculate Matrix Profile
             profile = mp.compute(ts, windows=self.window_bins)

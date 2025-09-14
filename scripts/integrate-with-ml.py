@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Integration script to connect the containerlab environment with the existing ML pipeline.
+Integration script to connect the containerlab environment with the ML pipeline.
 
 This script:
 1. Monitors BGP updates from the lab environment
-2. Converts them to the format expected by your ML pipeline
-3. Feeds them into your existing feature aggregator and Matrix Profile detector
+2. Converts them to the format expected by the ML pipeline
+3. Feeds them into the feature aggregator and Matrix Profile detector
 """
 
 import asyncio
@@ -24,15 +24,15 @@ sys.path.insert(0, str(project_root))
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Import your existing ML components
+# Import ML components
 try:
-    from python.utils.schema import BGPUpdate, FeatureBin
-    from python.features.stream_features import FeatureAggregator
-    from python.models.gpu_mp_detector import GPUMPDetector
-    from python.triage.impact import ImpactScorer
-    logger.info("✅ Successfully imported ML components")
+    from src.utils.schema import BGPUpdate, FeatureBin
+    from src.features.stream_features import FeatureAggregator
+    from src.models.gpu_mp_detector import GPUMPDetector
+    from src.triage.impact import ImpactScorer
+    logger.info("Successfully imported ML components")
 except ImportError as e:
-    logger.error(f"❌ Failed to import ML components: {e}")
+    logger.error(f"Failed to import ML components: {e}")
     sys.exit(1)
 
 
@@ -55,9 +55,9 @@ class LabMLIntegration:
             with open('configs/roles.yml', 'r') as f:
                 roles_config = yaml.safe_load(f)
             self.impact_scorer = ImpactScorer(roles_config)
-            logger.info("✅ Impact scorer initialized")
+            logger.info("✓ Impact scorer initialized")
         except Exception as e:
-            logger.warning(f"⚠️ Could not initialize impact scorer: {e}")
+            logger.warning(f" Could not initialize impact scorer: {e}")
             self.impact_scorer = None
         
         # Statistics
@@ -143,7 +143,7 @@ class LabMLIntegration:
                         mp_result = self.mp_detector.update(feature_bin)
                         
                         if mp_result.get('is_anomaly', False):
-                            logger.warning(f"🚨 ANOMALY DETECTED!")
+                            logger.warning(f" ANOMALY DETECTED!")
                             logger.warning(f"  Confidence: {mp_result.get('anomaly_confidence', 0):.2f}")
                             logger.warning(f"  Detected series: {mp_result.get('detected_series', [])}")
                             logger.warning(f"  Overall score: {mp_result.get('overall_score', {}).get('score', 0):.2f}")
@@ -165,15 +165,15 @@ class LabMLIntegration:
                 # Print statistics every 100 updates
                 if self.stats['updates_processed'] % 100 == 0:
                     elapsed_time = time.time() - self.stats['start_time']
-                    logger.info(f"📊 Stats: {self.stats['updates_processed']} updates, "
+                    logger.info(f" Stats: {self.stats['updates_processed']} updates, "
                               f"{self.stats['features_extracted']} features, "
                               f"{self.stats['anomalies_detected']} anomalies, "
                               f"{self.stats['updates_processed']/elapsed_time:.1f} updates/sec")
         
         except KeyboardInterrupt:
-            logger.info("⏹️ Processing interrupted by user")
+            logger.info(" Processing interrupted by user")
         except Exception as e:
-            logger.error(f"❌ Error processing BGP updates: {e}")
+            logger.error(f"✗ Error processing BGP updates: {e}")
         finally:
             process.terminate()
             process.wait()
@@ -200,15 +200,15 @@ async def main():
         result = subprocess.run(['docker', 'ps', '--filter', 'name=clab-bgp-anomaly-lab', '--format', '{{.Names}}'], 
                               capture_output=True, text=True)
         if not result.stdout.strip():
-            logger.error("❌ Lab is not running. Please deploy it first:")
+            logger.error("✗ Lab is not running. Please deploy it first:")
             logger.error("   cd lab && ./scripts/deploy.sh")
             sys.exit(1)
         
-        logger.info("✅ Lab is running")
+        logger.info("✓ Lab is running")
         logger.info(f"Running containers: {result.stdout.strip()}")
         
     except Exception as e:
-        logger.error(f"❌ Failed to check lab status: {e}")
+        logger.error(f"✗ Failed to check lab status: {e}")
         sys.exit(1)
     
     # Initialize integration
@@ -219,13 +219,13 @@ async def main():
         await integration.process_bgp_updates()
         
     except KeyboardInterrupt:
-        logger.info("⏹️ Integration stopped by user")
+        logger.info(" Integration stopped by user")
     except Exception as e:
-        logger.error(f"❌ Integration failed: {e}")
+        logger.error(f"✗ Integration failed: {e}")
     finally:
         # Print final statistics
         stats = integration.get_stats()
-        logger.info(f"📈 Final Statistics:")
+        logger.info(f" Final Statistics:")
         logger.info(f"  Updates processed: {stats['updates_processed']}")
         logger.info(f"  Features extracted: {stats['features_extracted']}")
         logger.info(f"  Anomalies detected: {stats['anomalies_detected']}")

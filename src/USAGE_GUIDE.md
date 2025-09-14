@@ -1,48 +1,61 @@
-# Virtual Lab Usage Guide
+# BGP Anomaly Detection Lab Usage Guide
 
-This guide shows you how to use the virtual lab to generate events and analyze them with your ML models.
+This guide describes how to use the containerlab-based lab environment to generate BGP events and analyze them with machine learning models.
 
-## 🎯 Three Ways to Use the Lab
+## Lab Usage Methods
 
-### 1. **Quick Demo** - See the lab in action
+### 1. Quick Demo
+
 ```bash
-python virtual_lab/scripts/demo_lab.py
+cd lab
+./scripts/deploy.sh
+./scripts/check-bgp.sh
 ```
-This runs a standalone demo without external dependencies.
 
-### 2. **Lab + ML Integration** - Generate events and analyze with your ML models
+This deploys the containerlab environment with real FRR routers.
+
+### 2. Lab + ML Integration
+
 ```bash
-python virtual_lab/scripts/run_lab_with_ml.py
+cd lab
+./scripts/deploy.sh
+python scripts/integrate-with-ml.py
 ```
-This integrates the lab with your existing ML pipeline.
 
-### 3. **Full Lab Environment** - Complete testing environment
+This integrates the lab with ML pipeline components.
+
+### 3. Full Lab with Failure Testing
+
 ```bash
-python virtual_lab/scripts/setup_lab.py
-python virtual_lab/scripts/start_lab.py
+cd lab
+./scripts/deploy.sh
+./scripts/inject-failures.sh
 ```
-This runs the full lab with message bus and scaling.
 
-## 🔬 Method 2: Lab + ML Integration (Recommended)
+This runs the full lab with failure injection capabilities.
 
-This is the most practical way to use the lab with your existing ML models.
+## Method 2: Lab + ML Integration (Recommended)
 
-### How it works:
+This is the most practical way to use the lab with machine learning models.
 
-1. **Generate Events**: Virtual lab creates realistic BGP updates, syslog messages, and system metrics
-2. **Convert Format**: Events are converted to your existing BGPUpdate format
-3. **Process with ML**: Events flow through your FeatureAggregator and GPUMPDetector
-4. **Analyze Results**: Matrix Profile analysis detects anomalies in real-time
+### How it works
 
-### Example Output:
-```
+1. **Deploy Lab**: Containerlab creates real FRR routers with authentic BGP sessions
+2. **Collect Data**: BGP collector captures real BGP updates and syslog messages
+3. **Convert Format**: Events are converted to BGPUpdate format
+4. **Process with ML**: Events flow through FeatureAggregator and GPUMPDetector
+5. **Analyze Results**: Matrix Profile analysis detects anomalies in real-time
+
+### Example Output
+
+```text
 🚀 Starting lab event generation and ML analysis for 2 minutes
-📊 Cycle 1 - Generating events...
-  Generated 15 BGP updates
+📊 Cycle 1 - Collecting BGP updates...
+  Generated 15 BGP updates from real FRR routers
   Processing feature bin: 1234567890 - 1234567920
   Normal operation - Score: 1.2
-📊 Cycle 2 - Generating events...
-  Generated 12 BGP updates
+📊 Cycle 2 - Collecting BGP updates...
+  Generated 12 BGP updates from real FRR routers
   Processing feature bin: 1234567920 - 1234567950
 🚨 ANOMALY DETECTED!
   Confidence: 0.85
@@ -50,156 +63,201 @@ This is the most practical way to use the lab with your existing ML models.
   Overall score: 3.2
 ```
 
-## 🛠️ Customizing the Lab
+## Lab Customization
 
-### Modify Data Generation
-Edit `virtual_lab/configs/lab_config.yml`:
+### Modify Network Topology
+
+Edit `lab/topo.clab.yml` to add more devices:
 
 ```yaml
-data_generation:
-  bgp_telemetry:
-    update_frequency: 0.5  # More frequent updates
-    base_announcements_per_second: 20  # Higher rate
-    base_withdrawals_per_second: 5
-  syslog:
-    base_messages_per_second: 10  # More syslog messages
+name: bgp-anomaly-lab
+topology:
+  nodes:
+    spine-03:  # Add more spine switches
+      kind: linux
+      image: frrouting/frr:v8.4.0
+    tor-03:    # Add more ToR switches
+      kind: linux
+      image: frrouting/frr:v8.4.0
 ```
 
-### Add More Anomalies
-```yaml
-data_generation:
-  bgp_telemetry:
-    anomaly_injection:
-      enabled: true
-      frequency: 0.2  # 20% chance of anomaly
-      types: ["link_failure", "bgp_reset", "prefix_hijack", "route_flap"]
+### Customize BGP Configuration
+
+Edit `lab/configs/*/frr.conf` to modify BGP behavior:
+
+```bash
+# Example: Add more prefixes to advertise
+router bgp 65001
+  network 192.168.100.0/24
+  network 192.168.101.0/24
+  neighbor 10.0.1.2 remote-as 65002
 ```
 
-### Scale Up the Load
-```yaml
-scaling:
-  phases:
-    - name: "baseline"
-      duration_minutes: 2
-      bgp_multiplier: 1.0
-    - name: "stress_test"
-      duration_minutes: 3
-      bgp_multiplier: 10.0  # 10x load
-```
+### Add Custom Failure Scenarios
 
-## 📊 Understanding the Data Flow
+Edit `lab/scripts/inject-failures.sh` to add new failure types:
 
-```
-Virtual Lab Network
+```bash
+# Example: Add prefix hijacking scenario
+inject_prefix_hijack() {
+    echo "Injecting prefix hijack..."
+    docker exec clab-bgp-anomaly-lab-server-01 vtysh -c "conf t" -c "router bgp 65010" -c "network 10.0.0.0/8"
+}
+
+## Data Flow
+
+```text
+Containerlab Environment
         ↓
-   Event Generation
+   Real FRR Routers (BGP sessions)
         ↓
-   Format Conversion
+   BGP Collector (GoBGP)
         ↓
-   Feature Aggregator (your existing code)
+   Format Conversion (BGPUpdate)
         ↓
-   Matrix Profile Detector (your existing code)
+   Feature Aggregator
+        ↓
+   Matrix Profile Detector
         ↓
    Anomaly Detection Results
 ```
 
-## 🔍 What Events Are Generated
+## Generated Events
 
-### BGP Updates
-- **Announcements**: New prefix advertisements
-- **Withdrawals**: Prefix withdrawals
-- **Session Events**: BGP neighbor up/down
-- **Path Changes**: AS path modifications
+### Real BGP Updates (from FRR routers)
 
-### Syslog Messages
-- **Interface Events**: Up/down status changes
-- **BGP Events**: Neighbor state changes
-- **System Events**: CPU, memory, temperature
-- **Security Events**: Login attempts, access denials
+- **Announcements**: Real prefix advertisements from FRR
+- **Withdrawals**: Actual prefix withdrawals from FRR
+- **Session Events**: Authentic BGP neighbor up/down events
+- **Path Changes**: Real AS path modifications
+- **Route Updates**: Actual routing table changes
 
-### System Metrics
-- **CPU Usage**: Realistic utilization patterns
-- **Memory Usage**: Memory consumption trends
-- **Temperature**: Thermal monitoring
-- **Interface Stats**: Traffic, errors, utilization
+### Real Syslog Messages (from FRR daemons)
 
-## 🎛️ Advanced Usage
+- **BGP Daemon Logs**: Authentic FRR BGP daemon messages
+- **Interface Events**: Real interface up/down status changes
+- **BGP Events**: Actual neighbor state changes
+- **System Events**: Real system and daemon events
+- **Error Conditions**: Authentic error and warning messages
+
+### Network Topology
+
+- **10 Real FRR Routers**: 2 spines, 2 ToRs, 2 edges, 4 servers
+- **Authentic BGP Sessions**: Real iBGP and eBGP relationships
+- **Real Network Interfaces**: Actual Linux network interfaces
+- **True BGP Timers**: Real BGP keepalive and hold timers
+
+## Advanced Usage
 
 ### Custom Network Topology
+
+Edit `lab/topo.clab.yml` to add more devices:
+
 ```yaml
+name: bgp-anomaly-lab
 topology:
-  devices:
-    spine_switches:
-      count: 4  # More spine switches
-    tor_switches:
-      count: 8  # More TOR switches
-    leaf_switches:
-      count: 16  # More leaf switches
+  nodes:
+    spine-03:  # Add more spine switches
+      kind: linux
+      image: frrouting/frr:v8.4.0
+    tor-03:    # Add more ToR switches
+      kind: linux
+      image: frrouting/frr:v8.4.0
+  links:
+    - endpoints: ["spine-03:eth1", "tor-03:eth1"]
 ```
 
-### Custom Feature Extraction
-The lab uses the Feltin 2023 approach for feature extraction:
-- Multi-scale temporal analysis
-- Semantic event understanding
-- Correlation between data sources
-- Feature selection using mutual information
+### Custom BGP Configuration
 
-### Integration with Your Code
+Edit `lab/configs/*/frr.conf` to modify BGP behavior:
+
+```bash
+# Example: Add more prefixes and modify policies
+router bgp 65001
+  network 192.168.100.0/24
+  neighbor 10.0.1.2 remote-as 65002
+  neighbor 10.0.1.2 route-map OUT out
+route-map OUT permit 10
+  set community 65001:100
+```
+
+### Code Integration
+
 ```python
-# In your existing code, you can now do:
-# Removed telemetry_generator - using real FRR data instead
+# The lab provides BGP data through the collector
+# ML pipeline processes BGP updates
 
-generator = TelemetryGenerator("virtual_lab/configs/lab_config.yml")
-bgp_events = await generator.generate_bgp_telemetry()
-# Process bgp_events with your existing ML pipeline
+from lab.scripts.integrate_with_ml import LabMLIntegration
+
+integration = LabMLIntegration()
+await integration.run_analysis()
+# Process BGP events with ML pipeline
 ```
 
-## 📈 Monitoring and Statistics
+## Monitoring and Statistics
 
-The lab provides comprehensive statistics:
-- Events generated per second
-- Features extracted per second
-- Anomalies detected
-- ML pipeline performance
-- Resource utilization
+The lab provides comprehensive monitoring:
 
-## 🚨 Troubleshooting
+- **BGP Updates**: Actual BGP messages from FRR routers
+- **BGP Session Status**: Live neighbor relationship monitoring
+- **Interface Statistics**: Network interface metrics
+- **ML Pipeline Performance**: Detection accuracy and speed
+- **Failure Injection**: Controlled anomaly testing
+- **Log Aggregation**: Centralized logging from all devices
+
+## Troubleshooting
 
 ### Common Issues
 
-1. **Import Errors**
-   - Make sure you're running from the project root directory
-   - Check that all dependencies are installed
+1. **Lab Won't Start**
+   - Check Docker is running: `docker ps`
+   - Verify containerlab is installed: `clab version`
+   - Check port conflicts
 
-2. **No Events Generated**
-   - Check the configuration file
-   - Verify the network topology settings
+2. **BGP Sessions Not Established**
+   - Check BGP status: `./scripts/check-bgp.sh`
+   - Verify interface configurations
+   - Check AS numbers match in configs
 
 3. **ML Pipeline Not Working**
-   - Ensure your existing ML components are available
+   - Ensure ML components are available
    - Check the import paths in the integration script
+   - Verify the lab is running: `docker ps --filter "name=clab-bgp-anomaly-lab"`
 
-### Debug Mode
+### Debug Commands
+
 ```bash
-python virtual_lab/scripts/run_lab_with_ml.py --log-level DEBUG
+# Check BGP status
+./scripts/check-bgp.sh
+
+# Monitor logs in real-time
+./scripts/monitor-logs.sh
+
+# Check specific router logs
+docker exec clab-bgp-anomaly-lab-spine-01 tail -f /var/log/frr/frr.log
+
+# Check BGP neighbors
+docker exec clab-bgp-anomaly-lab-spine-01 vtysh -c "show bgp summary"
 ```
 
-## 🎓 Research Applications
+## Research Applications
 
-This virtual lab is perfect for:
+This containerlab-based lab is perfect for:
 
-1. **Algorithm Testing**: Test your ML models with realistic data
-2. **Performance Benchmarking**: Measure detection accuracy and speed
-3. **Scalability Testing**: Test under increasing load conditions
-4. **Feature Validation**: Validate feature extraction approaches
-5. **Anomaly Injection**: Test with known anomaly patterns
+1. **Algorithm Testing**: Test ML models with BGP data from FRR routers
+2. **Performance Benchmarking**: Measure detection accuracy and speed with authentic data
+3. **Scalability Testing**: Test under increasing load conditions with real network protocols
+4. **Feature Validation**: Validate feature extraction approaches with real BGP updates
+5. **Failure Analysis**: Study BGP behavior under controlled failure scenarios
+6. **Protocol Validation**: Test with authentic BGP message formats and timers
 
-## 📚 Next Steps
+## Next Steps
 
-1. **Start Simple**: Run the demo to understand the capabilities
-2. **Integrate**: Use the lab + ML integration script
-3. **Customize**: Modify the configuration for your needs
-4. **Scale Up**: Test with higher loads and more complex scenarios
-5. **Research**: Use the lab for your capstone research
+1. **Deploy the Lab**: Run `cd lab && ./scripts/deploy.sh` to start the containerlab environment
+2. **Verify BGP**: Check `./scripts/check-bgp.sh` to ensure BGP sessions are established
+3. **Integrate ML**: Use `python scripts/integrate-with-ml.py` to connect with ML pipeline
+4. **Test Failures**: Run `./scripts/inject-failures.sh` to test with controlled anomalies
+5. **Customize**: Modify `topo.clab.yml` and `configs/*/frr.conf` for research needs
+6. **Research**: Use the lab for capstone research with BGP data
 
-The virtual lab provides a complete testing environment that generates realistic network telemetry data and integrates seamlessly with your existing ML pipeline. This allows you to test, validate, and improve your BGP anomaly detection system under controlled conditions.
+The containerlab-based lab provides a complete testing environment with FRR routers, BGP sessions, and network telemetry data. This allows testing, validation, and improvement of BGP anomaly detection systems under controlled conditions with network protocols.

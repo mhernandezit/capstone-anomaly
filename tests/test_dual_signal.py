@@ -6,8 +6,8 @@ import asyncio
 import json
 import time
 from datetime import datetime
-from python.simulators.syslog_simulator import SyslogSimulator
-from python.dual_signal_pipeline import DualSignalPipeline
+from src.simulators.syslog_simulator import SyslogSimulator
+from src.dual_signal_pipeline import DualSignalPipeline
 
 async def test_dual_signal_detection():
     """Test the dual-signal detection system."""

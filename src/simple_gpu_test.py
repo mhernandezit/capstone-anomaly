@@ -5,9 +5,6 @@ Simple test to verify GPU setup and basic functionality.
 def test_imports():
     """Test if all required modules can be imported."""
     try:
-        import numpy as np
-        print("✓ NumPy imported successfully")
-        
         import cupy as cp
         print("✓ CuPy imported successfully")
         print(f"  CuPy version: {cp.__version__}")
@@ -16,9 +13,6 @@ def test_imports():
         if cp.cuda.is_available():
             print(f"  CUDA version: {cp.cuda.runtime.runtimeGetVersion()}")
             print(f"  GPU count: {cp.cuda.runtime.getDeviceCount()}")
-        
-        import matrixprofile
-        print("✓ MatrixProfile imported successfully")
         
         return True
         

@@ -5,11 +5,10 @@ This script demonstrates what network operators would see when using
 the dual-signal BGP anomaly detection system.
 """
 
-import asyncio
-import json
+
 import time
-from datetime import datetime, timedelta
-from python.alerting.alert_manager import AlertManager, create_sample_alert
+from datetime import datetime
+from src.alerting.alert_manager import AlertManager
 
 def print_banner(title):
     """Print a formatted banner."""
@@ -19,18 +18,18 @@ def print_banner(title):
 
 def print_alert(alert):
     """Print a formatted alert."""
-    print(f"\n🚨 ALERT: {alert.title}")
+    print(f"\nALERT: {alert.title}")
     print(f"   ID: {alert.alert_id}")
     print(f"   Severity: {alert.severity}")
     print(f"   Time: {datetime.fromtimestamp(alert.timestamp).strftime('%H:%M:%S')}")
     print(f"   Impact: {alert.impact}")
     print(f"   Confidence: {alert.confidence:.2f}")
     print(f"   Roles: {', '.join(alert.roles_affected)}")
-    print(f"   Status: {'✅ Acknowledged' if alert.acknowledged else '⚠️ Active'}")
+    print(f"   Status: {'Acknowledged' if alert.acknowledged else 'Active'}")
 
 def simulate_network_operations():
     """Simulate a network operations center experience."""
-    print_banner("🌐 Network Operations Center - BGP Anomaly Detection System")
+    print_banner("Network Operations Center - BGP Anomaly Detection System")
     
     # Initialize alert manager
     config = {
@@ -44,24 +43,24 @@ def simulate_network_operations():
     
     alert_manager = AlertManager(config)
     
-    print("System Status: 🟢 Online")
+    print("System Status: Online")
     print("Monitoring: 2,000+ network devices")
     print("BGP Sessions: 1,200+ active")
     print("Detection Mode: Dual-Signal (BGP + Syslog)")
-    print("GPU Acceleration: ✅ Enabled")
+    print("GPU Acceleration: Enabled")
     
     # Simulate normal operation
-    print_banner("📊 Normal Operation (10:00 AM - 10:15 AM)")
-    print("✅ System monitoring 2,000+ devices")
-    print("✅ Processing 1,200+ BGP sessions")
-    print("✅ Matrix Profile analysis running")
-    print("✅ No anomalies detected")
-    print("✅ All systems green")
+    print_banner("Normal Operation (10:00 AM - 10:15 AM)")
+    print("System monitoring 2,000+ devices")
+    print("Processing 1,200+ BGP sessions")
+    print("Matrix Profile analysis running")
+    print("No anomalies detected")
+    print("All systems green")
     
     time.sleep(2)
     
     # Simulate first anomaly
-    print_banner("🚨 ANOMALY DETECTED (10:15:23 AM)")
+    print_banner("ANOMALY DETECTED (10:15:23 AM)")
     
     # Create sample event for ToR-Spine link failure
     link_failure_event = {
@@ -106,7 +105,7 @@ def simulate_network_operations():
     
     print("\n💬 Slack Notification Sent:")
     print("   Channel: #network-alerts")
-    print("   Message: 🚨 Network Anomaly Alert - CRITICAL severity")
+    print("   Message: Network Anomaly Alert - CRITICAL severity")
     
     print("\n🔗 Webhook Notification Sent:")
     print("   URL: https://monitoring.company.com/alerts")
@@ -122,12 +121,12 @@ def simulate_network_operations():
     
     # Acknowledge alert
     alert_manager.acknowledge_alert(alert1.alert_id, "John Smith")
-    print(f"✅ Alert {alert1.alert_id} acknowledged by John Smith")
+    print(f"Alert {alert1.alert_id} acknowledged by John Smith")
     
     time.sleep(2)
     
     # Simulate second anomaly
-    print_banner("🚨 SECOND ANOMALY DETECTED (10:16:12 AM)")
+    print_banner("SECOND ANOMALY DETECTED (10:16:12 AM)")
     
     # Create sample event for BGP session reset
     bgp_reset_event = {
@@ -163,7 +162,7 @@ def simulate_network_operations():
     alert2 = alert_manager.process_event(bgp_reset_event)
     print_alert(alert2)
     
-    print("\n📊 Analysis:")
+    print("\nAnalysis:")
     print("   - BGP shows withdrawal spike")
     print("   - Syslog shows only warnings (no errors)")
     print("   - Impact: Edge-local (ToR only)")
@@ -173,21 +172,21 @@ def simulate_network_operations():
     time.sleep(2)
     
     # Simulate resolution
-    print_banner("✅ INCIDENT RESOLVED (10:18:30 AM)")
+    print_banner("INCIDENT RESOLVED (10:18:30 AM)")
     print("Root Cause: Physical link failure between spine-01 and tor-01")
     print("Resolution: Replaced faulty SFP module")
     print("Impact: 150 prefixes affected for 3 minutes")
     print("MTTR: 3 minutes 7 seconds")
     
     # Show final stats
-    print_banner("📈 Session Summary")
+    print_banner("Session Summary")
     stats = alert_manager.get_alert_stats()
     print(f"Total Alerts: {stats['total_alerts']}")
     print(f"Active Alerts: {stats['active_alerts']}")
     print(f"Acknowledged Alerts: {stats['acknowledged_alerts']}")
     print(f"Severity Breakdown: {stats['severity_counts']}")
     
-    print("\n🎯 Key Metrics:")
+    print("\nKey Metrics:")
     print("   - Detection Time: 23 seconds")
     print("   - False Positive Rate: 0%")
     print("   - Signal Correlation: 89%")
@@ -195,11 +194,11 @@ def simulate_network_operations():
     print("   - Resolution Time: 3 minutes 7 seconds")
     
     print_banner("🏆 System Performance")
-    print("✅ Dual-signal approach working effectively")
-    print("✅ GPU acceleration providing real-time analysis")
-    print("✅ Topology-aware impact classification accurate")
-    print("✅ Alert correlation reducing false positives")
-    print("✅ Network operators can respond quickly and effectively")
+    print("✓ Dual-signal approach working effectively")
+    print("✓ GPU acceleration providing real-time analysis")
+    print("✓ Topology-aware impact classification accurate")
+    print("✓ Alert correlation reducing false positives")
+    print("✓ Network operators can respond quickly and effectively")
 
 def show_dashboard_preview():
     """Show what the dashboard would look like."""
@@ -208,24 +207,24 @@ def show_dashboard_preview():
     print("┌─────────────────────────────────────────────────────────────┐")
     print("│  🔍 BGP Anomaly Detection Dashboard                        │")
     print("├─────────────────────────────────────────────────────────────┤")
-    print("│  System Status: 🟢 Online    Uptime: 2h 15m                │")
+    print("│  System Status:  Online    Uptime: 2h 15m                │")
     print("│  Events Processed: 1,247    Anomalies Detected: 2          │")
     print("├─────────────────────────────────────────────────────────────┤")
-    print("│  📊 Recent Events Timeline                                 │")
+    print("│   Recent Events Timeline                                 │")
     print("│  ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● │")
     print("│  Normal  Anomaly  Normal  Anomaly  Normal                  │")
     print("│  10:00   10:15    10:16   10:16    10:18                   │")
     print("├─────────────────────────────────────────────────────────────┤")
-    print("│  🚨 Active Alerts                                          │")
+    print("│  Active Alerts                                          │")
     print("│  ┌─────────────────────────────────────────────────────────┐ │")
     print("│  │ CRITICAL: Network-Wide Anomaly - spine, tor            │ │")
     print("│  │ Confidence: 0.92  Impact: NETWORK_IMPACTING            │ │")
-    print("│  │ Status: ✅ Acknowledged by John Smith                  │ │")
+    print("│  │ Status: ✓ Acknowledged by John Smith                  │ │")
     print("│  └─────────────────────────────────────────────────────────┘ │")
     print("│  ┌─────────────────────────────────────────────────────────┐ │")
     print("│  │ MEDIUM: Edge-Local Anomaly - tor                       │ │")
     print("│  │ Confidence: 0.78  Impact: EDGE_LOCAL                   │ │")
-    print("│  │ Status: ⚠️ Active                                      │ │")
+    print("│  │ Status:  Active                                      │ │")
     print("│  └─────────────────────────────────────────────────────────┘ │")
     print("├─────────────────────────────────────────────────────────────┤")
     print("│  📝 Real-Time Syslog Monitor                              │")
@@ -250,12 +249,12 @@ def main():
     print("This demonstrates the complete user experience for network operators")
     print("using the dual-signal BGP anomaly detection system.")
     print("\nKey Benefits Demonstrated:")
-    print("✅ Real-time anomaly detection with GPU acceleration")
-    print("✅ Dual-signal validation reducing false positives")
-    print("✅ Topology-aware impact classification")
-    print("✅ Comprehensive alerting and notification system")
-    print("✅ Intuitive dashboard for network operators")
-    print("✅ Fast incident response and resolution")
+    print("✓ Real-time anomaly detection with GPU acceleration")
+    print("✓ Dual-signal validation reducing false positives")
+    print("✓ Topology-aware impact classification")
+    print("✓ Comprehensive alerting and notification system")
+    print("✓ Intuitive dashboard for network operators")
+    print("✓ Fast incident response and resolution")
 
 if __name__ == "__main__":
     main()

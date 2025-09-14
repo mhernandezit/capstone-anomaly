@@ -125,7 +125,7 @@ def render_header():
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.metric("System Status", "🟢 Online")
+        st.metric("System Status", " Online")
     
     with col2:
         st.metric("Uptime", "2h 15m")
@@ -138,7 +138,7 @@ def render_header():
 
 def render_metrics_overview():
     """Render key metrics overview."""
-    st.subheader("📊 System Metrics")
+    st.subheader(" System Metrics")
     
     col1, col2, col3 = st.columns(3)
     
@@ -153,7 +153,7 @@ def render_metrics_overview():
 
 def render_events_timeline(events):
     """Render events timeline."""
-    st.subheader("📈 Recent Events Timeline")
+    st.subheader(" Recent Events Timeline")
     
     df = pd.DataFrame(events)
     
@@ -172,7 +172,7 @@ def render_events_timeline(events):
 
 def render_anomaly_details(events):
     """Render anomaly details."""
-    st.subheader("🚨 Recent Anomalies")
+    st.subheader(" Recent Anomalies")
     
     anomalies = [e for e in events if e['type'] == 'Anomaly']
     
@@ -200,10 +200,10 @@ def render_anomaly_details(events):
             
             # Correlation analysis
             st.write("**Signal Correlation:**")
-            st.write(f"- BGP Anomaly: ✅ True")
-            st.write(f"- Syslog Anomaly: ✅ True")
+            st.write(f"- BGP Anomaly: ✓ True")
+            st.write(f"- Syslog Anomaly: ✓ True")
             st.write(f"- Correlation Strength: 0.89")
-            st.write(f"- Signal Agreement: ✅ True")
+            st.write(f"- Signal Agreement: ✓ True")
 
 def render_syslog_monitor(syslog_messages):
     """Render syslog monitor."""
@@ -231,11 +231,11 @@ def render_system_status():
     
     with col1:
         st.write("**Component Status:**")
-        st.write("🟢 BGP Collector: Running")
-        st.write("🟢 Syslog Simulator: Running")
-        st.write("🟢 Matrix Profile Detector: Running")
-        st.write("🟢 GPU Acceleration: Active")
-        st.write("🟢 Dashboard: Active")
+        st.write(" BGP Collector: Running")
+        st.write(" Syslog Simulator: Running")
+        st.write(" Matrix Profile Detector: Running")
+        st.write(" GPU Acceleration: Active")
+        st.write(" Dashboard: Active")
     
     with col2:
         st.write("**Performance Metrics:**")
