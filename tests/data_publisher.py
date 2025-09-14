@@ -7,9 +7,8 @@ the anomaly detection pipeline and dashboard.
 """
 
 import asyncio
-import json
 import time
-from typing import List, Dict, Any, Optional
+from typing import List, Optional
 from dataclasses import dataclass
 import random
 import sys

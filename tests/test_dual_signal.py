@@ -3,9 +3,7 @@ Test script for dual-signal BGP + Syslog anomaly detection
 """
 
 import asyncio
-import json
 import time
-from datetime import datetime
 from src.simulators.syslog_simulator import SyslogSimulator
 from src.dual_signal_pipeline import DualSignalPipeline
 
@@ -71,7 +69,7 @@ async def test_dual_signal_detection():
         
         print("\n5. Getting pipeline status...")
         status = dual_pipeline.get_pipeline_status()
-        print(f"Pipeline Status:")
+        print("Pipeline Status:")
         print(f"  BGP aggregator bins: {status['bgp_aggregator']['closed_bins_count']}")
         print(f"  Syslog buffer messages: {status['syslog_buffer']['message_count']}")
         print(f"  GPU available: {status['mp_detector_status']['gpu_available']}")

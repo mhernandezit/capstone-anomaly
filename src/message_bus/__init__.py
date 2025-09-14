@@ -7,4 +7,4 @@ including NATS publishers and consumers for data streaming.
 
 from .nats_publisher import NATSPublisher, NATSConsumer, MessageBusManager
 
-__all__ = ['NATSPublisher', 'NATSConsumer', 'MessageBusManager']
+__all__ = ["NATSPublisher", "NATSConsumer", "MessageBusManager"]
