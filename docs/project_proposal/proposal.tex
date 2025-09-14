@@ -68,11 +68,23 @@ I will use recent papers and accessible methods: Matrix Profile for BGP time ser
 
 \subsection{Development \& Evaluation Resources}
 
-A containerized \textbf{virtual lab} (FRRouting with two spines, two ToRs, two edges, and multiple "server" peers) will generate realistic BGP updates and logs. I will inject four representative failures—\textbf{one-way loss of signal, route-reflector crash, edge/provider outage, and server crash}—then compare the system's alerts against a \textbf{baseline of manual SNMP/syslog triage}. Event-level precision, recall, and \textbf{F1} will be reported along with the \textbf{detection delay} to first alert and localization \textbf{Hit@k}; results will be summarized in a short paper, an 18-slide presentation, and a live demo.
+A containerized \textbf{virtual lab} (FRRouting with two spines, two ToRs, two edges, and multiple "server" peers) will generate realistic BGP updates and logs. I will inject four representative failures—\textbf{one-way loss of signal, route-reflector crash, edge/provider outage, and server crash}—then compare the system's alerts against a \textbf{baseline of manual SNMP/syslog triage}. 
+
+\textbf{Evaluation Metrics:} To demonstrate the practical value of this system, I will measure three key metrics that directly address operator pain points:
+
+\begin{itemize}
+    \item \textbf{F1 Score} — Overall alert quality that balances how many real failures are caught (recall) with how few false alarms are raised (precision). This directly addresses the over-paging problem by ensuring alerts are both comprehensive and accurate.
+    
+    \item \textbf{Detection Delay} — Speed of response measured as time from failure onset to first alert, compared against the SNMP/syslog baseline. This quantifies the improvement in time-to-detection for faster incident response.
+    
+    \item \textbf{Hit@k} — Localization accuracy determining whether the true failure origin (device or network role) appears in the top-k suspects (e.g., Hit@1, Hit@3). This addresses the under-explanation problem by providing actionable guidance on where to investigate first.
+\end{itemize}
+
+Results will be summarized in a short paper, an 18-slide presentation, and a live demo that demonstrates these metrics in real-time.
 
 \section{Writing \& Formatting}
 
-The paper will use \textbf{plain, professional language} and avoid jargon where possible, defining terms when needed (e.g., "BGP updates" as "routing change messages"). In-text \textbf{APA citations} will be included with a reference list to meet formatting expectations.
+The paper will use \textbf{plain, professional language} and avoid jargon where possible, defining terms when needed (e.g., "BGP updates" as "routing change messages"). In-text \textbf{APA citations} will be included with a reference list.
 
 % References
 \bibliographystyle{apacite}
