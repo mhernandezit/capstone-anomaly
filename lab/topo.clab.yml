@@ -1,0 +1,273 @@
+name: bgp-anomaly-lab
+
+topology:
+  nodes:
+    # Spine Switches (Core Layer)
+    spine-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/spine-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/spine-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "spine"
+        asn: "65001"
+        priority: "1"
+
+    spine-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/spine-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/spine-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "spine"
+        asn: "65001"
+        priority: "2"
+
+    # ToR Switches (Aggregation Layer)
+    tor-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/tor-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/tor-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "tor"
+        asn: "65002"
+        priority: "1"
+
+    tor-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/tor-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/tor-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "tor"
+        asn: "65002"
+        priority: "2"
+
+    # Edge Routers (Edge Layer)
+    edge-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/edge-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/edge-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "edge"
+        asn: "65003"
+        priority: "1"
+
+    edge-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/edge-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/edge-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "edge"
+        asn: "65003"
+        priority: "2"
+
+    # Servers (Host Layer)
+    server-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/server-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/server-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "server"
+        asn: "65010"
+        priority: "1"
+
+    server-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/server-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/server-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "server"
+        asn: "65011"
+        priority: "2"
+
+    server-03:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/server-03/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/server-03:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "server"
+        asn: "65012"
+        priority: "3"
+
+    server-04:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/server-04/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/server-04:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "server"
+        asn: "65013"
+        priority: "4"
+
+    # BGP Collector (for ML pipeline)
+    collector:
+      kind: linux
+      image: alpine:latest
+      cmd: /bin/sh -c "apk add --no-cache gobgp && sleep infinity"
+      binds:
+        - ./scripts/collector.sh:/collector.sh:ro
+        - ./logs/collector:/var/log:rw
+      labels:
+        role: "collector"
+        purpose: "bgp-monitoring"
+
+    # Fluent Bit for log collection
+    fluent-bit:
+      kind: linux
+      image: fluent/fluent-bit:latest
+      cmd: /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit.conf
+      binds:
+        - ./monitoring/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+        - ./logs:/var/log/lab:ro
+        - ./logs/fluent-bit:/var/log/fluent-bit:rw
+      labels:
+        role: "logging"
+        purpose: "log-collection"
+
+  links:
+    # Spine-to-Spine (iBGP)
+    - endpoints: ["spine-01:eth1", "spine-02:eth1"]
+      labels:
+        type: "spine-spine"
+        cost: "1"
+
+    # Spine-to-ToR connections
+    - endpoints: ["spine-01:eth2", "tor-01:eth1"]
+      labels:
+        type: "spine-tor"
+        cost: "1"
+    - endpoints: ["spine-01:eth3", "tor-02:eth1"]
+      labels:
+        type: "spine-tor"
+        cost: "1"
+    - endpoints: ["spine-02:eth2", "tor-01:eth2"]
+      labels:
+        type: "spine-tor"
+        cost: "1"
+    - endpoints: ["spine-02:eth3", "tor-02:eth2"]
+      labels:
+        type: "spine-tor"
+        cost: "1"
+
+    # ToR-to-Edge connections
+    - endpoints: ["tor-01:eth3", "edge-01:eth1"]
+      labels:
+        type: "tor-edge"
+        cost: "1"
+    - endpoints: ["tor-01:eth4", "edge-02:eth1"]
+      labels:
+        type: "tor-edge"
+        cost: "1"
+    - endpoints: ["tor-02:eth3", "edge-01:eth2"]
+      labels:
+        type: "tor-edge"
+        cost: "1"
+    - endpoints: ["tor-02:eth4", "edge-02:eth2"]
+      labels:
+        type: "tor-edge"
+        cost: "1"
+
+    # Edge-to-Server connections
+    - endpoints: ["edge-01:eth3", "server-01:eth1"]
+      labels:
+        type: "edge-server"
+        cost: "1"
+    - endpoints: ["edge-01:eth4", "server-02:eth1"]
+      labels:
+        type: "edge-server"
+        cost: "1"
+    - endpoints: ["edge-02:eth3", "server-03:eth1"]
+      labels:
+        type: "edge-server"
+        cost: "1"
+    - endpoints: ["edge-02:eth4", "server-04:eth1"]
+      labels:
+        type: "edge-server"
+        cost: "1"
+
+    # Collector connections (monitoring)
+    - endpoints: ["collector:eth1", "spine-01:eth4"]
+      labels:
+        type: "monitoring"
+        purpose: "bgp-collection"
+    - endpoints: ["collector:eth2", "spine-02:eth4"]
+      labels:
+        type: "monitoring"
+        purpose: "bgp-collection"

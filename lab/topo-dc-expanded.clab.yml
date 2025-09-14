@@ -1,0 +1,544 @@
+name: bgp-anomaly-lab-dc
+
+topology:
+  nodes:
+    # ===========================================
+    # DATACENTER 1 (Primary)
+    # ===========================================
+    
+    # DC1 Spine Layer
+    dc1-spine-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/dc1-spine-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dc1-spine-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "spine"
+        datacenter: "dc1"
+        asn: "65001"
+        priority: "1"
+
+    dc1-spine-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/dc1-spine-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dc1-spine-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "spine"
+        datacenter: "dc1"
+        asn: "65001"
+        priority: "2"
+
+    # DC1 Service Leaf Layer
+    dc1-svc-leaf-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/dc1-svc-leaf-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dc1-svc-leaf-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "service-leaf"
+        datacenter: "dc1"
+        asn: "65002"
+        priority: "1"
+
+    dc1-svc-leaf-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/dc1-svc-leaf-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dc1-svc-leaf-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "service-leaf"
+        datacenter: "dc1"
+        asn: "65002"
+        priority: "2"
+
+    # DC1 Internet Edge Layer
+    dc1-inet-edge-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/dc1-inet-edge-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dc1-inet-edge-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "internet-edge"
+        datacenter: "dc1"
+        asn: "65010"
+        priority: "1"
+
+    dc1-inet-edge-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/dc1-inet-edge-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dc1-inet-edge-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "internet-edge"
+        datacenter: "dc1"
+        asn: "65010"
+        priority: "2"
+
+    # ===========================================
+    # DATACENTER 2 (Secondary)
+    # ===========================================
+    
+    # DC2 Spine Layer
+    dc2-spine-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/dc2-spine-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dc2-spine-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "spine"
+        datacenter: "dc2"
+        asn: "65020"
+        priority: "1"
+
+    dc2-spine-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/dc2-spine-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dc2-spine-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "spine"
+        datacenter: "dc2"
+        asn: "65020"
+        priority: "2"
+
+    # DC2 Service Leaf Layer
+    dc2-svc-leaf-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/dc2-svc-leaf-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dc2-svc-leaf-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "service-leaf"
+        datacenter: "dc2"
+        asn: "65021"
+        priority: "1"
+
+    dc2-svc-leaf-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/dc2-svc-leaf-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dc2-svc-leaf-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "service-leaf"
+        datacenter: "dc2"
+        asn: "65021"
+        priority: "2"
+
+    # DC2 Internet Edge Layer
+    dc2-inet-edge-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/dc2-inet-edge-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dc2-inet-edge-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "internet-edge"
+        datacenter: "dc2"
+        asn: "65030"
+        priority: "1"
+
+    dc2-inet-edge-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/dc2-inet-edge-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dc2-inet-edge-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "internet-edge"
+        datacenter: "dc2"
+        asn: "65030"
+        priority: "2"
+
+    # ===========================================
+    # EXTRANET SEGMENT (Counterparties)
+    # ===========================================
+    
+    # Counterparty 1
+    extranet-cp-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/extranet-cp-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/extranet-cp-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "counterparty"
+        segment: "extranet"
+        asn: "65100"
+        priority: "1"
+
+    # Counterparty 2
+    extranet-cp-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/extranet-cp-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/extranet-cp-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "counterparty"
+        segment: "extranet"
+        asn: "65101"
+        priority: "2"
+
+    # Internet Service Provider (ISP) Simulation
+    isp-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/isp-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/isp-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "isp"
+        segment: "internet"
+        asn: "65000"
+        priority: "1"
+
+    isp-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/isp-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/isp-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd,ospfd,ldpd,isisd,ripd,ripngd,staticd,bfdd,sharpd,pbrd,nhrpd,eigrpd,babeld"
+      labels:
+        role: "isp"
+        segment: "internet"
+        asn: "65000"
+        priority: "2"
+
+    # ===========================================
+    # MONITORING & COLLECTION
+    # ===========================================
+    
+    # BGP Collector (for ML pipeline)
+    collector:
+      kind: linux
+      image: alpine:latest
+      cmd: /bin/sh -c "apk add --no-cache gobgp && sleep infinity"
+      binds:
+        - ./scripts/collector.sh:/collector.sh:ro
+        - ./logs/collector:/var/log:rw
+      labels:
+        role: "collector"
+        purpose: "bgp-monitoring"
+
+    # Fluent Bit for log collection
+    fluent-bit:
+      kind: linux
+      image: fluent/fluent-bit:latest
+      cmd: /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit.conf
+      binds:
+        - ./monitoring/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+        - ./logs:/var/log/lab:ro
+        - ./logs/fluent-bit:/var/log/fluent-bit:rw
+      labels:
+        role: "logging"
+        purpose: "log-collection"
+
+  links:
+    # ===========================================
+    # DATACENTER 1 INTERNAL CONNECTIONS
+    # ===========================================
+    
+    # DC1 Spine-to-Spine (iBGP)
+    - endpoints: ["dc1-spine-01:eth1", "dc1-spine-02:eth1"]
+      labels:
+        type: "spine-spine"
+        datacenter: "dc1"
+        cost: "1"
+
+    # DC1 Spine-to-Service-Leaf connections
+    - endpoints: ["dc1-spine-01:eth2", "dc1-svc-leaf-01:eth1"]
+      labels:
+        type: "spine-svc-leaf"
+        datacenter: "dc1"
+        cost: "1"
+    - endpoints: ["dc1-spine-01:eth3", "dc1-svc-leaf-02:eth1"]
+      labels:
+        type: "spine-svc-leaf"
+        datacenter: "dc1"
+        cost: "1"
+    - endpoints: ["dc1-spine-02:eth2", "dc1-svc-leaf-01:eth2"]
+      labels:
+        type: "spine-svc-leaf"
+        datacenter: "dc1"
+        cost: "1"
+    - endpoints: ["dc1-spine-02:eth3", "dc1-svc-leaf-02:eth2"]
+      labels:
+        type: "spine-svc-leaf"
+        datacenter: "dc1"
+        cost: "1"
+
+    # DC1 Service-Leaf-to-Internet-Edge connections
+    - endpoints: ["dc1-svc-leaf-01:eth3", "dc1-inet-edge-01:eth1"]
+      labels:
+        type: "svc-leaf-inet-edge"
+        datacenter: "dc1"
+        cost: "1"
+    - endpoints: ["dc1-svc-leaf-01:eth4", "dc1-inet-edge-02:eth1"]
+      labels:
+        type: "svc-leaf-inet-edge"
+        datacenter: "dc1"
+        cost: "1"
+    - endpoints: ["dc1-svc-leaf-02:eth3", "dc1-inet-edge-01:eth2"]
+      labels:
+        type: "svc-leaf-inet-edge"
+        datacenter: "dc1"
+        cost: "1"
+    - endpoints: ["dc1-svc-leaf-02:eth4", "dc1-inet-edge-02:eth2"]
+      labels:
+        type: "svc-leaf-inet-edge"
+        datacenter: "dc1"
+        cost: "1"
+
+    # ===========================================
+    # DATACENTER 2 INTERNAL CONNECTIONS
+    # ===========================================
+    
+    # DC2 Spine-to-Spine (iBGP)
+    - endpoints: ["dc2-spine-01:eth1", "dc2-spine-02:eth1"]
+      labels:
+        type: "spine-spine"
+        datacenter: "dc2"
+        cost: "1"
+
+    # DC2 Spine-to-Service-Leaf connections
+    - endpoints: ["dc2-spine-01:eth2", "dc2-svc-leaf-01:eth1"]
+      labels:
+        type: "spine-svc-leaf"
+        datacenter: "dc2"
+        cost: "1"
+    - endpoints: ["dc2-spine-01:eth3", "dc2-svc-leaf-02:eth1"]
+      labels:
+        type: "spine-svc-leaf"
+        datacenter: "dc2"
+        cost: "1"
+    - endpoints: ["dc2-spine-02:eth2", "dc2-svc-leaf-01:eth2"]
+      labels:
+        type: "spine-svc-leaf"
+        datacenter: "dc2"
+        cost: "1"
+    - endpoints: ["dc2-spine-02:eth3", "dc2-svc-leaf-02:eth2"]
+      labels:
+        type: "spine-svc-leaf"
+        datacenter: "dc2"
+        cost: "1"
+
+    # DC2 Service-Leaf-to-Internet-Edge connections
+    - endpoints: ["dc2-svc-leaf-01:eth3", "dc2-inet-edge-01:eth1"]
+      labels:
+        type: "svc-leaf-inet-edge"
+        datacenter: "dc2"
+        cost: "1"
+    - endpoints: ["dc2-svc-leaf-01:eth4", "dc2-inet-edge-02:eth1"]
+      labels:
+        type: "svc-leaf-inet-edge"
+        datacenter: "dc2"
+        cost: "1"
+    - endpoints: ["dc2-svc-leaf-02:eth3", "dc2-inet-edge-01:eth2"]
+      labels:
+        type: "svc-leaf-inet-edge"
+        datacenter: "dc2"
+        cost: "1"
+    - endpoints: ["dc2-svc-leaf-02:eth4", "dc2-inet-edge-02:eth2"]
+      labels:
+        type: "svc-leaf-inet-edge"
+        datacenter: "dc2"
+        cost: "1"
+
+    # ===========================================
+    # DATA CENTER INTERCONNECT (DCI)
+    # ===========================================
+    
+    # DCI Links between spines
+    - endpoints: ["dc1-spine-01:eth4", "dc2-spine-01:eth4"]
+      labels:
+        type: "dci"
+        purpose: "inter-dc-connectivity"
+        cost: "10"
+    - endpoints: ["dc1-spine-02:eth4", "dc2-spine-02:eth4"]
+      labels:
+        type: "dci"
+        purpose: "inter-dc-connectivity"
+        cost: "10"
+
+    # ===========================================
+    # INTERNET CONNECTIVITY
+    # ===========================================
+    
+    # DC1 Internet Edge to ISP connections
+    - endpoints: ["dc1-inet-edge-01:eth3", "isp-01:eth1"]
+      labels:
+        type: "internet"
+        datacenter: "dc1"
+        cost: "5"
+    - endpoints: ["dc1-inet-edge-02:eth3", "isp-02:eth1"]
+      labels:
+        type: "internet"
+        datacenter: "dc1"
+        cost: "5"
+
+    # DC2 Internet Edge to ISP connections
+    - endpoints: ["dc2-inet-edge-01:eth3", "isp-01:eth2"]
+      labels:
+        type: "internet"
+        datacenter: "dc2"
+        cost: "5"
+    - endpoints: ["dc2-inet-edge-02:eth3", "isp-02:eth2"]
+      labels:
+        type: "internet"
+        datacenter: "dc2"
+        cost: "5"
+
+    # ===========================================
+    # EXTRANET CONNECTIVITY
+    # ===========================================
+    
+    # Extranet connections to counterparties
+    - endpoints: ["dc1-svc-leaf-01:eth5", "extranet-cp-01:eth1"]
+      labels:
+        type: "extranet"
+        purpose: "counterparty-connectivity"
+        cost: "3"
+    - endpoints: ["dc1-svc-leaf-02:eth5", "extranet-cp-02:eth1"]
+      labels:
+        type: "extranet"
+        purpose: "counterparty-connectivity"
+        cost: "3"
+    - endpoints: ["dc2-svc-leaf-01:eth5", "extranet-cp-01:eth2"]
+      labels:
+        type: "extranet"
+        purpose: "counterparty-connectivity"
+        cost: "3"
+    - endpoints: ["dc2-svc-leaf-02:eth5", "extranet-cp-02:eth2"]
+      labels:
+        type: "extranet"
+        purpose: "counterparty-connectivity"
+        cost: "3"
+
+    # ===========================================
+    # MONITORING CONNECTIONS
+    # ===========================================
+    
+    # Collector connections (monitoring all critical nodes)
+    - endpoints: ["collector:eth1", "dc1-spine-01:eth5"]
+      labels:
+        type: "monitoring"
+        purpose: "bgp-collection"
+    - endpoints: ["collector:eth2", "dc1-spine-02:eth5"]
+      labels:
+        type: "monitoring"
+        purpose: "bgp-collection"
+    - endpoints: ["collector:eth3", "dc2-spine-01:eth5"]
+      labels:
+        type: "monitoring"
+        purpose: "bgp-collection"
+    - endpoints: ["collector:eth4", "dc2-spine-02:eth5"]
+      labels:
+        type: "monitoring"
+        purpose: "bgp-collection"

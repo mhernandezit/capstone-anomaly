@@ -9,3 +9,8 @@ scipy
 graphviz
 ruff
 black
+# Matrix Profile libraries (CPU-optimized)
+matrixprofile>=1.1.10
+stumpy>=1.12.0
+# Alternative: matrixprofile-ts for more features
+# matrixprofile-ts>=0.4.0

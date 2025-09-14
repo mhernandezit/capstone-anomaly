@@ -1,0 +1,15 @@
+# FRR daemons configuration
+zebra=yes
+bgpd=yes
+ospfd=no
+ldpd=no
+isisd=no
+ripd=no
+ripngd=no
+staticd=yes
+bfdd=no
+sharpd=no
+pbrd=no
+nhrpd=no
+eigrpd=no
+babeld=no
