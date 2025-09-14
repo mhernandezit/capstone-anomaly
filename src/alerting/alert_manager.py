@@ -225,7 +225,7 @@ BGP Anomaly Detection System
         }
         
         payload = {
-            'text': f"🚨 Network Anomaly Alert",
+            'text': f" Network Anomaly Alert",
             'attachments': [{
                 'color': color_map.get(alert.severity, '#000000'),
                 'fields': [

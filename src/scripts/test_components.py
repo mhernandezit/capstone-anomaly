@@ -8,7 +8,6 @@ to ensure they work correctly before running the full lab.
 
 import asyncio
 import sys
-import os
 import logging
 from pathlib import Path
 
@@ -32,11 +31,11 @@ async def test_network_switch():
     try:
         # Removed virtual network testing - using real FRR routers instead
         logger.info("Using real FRR routers from Containerlab setup")
-        logger.info("✅ Real FRR router test passed")
+        logger.info("Real FRR router test passed")
         return True
         
     except Exception as e:
-        logger.error(f"❌ Network switch emulator test failed: {e}")
+        logger.error(f"Network switch emulator test failed: {e}")
         return False
 
 
@@ -51,11 +50,11 @@ async def test_telemetry_generator():
         # Removed telemetry generation testing - using real FRR data instead
         logger.info("Real BGP and syslog data will be processed from FRR routers")
         
-        logger.info("✅ Real FRR data test passed")
+        logger.info("Real FRR data test passed")
         return True
         
     except Exception as e:
-        logger.error(f"❌ Telemetry generator test failed: {e}")
+        logger.error(f"Telemetry generator test failed: {e}")
         return False
 
 
@@ -74,11 +73,11 @@ async def test_message_bus():
         stats = manager.get_stats()
         logger.info(f"Message bus stats: {stats}")
         
-        logger.info("✅ Message bus manager test passed")
+        logger.info("Message bus manager test passed")
         return True
         
     except Exception as e:
-        logger.error(f"❌ Message bus manager test failed: {e}")
+        logger.error(f"Message bus manager test failed: {e}")
         return False
 
 
@@ -126,11 +125,11 @@ async def test_preprocessing_pipeline():
         stats = pipeline.get_processing_stats()
         logger.info(f"Processing stats: {stats}")
         
-        logger.info("✅ Preprocessing pipeline test passed")
+        logger.info("Preprocessing pipeline test passed")
         return True
         
     except Exception as e:
-        logger.error(f"❌ Preprocessing pipeline test failed: {e}")
+        logger.error(f"Preprocessing pipeline test failed: {e}")
         return False
 
 
@@ -162,7 +161,7 @@ async def run_all_tests():
         logger.info("🎉 All tests passed! Virtual lab components are ready.")
         return True
     else:
-        logger.error(f"❌ {total - passed} tests failed. Please fix issues before running the lab.")
+        logger.error(f"{total - passed} tests failed. Please fix issues before running the lab.")
         return False
 
 

@@ -8,8 +8,8 @@ This script tests the GPU acceleration and compares performance with CPU baselin
 import time
 import numpy as np
 import logging
-from python.models.gpu_mp_detector import create_gpu_mp_detector
-from python.utils.schema import FeatureBin
+from models.gpu_mp_detector import create_gpu_mp_detector
+from utils.schema import FeatureBin
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -102,7 +102,7 @@ def test_gpu_detector_performance():
     anomalies_detected = sum(1 for r in results if r['is_anomaly'])
     true_anomalies = len([100, 200, 350, 450])  # Known anomaly positions
     
-    logger.info(f"Performance Results:")
+    logger.info("Performance Results:")
     logger.info(f"  Processing time: {processing_time:.2f} seconds")
     logger.info(f"  Bins processed: {len(test_data)}")
     logger.info(f"  Processing rate: {len(test_data)/processing_time:.1f} bins/sec")
@@ -111,7 +111,7 @@ def test_gpu_detector_performance():
     
     # Get detector status
     status = detector.get_status()
-    logger.info(f"Detector Status:")
+    logger.info("Detector Status:")
     logger.info(f"  GPU available: {status['gpu_available']}")
     logger.info(f"  Window bins: {status['window_bins']}")
     logger.info(f"  Series keys: {status['series_keys']}")
@@ -150,7 +150,7 @@ def test_cpu_fallback():
     
     processing_time = time.time() - start_time
     
-    logger.info(f"CPU Fallback Results:")
+    logger.info("CPU Fallback Results:")
     logger.info(f"  Processing time: {processing_time:.2f} seconds")
     logger.info(f"  Bins processed: {len(test_data)}")
     logger.info(f"  Processing rate: {len(test_data)/processing_time:.1f} bins/sec")
@@ -196,7 +196,7 @@ def benchmark_gpu_vs_cpu():
     # Results
     speedup = cpu_time / gpu_time if gpu_time > 0 else 0
     
-    logger.info(f"Benchmark Results:")
+    logger.info("Benchmark Results:")
     logger.info(f"  GPU time: {gpu_time:.2f} seconds")
     logger.info(f"  CPU time: {cpu_time:.2f} seconds")
     logger.info(f"  Speedup: {speedup:.2f}x")

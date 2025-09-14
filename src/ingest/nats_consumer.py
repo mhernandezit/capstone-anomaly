@@ -1,10 +1,10 @@
 import asyncio
 import yaml
 from nats.aio.client import Client as NATS
-from python.utils.schema import BGPUpdate
-from python.features.stream_features import FeatureAggregator
-from python.models.mp_detector import MPDetector
-from python.triage.impact import ImpactScorer
+from src.utils.schema import BGPUpdate
+from src.features.stream_features import FeatureAggregator
+from src.models.mp_detector import MPDetector
+from src.triage.impact import ImpactScorer
 
 CFG_ROLES = yaml.safe_load(open("configs/roles.yml"))
 BIN_SECS = CFG_ROLES["binning"]["bin_seconds"]

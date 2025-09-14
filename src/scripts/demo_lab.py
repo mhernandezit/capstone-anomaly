@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 async def demo_network_switch():
     """Demonstrate network switch emulation."""
-    logger.info("🌐 Network Switch Emulation Demo")
+    logger.info(" Network Switch Emulation Demo")
     logger.info("=" * 50)
     
     # Create a simple config for demo
@@ -90,7 +90,7 @@ async def demo_network_switch():
 
 async def demo_telemetry_generation():
     """Demonstrate telemetry data generation."""
-    logger.info("\n📊 Telemetry Generation Demo")
+    logger.info("\nTelemetry Generation Demo")
     logger.info("=" * 50)
     
     # Create a simple config for demo
@@ -260,7 +260,7 @@ async def demo_feature_extraction():
         features = pipeline.extract_features()
         
         if features:
-            logger.info("✅ Features extracted successfully!")
+            logger.info("Features extracted successfully!")
             logger.info(f"  Window: {features.window_start} to {features.window_end}")
             logger.info(f"  BGP features: {len(features.bgp_features)}")
             logger.info(f"  Syslog features: {len(features.syslog_features)}")
@@ -269,15 +269,15 @@ async def demo_feature_extraction():
             logger.info(f"  Semantic features: {len(features.semantic_features)}")
             
             # Show some sample features
-            logger.info(f"\nSample BGP features:")
+            logger.info("\nSample BGP features:")
             for key, value in list(features.bgp_features.items())[:3]:
                 logger.info(f"  {key}: {value:.4f}")
             
-            logger.info(f"\nSample syslog features:")
+            logger.info("\nSample syslog features:")
             for key, value in list(features.syslog_features.items())[:3]:
                 logger.info(f"  {key}: {value:.4f}")
             
-            logger.info(f"\nSample system features:")
+            logger.info("\nSample system features:")
             for key, value in list(features.system_features.items())[:3]:
                 logger.info(f"  {key}: {value:.4f}")
         else:
@@ -285,7 +285,7 @@ async def demo_feature_extraction():
         
         # Show processing stats
         stats = pipeline.get_processing_stats()
-        logger.info(f"\nProcessing statistics:")
+        logger.info("\nProcessing statistics:")
         logger.info(f"  Data buffer sizes: {stats['data_buffer_sizes']}")
         logger.info(f"  Feature history size: {stats['feature_history_size']}")
         
@@ -302,7 +302,7 @@ async def demo_feature_extraction():
 
 async def main():
     """Run all demos."""
-    logger.info("🚀 Virtual Lab Demo")
+    logger.info("Virtual Lab Demo")
     logger.info("=" * 60)
     logger.info("This demo shows the key capabilities of the virtual lab")
     logger.info("without requiring external dependencies or full setup.")
@@ -316,16 +316,16 @@ async def main():
     
     results = []
     for demo_name, demo_func in demos:
-        logger.info(f"\n🎯 Running: {demo_name}")
+        logger.info(f"\nRunning: {demo_name}")
         try:
             result = await demo_func()
             results.append(result)
             if result:
-                logger.info(f"✅ {demo_name} completed successfully")
+                logger.info(f"{demo_name} completed successfully")
             else:
-                logger.error(f"❌ {demo_name} failed")
+                logger.error(f"{demo_name} failed")
         except Exception as e:
-            logger.error(f"❌ {demo_name} failed with exception: {e}")
+            logger.error(f"{demo_name} failed with exception: {e}")
             results.append(False)
     
     # Summary
@@ -337,7 +337,7 @@ async def main():
     total = len(results)
     
     for i, (demo_name, _) in enumerate(demos):
-        status = "✅ PASSED" if results[i] else "❌ FAILED"
+        status = "PASSED" if results[i] else "FAILED"
         logger.info(f"{demo_name}: {status}")
     
     logger.info(f"\nOverall: {passed}/{total} demos passed")
@@ -349,7 +349,7 @@ async def main():
         logger.info("1. Run: python virtual_lab/scripts/setup_lab.py")
         logger.info("2. Run: python virtual_lab/scripts/start_lab.py")
     else:
-        logger.error("❌ Some demos failed. Please check the errors above.")
+        logger.error("Some demos failed. Please check the errors above.")
         sys.exit(1)
 
 

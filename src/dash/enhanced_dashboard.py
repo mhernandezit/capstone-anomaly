@@ -93,7 +93,7 @@ class AnomalyDashboard:
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
-            st.metric("System Status", "🟢 Online", delta=None)
+            st.metric("System Status", " Online", delta=None)
         
         with col2:
             uptime = int(time.time() - self.start_time)
@@ -107,7 +107,7 @@ class AnomalyDashboard:
     
     def render_metrics_overview(self):
         """Render key metrics overview."""
-        st.subheader("📊 System Metrics")
+        st.subheader(" System Metrics")
         
         col1, col2, col3 = st.columns(3)
         
@@ -126,7 +126,7 @@ class AnomalyDashboard:
     
     def render_recent_events(self):
         """Render recent events timeline."""
-        st.subheader("📈 Recent Events Timeline")
+        st.subheader(" Recent Events Timeline")
         
         if not self.events:
             st.info("No events received yet. Start the BGP collector and syslog simulator.")
@@ -162,7 +162,7 @@ class AnomalyDashboard:
     
     def render_anomaly_details(self):
         """Render detailed anomaly information."""
-        st.subheader("🚨 Recent Anomalies")
+        st.subheader(" Recent Anomalies")
         
         if not self.alerts:
             st.info("No anomalies detected yet.")
@@ -257,11 +257,11 @@ class AnomalyDashboard:
         
         with col1:
             st.write("**Component Status:**")
-            st.write("🟢 BGP Collector: Running")
-            st.write("🟢 Syslog Simulator: Running")
-            st.write("🟢 Matrix Profile Detector: Running")
-            st.write("🟢 NATS Message Bus: Connected")
-            st.write("🟢 Dashboard: Active")
+            st.write(" BGP Collector: Running")
+            st.write(" Syslog Simulator: Running")
+            st.write(" Matrix Profile Detector: Running")
+            st.write(" NATS Message Bus: Connected")
+            st.write(" Dashboard: Active")
         
         with col2:
             st.write("**Performance Metrics:**")

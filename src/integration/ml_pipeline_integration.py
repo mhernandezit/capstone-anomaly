@@ -20,10 +20,10 @@ from message_bus.nats_publisher import MessageBusManager
 
 # Import existing ML pipeline components
 try:
-    from python.models.gpu_mp_detector import GPUMPDetector
-    from python.triage.impact import ImpactScorer
-    from python.alerting.alert_manager import AlertManager
-    from python.utils.schema import FeatureBin
+    from models.gpu_mp_detector import GPUMPDetector
+    from triage.impact import ImpactScorer
+    from alerting.alert_manager import AlertManager
+    from utils.schema import FeatureBin
 except ImportError as e:
     logging.warning(f"Could not import existing ML pipeline components: {e}")
     logging.warning("Some features may not be available")

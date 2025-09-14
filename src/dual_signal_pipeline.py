@@ -13,10 +13,10 @@ from typing import Dict, Any, List, Optional
 from collections import defaultdict, deque
 from nats.aio.client import Client as NATS
 
-from python.features.stream_features import FeatureAggregator
-from python.models.gpu_mp_detector import create_gpu_mp_detector
-from python.triage.impact import ImpactScorer
-from python.utils.schema import BGPUpdate, FeatureBin
+from src.features.stream_features import FeatureAggregator
+from src.models.gpu_mp_detector import create_gpu_mp_detector
+from src.triage.impact import ImpactScorer
+from src.utils.schema import BGPUpdate, FeatureBin
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
