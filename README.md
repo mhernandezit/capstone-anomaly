@@ -1,69 +1,140 @@
-# BGP Failure Detection using Topology-Aware Machine Learning
+# BGP Anomaly Detection System
 
-> **IS499 Capstone Project** | Real-time BGP anomaly detection with topology-aware failure localization
+A comprehensive machine learning system for real-time detection and localization of network failures using BGP routing updates and device logs.
 
-This system detects **failure‑induced** BGP anomalies on live streams and triages edge‑local (ToR↔server) vs. network‑impacting events using Matrix Profile analysis and lightweight topology‑aware blast‑radius scoring.
+## 🏗️ Project Structure
 
-## 📚 Project Documentation
+```text
+capstone-anomaly/
+├── src/                          # Source code
+│   ├── python/                   # Python ML pipeline components
+│   │   ├── models/              # ML models (Matrix Profile, LSTM, etc.)
+│   │   ├── features/            # Feature extraction
+│   │   ├── ingest/              # Data ingestion (NATS, BGP)
+│   │   ├── dash/                # Streamlit dashboards
+│   │   ├── alerting/            # Alert management
+│   │   └── triage/              # Impact classification
+│   ├── cmd/                     # Go-based BGP collector
+│   └── virtual_lab/             # Lab simulation components
+├── lab/                         # Containerlab virtual lab environment
+│   ├── topo.clab.yml           # Lab topology definition
+│   ├── configs/                # FRR router configurations
+│   └── scripts/                # Lab management scripts
+├── scripts/                     # Management and deployment scripts
+├── config/                      # Configuration files
+│   └── configs/                # System configurations
+├── tests/                       # Test files and test data
+├── data/                        # Data storage
+│   ├── lab_traces/             # Lab-generated traces
+│   └── public_traces/          # Public BGP traces
+├── results/                     # Analysis results and outputs
+├── docs/                        # Documentation
+│   ├── project_proposal/       # LaTeX proposal documents
+│   ├── design/                 # System design diagrams
+│   ├── papers/                 # Research papers
+│   └── development/            # Development documentation
+└── docker-compose.yml          # Container orchestration
+```
 
-**👉 [Complete Documentation](docs/)** | **[References](docs/research/references.md)** | **[System Design](docs/design/)**
+## 🚀 Quick Start
 
-- **Research Foundation:** [9 peer-reviewed sources](docs/research/references.md) on BGP anomaly detection
-- **Technical Design:** [UML diagrams](docs/design/) and system architecture  
-- **Academic Integration:** [Program alignment](docs/development/program_alignment.md) mapping to IS curriculum
-- **Project Planning:** [Proposal](docs/development/proposal.md) and [evaluation plan](docs/development/evaulation_plan.md)
+### Prerequisites
 
-## Quick Start
-1. **Edit configs**
-   - `configs/roles.yml` — map device name/IP → role: [server, tor, spine, rr, edge]
-   - `configs/collector.yml` — GoBGP passive eBGP collector (no routes advertised)
-2. **Bring up infra**
+- Docker and Docker Compose
+- Python 3.8+
+- Go 1.19+ (for BGP collector)
+- Containerlab (for virtual lab)
+
+### Running the System
+
+1. **Start the lab environment:**
+
    ```bash
-   make up      # starts NATS + dashboard; run collector separately if you prefer bare-metal
+   cd lab
+   ./scripts/deploy.sh
    ```
-3. **Test with sample data** (Optional but recommended)
+
+2. **Run the ML pipeline:**
+
    ```bash
-   make test-quick       # Send a few test BGP events immediately
-   make test-scenarios   # Interactive test runner with anomaly scenarios
+   cd src/python
+   python dual_signal_pipeline.py
    ```
-4. **Run collector** (Go)
-   ```bash
-   make collector
-   ```
-5. **Run pipeline** (Python)
-   ```bash
-   make pipeline  # feature aggregation + MP detector + triage + push to dashboard
-   ```
-6. **Open dashboard**
-   * Streamlit at [http://localhost:8501](http://localhost:8501)
 
-## Components
+3. **Access the dashboard:**
+   - Open `http://localhost:8501` in your browser
 
-* **Collector (Go):** peers eBGP with ToRs/Spines/Edge as a passive neighbor, publishes parsed updates to NATS (`bgp.updates`).
-* **Features (Python):** aggregates 15–30s bins (withdrawals, announcements, prefix/peer churn, AS‑path edit distance, etc.).
-* **Detector (Python):** Matrix Profile discords (streaming) over selected series.
-* **Triage (Python):** topology‑aware blast radius → `EDGE_LOCAL` or `NETWORK_IMPACTING`.
-* **Dashboard:** live anomaly score + impacted roles/prefixes + explanation.
+### Testing
 
-## Lab Tips
+```bash
+# Quick test
+make test-quick
 
-* If physical lab isn't ready, use `cmd/failure-injector/exabgp.conf` to simulate withdraw storms and session reset
+# Full test suite
+make test-scenarios
+```
 
-## 🎓 Academic Context
+## 🔬 Research Components
 
-**Thesis:** Traditional BGP monitoring suffers from high false positives and lacks failure localization context. This system combines Matrix Profile discord detection with network topology analysis to reduce alert fatigue and enable faster failure resolution.
+### Machine Learning Models
 
-**Novel Contributions:**
-- Real-time topology-aware failure localization (EDGE_LOCAL vs NETWORK_IMPACTING)
-- Streaming Matrix Profile implementation for BGP time series analysis
-- Multi-language integration (Go collector + Python ML pipeline)
-- Production-ready architecture with Docker containerization
+- **Matrix Profile**: Time-series anomaly detection for BGP streams
+- **Isolation Forest**: Unsupervised anomaly detection for log patterns
+- **LSTM Baseline**: Supervised learning approach for comparison
 
-**Program Integration:** Demonstrates competencies across 12 IS courses including networking, databases, security, software development, and enterprise architecture.
+### Data Sources
 
----
+- **BGP Updates**: Real-time routing change messages
+- **Syslog**: Device logs and system events
+- **Lab Traces**: Generated from virtual lab environment
 
-**Author:** Mike Hernandez  
-**Institution:** [Your University] - Information Systems Program  
-**Advisor:** [Advisor Name]  
-**Repository:** https://github.com/mhernandezit/capstone-anomaly
+### Evaluation Metrics
+
+- Detection delay
+- Precision/Recall/F1 scores
+- Localization accuracy (Hit@k)
+- Page reduction vs. traditional monitoring
+
+## 📚 Documentation
+
+- [Project Proposal](docs/project_proposal/) - LaTeX proposal documents
+- [Testing Guide](TESTING_GUIDE.md) - Comprehensive testing instructions
+- [Lab Documentation](lab/README.md) - Virtual lab setup and usage
+- [Research Papers](docs/papers/) - Supporting research literature
+
+## 🛠️ Development
+
+### Code Organization
+
+- **`src/python/`**: Main ML pipeline and analysis code
+- **`src/cmd/`**: Go-based BGP collector and utilities
+- **`lab/`**: Virtual lab environment for testing
+- **`scripts/`**: Deployment and management automation
+
+### Key Features
+
+- Real-time BGP anomaly detection
+- Multi-signal correlation (BGP + logs)
+- Topology-aware localization
+- Interactive dashboard for operators
+- Comprehensive testing framework
+
+## 📊 Project Status
+
+This project is part of the IS 499 Information Systems Capstone at CUNY School of Professional Studies.
+
+**Current Focus:**
+
+- ✅ Project proposal completed
+- ✅ Virtual lab environment established
+- ✅ ML pipeline implementation
+- 🔄 System integration and testing
+- 📋 Final evaluation and documentation
+
+## 🤝 Contributing
+
+This is a capstone project. All code is a work in progress by Mike Hernandez.
+
+## 📄 License
+
+This project is for educational purposes as part of the CUNY SPS Information Systems Capstone.

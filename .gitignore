@@ -73,3 +73,11 @@ data/public_traces/*.parquet
 .dockerignore
 .vscode/
 collector
+lab/clab-bgp-anomaly-lab/.tls/
+lab/clab-bgp-anomaly-lab/*.yml
+lab/clab-bgp-anomaly-lab/authorized_keys
+lab/clab-bgp-anomaly-lab/topology-data.json
+lab/clab-bgp-anomaly-lab/.tls/
+lab/clab-bgp-anomaly-lab/*.yml
+lab/clab-bgp-anomaly-lab/authorized_keys
+lab/clab-bgp-anomaly-lab/topology-data.json
