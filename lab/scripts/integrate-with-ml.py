@@ -197,9 +197,6 @@ class LabMLIntegration:
             logger.info("Processing interrupted by user")
         except Exception as e:
             logger.error(f"Error processing BGP updates: {e}")
-        finally:
-            process.terminate()
-            process.wait()
     
     def get_stats(self):
         """Get current statistics."""

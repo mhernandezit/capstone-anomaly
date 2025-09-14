@@ -8,9 +8,8 @@ import asyncio
 import json
 import logging
 import subprocess
-import time
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 # Configure logging
 logging.basicConfig(
@@ -240,14 +239,14 @@ async def main():
     data = await collector.collect_bgp_data()
     
     # Print summary
-    print(f"\nBGP Collection Summary:")
+    print("\nBGP Collection Summary:")
     print(f"Devices available: {data['devices_available']}/{data['devices_total']}")
     print(f"BGP neighbors: {len(data['neighbors'])}")
     print(f"BGP routes: {len(data['routes'])}")
     print(f"Log entries: {len(data['logs'])}")
     
     if data['neighbors']:
-        print(f"\nActive BGP Sessions:")
+        print("\nActive BGP Sessions:")
         for neighbor in data['neighbors']:
             if neighbor['state'] == 'Established':
                 print(f"  {neighbor['device']} -> {neighbor['peer_ip']} (AS{neighbor['asn']})")

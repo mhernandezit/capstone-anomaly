@@ -90,6 +90,7 @@ The system includes these automated test scenarios:
 ## 📈 Expected Results
 
 ### Normal Operation
+
 - All BGP sessions established
 - BMP collector receiving updates
 - NATS messages flowing
@@ -97,6 +98,7 @@ The system includes these automated test scenarios:
 - No false positive alerts
 
 ### During Failures
+
 - BGP sessions go down/up
 - Route withdrawals/advertisements
 - Anomaly detection triggers
@@ -108,25 +110,33 @@ The system includes these automated test scenarios:
 ### Common Issues
 
 1. **Containers not starting**
+
    ```bash
+
    docker ps -a
    docker logs <container_name>
    ```
 
 2. **BGP sessions not established**
+
    ```bash
+
    ./scripts/check-bgp.sh
    docker exec clab-bgp-anomaly-lab-spine-01 vtysh -c "show bgp summary"
    ```
 
 3. **BMP collector not receiving data**
+
    ```bash
+
    docker logs clab-bgp-anomaly-lab-bmp-collector
    docker exec clab-bgp-anomaly-lab-spine-01 vtysh -c "show bmp targets"
    ```
 
 4. **Dashboard not accessible**
-   ```bash
+
+```bash
+
    # Check if Streamlit is running
    ps aux | grep streamlit
    
@@ -151,6 +161,7 @@ docker system prune -f
 ## 📋 Test Report
 
 After running tests, check the generated report:
+
 - `test-report-YYYYMMDD-HHMMSS.txt`
 - Contains system status, logs, and results
 

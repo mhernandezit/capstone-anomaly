@@ -6,17 +6,17 @@ based on the Feltin 2023 paper on feature selection for network telemetry.
 """
 
 from .feature_extractor import (
-    SemanticFeatureExtractor, 
-    FeatureSelector, 
+    SemanticFeatureExtractor,
+    FeatureSelector,
     PreprocessingPipeline,
     ExtractedFeatures,
-    FeatureWindow
+    FeatureWindow,
 )
 
 __all__ = [
-    'SemanticFeatureExtractor',
-    'FeatureSelector', 
-    'PreprocessingPipeline',
-    'ExtractedFeatures',
-    'FeatureWindow'
+    "SemanticFeatureExtractor",
+    "FeatureSelector",
+    "PreprocessingPipeline",
+    "ExtractedFeatures",
+    "FeatureWindow",
 ]

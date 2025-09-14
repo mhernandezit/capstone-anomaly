@@ -7,7 +7,6 @@ Suitable for testing if the dashboard is receiving data.
 """
 
 import asyncio
-import json
 import time
 import sys
 import os
