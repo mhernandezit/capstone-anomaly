@@ -1,8 +1,8 @@
-# BGP Anomaly Detection System
+# Machine Learning for Network Anomaly and Failure Detection
 
-A comprehensive machine learning system for real-time detection and localization of network failures using BGP routing updates and device logs.
+A comprehensive machine learning system for real-time detection and localization of network failures using multi-modal data sources including BGP routing updates, SNMP metrics, and syslog messages.
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```text
 capstone-anomaly/
@@ -33,6 +33,7 @@ capstone-anomaly/
 │   └── public_traces/          # Public BGP traces
 ├── docs/                        # Documentation
 │   ├── project_proposal/       # LaTeX proposal documents
+│   ├── presentations/          # Final project presentation
 │   ├── design/                 # System design diagrams
 │   ├── papers/                 # Research papers
 │   └── development/            # Development documentation
@@ -40,7 +41,7 @@ capstone-anomaly/
 └── go.mod                       # Go module dependencies
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -88,7 +89,7 @@ make test-quick
 make test-scenarios
 ```
 
-## 🔬 Research Components
+## Research Components
 
 ### Machine Learning Models
 
@@ -98,25 +99,27 @@ make test-scenarios
 
 ### Data Sources
 
-- **BGP Updates**: Real-time routing change messages
+- **BGP Updates**: Real-time routing change messages via BGP Monitoring Protocol (BMP)
+- **SNMP Metrics**: Hardware health indicators and interface performance data
 - **Syslog**: Device logs and system events
-- **Lab Traces**: Generated from virtual lab environment
+- **Lab Traces**: Generated from virtual lab environment with Containerlab and FRR routers
 
 ### Evaluation Metrics
 
-- Detection delay
-- Precision/Recall/F1 scores
-- Localization accuracy (Hit@k)
-- Page reduction vs. traditional monitoring
+- Operational efficiency improvements
+- Precision/Recall/F1 scores for anomaly detection
+- Context-aware anomaly localization accuracy
+- Alert noise reduction vs. traditional threshold-based monitoring
 
-## 📚 Documentation
+## Documentation
 
 - [Project Proposal](docs/project_proposal/) - LaTeX proposal documents
+- [Final Project Presentation](docs/presentations/) - Final project presentation
 - [Testing Guide](TESTING_GUIDE.md) - Comprehensive testing instructions
 - [Lab Documentation](lab/README.md) - Virtual lab setup and usage
 - [Research Papers](docs/papers/) - Supporting research literature
 
-## 🛠️ Development
+## Development
 
 ### Code Organization
 
@@ -127,28 +130,31 @@ make test-scenarios
 
 ### Key Features
 
-- Real-time BGP anomaly detection
-- Multi-signal correlation (BGP + logs)
-- Topology-aware localization
-- Interactive dashboard for operators
-- Comprehensive testing framework
+- Multi-modal network anomaly detection (BGP, SNMP, syslog)
+- Real-time streaming analytics with NATS message bus
+- Matrix Profile and Isolation Forest ML algorithms
+- Topology-aware failure localization
+- Context-aware correlation analysis
+- Interactive dashboard for Network Operation Centers
 
-## 📊 Project Status
+## Project Status
 
-This project is part of the IS 499 Information Systems Capstone at CUNY School of Professional Studies.
+This project is part of the Information Systems Capstone program.
 
 **Current Focus:**
 
-- ✅ Project proposal completed
-- ✅ Virtual lab environment established
-- ✅ ML pipeline implementation
-- 🔄 System integration and testing
-- 📋 Final evaluation and documentation
+- Project proposal completed
+- Virtual lab environment established with Containerlab and FRR routers
+- ML pipeline implementation with multi-modal data processing
+- Go-based BMP collector for BGP data ingestion
+- Final project presentation completed
+- System integration and comprehensive testing
+- Performance evaluation and validation
 
-## 🤝 Contributing
+## Contributing
 
-This is a capstone project. All code is a work in progress by Mike Hernandez.
+This is a research project. All code is a work in progress by Mike Hernandez.
 
-## 📄 License
+## License
 
-This project is for educational purposes as part of the CUNY SPS Information Systems Capstone.
+This project is for educational purposes as part of the Information Systems Capstone program.

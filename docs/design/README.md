@@ -2,7 +2,7 @@
 
 This directory contains comprehensive UML diagrams and design documentation for the BGP Failure Detection system.
 
-## 📊 UML Diagrams
+## UML Diagrams
 
 ### 1. Structural UML - System Architecture
 
@@ -63,7 +63,7 @@ python bgp_anomaly_uml.py
 python bgp_action_specification.py
 ```
 
-## 📋 Design Principles
+## Design Principles
 
 ### 1. Real-time Processing
 
@@ -89,7 +89,7 @@ python bgp_action_specification.py
 - Message bus decoupling (NATS)
 - Stateless processing components
 
-## 🎯 Use Case Scenarios
+## Use Case Scenarios
 
 ### Primary: Network Failure Detection
 
@@ -105,7 +105,7 @@ python bgp_action_specification.py
 3. **Classification:** Multi-role correlation analysis
 4. **Response:** Predictive alerting before critical failure
 
-## 📈 Performance Requirements
+## Performance Requirements
 
 | Metric | Requirement | Rationale |
 |--------|-------------|-----------|
@@ -123,7 +123,7 @@ The UML diagrams support validation through:
 - **Consistency:** Cross-referenced between structural and behavioral views
 - **Testability:** Clear pre/post conditions enable unit testing
 
-## 📚 Related Documentation
+## Related Documentation
 
 - **[System Requirements](../development/proposal.md)** - Functional and non-functional requirements
 - **[Implementation Plan](../development/program_alignment.md)** - Development approach
@@ -131,4 +131,4 @@ The UML diagrams support validation through:
 
 ---
 
-*These diagrams provide the architectural foundation for the IS499 capstone project, demonstrating systems analysis and design competencies while supporting the technical implementation.*
+*These diagrams provide the architectural foundation for the network anomaly detection project, demonstrating systems analysis and design competencies while supporting the technical implementation.*

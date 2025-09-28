@@ -2,7 +2,7 @@
 
 A complete containerlab-based network environment for testing BGP anomaly detection systems with real FRR routers, authentic BGP sessions, Go-based BMP collection, and Python ML pipeline integration.
 
-## 🏗️ Lab Architecture
+## Lab Architecture
 
 ```text
 ┌─────────────────────────────────────────────────────────────────┐
@@ -45,7 +45,7 @@ A complete containerlab-based network environment for testing BGP anomaly detect
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -101,7 +101,7 @@ python scripts/integrate-with-ml.py
 - **Fluent Bit** - Log collection and forwarding
 - **Python ML Pipeline** - Streaming anomaly detection using Matrix Profile and other ML techniques
 
-## 📊 What You Get
+## What You Get
 
 ### Real BGP Data
 
@@ -126,7 +126,7 @@ python scripts/integrate-with-ml.py
 - **BGP session resets** - Neighbor relationship issues
 - **Interface instability** - Flapping conditions
 
-## 🎯 Usage Scenarios
+## Usage Scenarios
 
 ### 1. **Algorithm Testing**
 
@@ -220,7 +220,7 @@ docker exec clab-bgp-anomaly-lab-spine-01 vtysh -c "show bgp ipv4 unicast"
 docker exec clab-bgp-anomaly-lab-spine-01 vtysh -c "show running-config"
 ```
 
-## 🛠️ Customization
+## Customization
 
 ### Modify Network Topology
 
@@ -248,7 +248,7 @@ Edit `scripts/inject-failures.sh` to:
 - Create automated sequences
 - Implement custom test scenarios
 
-## 📁 Directory Structure
+## Directory Structure
 
 ```text
 lab/
@@ -322,7 +322,7 @@ This lab is perfect for:
 4. **Scalability Studies** - Test under various load conditions
 5. **Failure Analysis** - Study BGP behavior under failures
 
-## 📚 Next Steps
+## Next Steps
 
 1. **Deploy the lab** and verify BGP sessions are established
 2. **Run the ML integration** to see real-time anomaly detection
@@ -330,7 +330,7 @@ This lab is perfect for:
 4. **Customize the lab** for your specific research needs
 5. **Integrate with your existing pipeline** for comprehensive testing
 
-## 🤝 Contributing
+## Contributing
 
 To extend the lab:
 

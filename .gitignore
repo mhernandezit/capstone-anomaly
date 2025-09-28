@@ -49,6 +49,7 @@ venv.bak/
 # IDE
 .vscode/
 .idea/
+.cursorrules
 *.swp
 *.swo
 *~
@@ -68,6 +69,25 @@ data/lab_traces/*.parquet
 data/public_traces/*.csv
 data/public_traces/*.parquet
 *.log
+
+# LaTeX auxiliary files (keep .tex source and .pdf output)
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+*.dvi
+*.ps
+*.eps
 
 # Docker
 .dockerignore

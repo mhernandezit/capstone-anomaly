@@ -1,12 +1,13 @@
 # Final Project Presentation
 
-This directory contains the LaTeX source files for the IS 499 Final Project presentation.
+This directory contains the LaTeX source files for the final project presentation.
 
 ## Files
 
 - `final_project_draft.tex` - Main LaTeX document for the final project presentation
-- `build.sh` - Build script for Unix/Linux/macOS systems
-- `build.bat` - Build script for Windows systems
+- `system_architecture.png` - System architecture UML diagram
+- `action_specification.png` - Action specification UML diagram  
+- `usecase_details.png` - Use case details UML diagram
 - `README.md` - This file
 
 ## Building the Document
@@ -19,35 +20,32 @@ You need a LaTeX distribution installed on your system:
 - **macOS**: MacTeX or TeX Live
 - **Linux**: TeX Live
 
-### Building on Windows
+### Building on Windows (PowerShell)
 
-```cmd
+```powershell
 cd docs/presentations
-build.bat
+$env:PATH += ";C:\texlive\2025\bin\windows"
+pdflatex final_project_draft.tex
 ```
 
 ### Building on Unix/Linux/macOS
 
 ```bash
 cd docs/presentations
-chmod +x build.sh
-./build.sh
+pdflatex final_project_draft.tex
 ```
 
 ### Manual Building
 
-If the build scripts don't work, you can build manually:
+The document uses a manual bibliography (no BibTeX required):
 
 ```bash
-pdflatex final_project_draft.tex
-bibtex final_project_draft
-pdflatex final_project_draft.tex
 pdflatex final_project_draft.tex
 ```
 
 ## Document Structure
 
-The presentation follows the IS 499 Final Project template requirements:
+The presentation follows the required final project template structure:
 
 1. **Cover Page** - Document title, college name, student name, date
 2. **Table of Contents** - Automatic generation from sections
@@ -62,19 +60,18 @@ The presentation follows the IS 499 Final Project template requirements:
 
 The document includes status indicators for sections that need additional data:
 
-- 🔄 **In Progress** - Currently being worked on
-- ✅ **Completed** - Finished components
+- **In Progress** - Currently being worked on
+- **Completed** - Finished components
 - **\textcolor{red}{[NEEDS MORE DATA]}** - Requires additional data collection
 - **\textcolor{red}{[IN PROGRESS]}** - Currently being developed
 
 ## Bibliography
 
-The document references the same bibliography file as the project proposal:
-`../project_proposal/references.bib`
+The document includes a manual bibliography with APA-style citations and hyperlinks to research papers.
 
 ## Notes
 
-- This is a first draft with placeholders for sections requiring additional data
-- The document structure follows the professor's template exactly
-- LaTeX formatting matches the existing proposal style
-- Status indicators clearly mark what needs more work
+- This is the final presentation document following the required template structure
+- LaTeX formatting uses academic language aligned with Mohammed et al. NOC framework
+- UML diagrams are integrated for system architecture and use case visualization
+- Document focuses on multi-modal network anomaly detection and correlation analysis
