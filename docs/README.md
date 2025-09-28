@@ -1,8 +1,8 @@
 # Documentation
 
-This directory contains all documentation for the BGP Failure Detection capstone project.
+This directory contains all documentation for the Machine Learning for Network Anomaly and Failure Detection project.
 
-## 📁 Structure
+## Structure
 
 ```text
 docs/
@@ -22,20 +22,20 @@ docs/
 │   ├── evaulation_plan.md   # Testing and evaluation plan
 │   └── proposal.md          # Project proposal
 ├── papers/            # PDF copies of referenced papers
-├── presentations/     # Slides and presentation materials
+├── presentations/     # Final project presentation and materials
 └── README.md         # This file
 ```
 
-## 📚 Quick Access
+## Quick Access
 
 ### Essential Documents
 
+- **[Final Project Presentation](presentations/final_project_draft.pdf)** - Complete project presentation
 - **[References](research/references.md)** - Core academic literature
 - **[System Architecture](design/bgp_anomaly_uml.gv.png)** - Structural flow diagram
 - **[Behavioral Model](design/bgp_action_specification.gv.png)** - Use cases & actions
 - **[Design Guide](design/README.md)** - Complete design documentation
 - **[Project Proposal](development/proposal.md)** - Problem statement and approach
-- **[Program Alignment](development/program_alignment.md)** - Course outcome mapping
 
 ### For Advisors/Review
 
@@ -50,7 +50,7 @@ docs/
 - **Markdown:** GitHub-flavored markdown for all text documents
 - **File Naming:** Snake_case for technical files, kebab-case for documents
 
-## 🔄 Maintenance
+## Maintenance
 
 - Update references.md when adding new literature
 - Regenerate UML diagrams when system architecture changes

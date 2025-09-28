@@ -1,8 +1,8 @@
-# Multi-Modal Network Failure Detection ML Pipeline
+# Multi-Modal Network Anomaly Detection ML Pipeline
 
-This Python-based ML pipeline provides comprehensive real-time network failure detection using streaming data from multiple sources. It processes BGP updates, SNMP metrics, and syslog messages via NATS messaging, extracts multi-modal features, and performs anomaly detection using Matrix Profile and other ML techniques to detect hardware failures, environmental issues, and routing anomalies.
+This Python-based ML pipeline provides comprehensive real-time network anomaly detection using streaming data from multiple sources. It processes BGP updates, SNMP metrics, and syslog messages via NATS messaging, extracts multi-modal features, and performs anomaly detection using Matrix Profile and other ML techniques to identify network failures and provide correlation analysis for Network Operation Centers.
 
-## 🏗️ Architecture
+## Architecture
 
 The ML pipeline consists of several key components:
 
@@ -79,16 +79,16 @@ The ML pipeline consists of several key components:
   - **Power supply instability modeling**
   - Realistic SNMP metric generation
 
-## 🌟 Enhanced Capabilities (Addressing Professor Feedback)
+## Multi-Modal Analytics Framework
 
-This enhanced version expands beyond BGP-only events to include comprehensive network failure detection:
+This system extends beyond traditional BGP monitoring to provide comprehensive network analytics:
 
-### **Expanded Failure Detection**
+### **Network Anomaly Detection**
 
-- **Hardware Failures**: Bad parts, memory issues, CPU problems, storage failures
-- **Cable/Optics Issues**: Fiber breaks, transceiver degradation, connector problems
-- **Environmental Problems**: Thermal runaway, power instability, cooling failures
-- **Routing Events**: BGP, OSPF, IS-IS convergence issues and policy problems
+- **Routing Anomalies**: BGP update patterns, AS path changes, convergence issues
+- **Hardware Issues**: SNMP metrics for device health and interface performance
+- **System Events**: Syslog message patterns and error correlation
+- **Environmental Factors**: Thermal, power, and performance degradation indicators
 
 ### **Multi-Modal Data Sources**
 
@@ -96,14 +96,14 @@ This enhanced version expands beyond BGP-only events to include comprehensive ne
 - **SNMP Metrics**: Hardware health, interface statistics, environmental sensors
 - **Syslog Messages**: System events, error patterns, device correlations
 
-### **Advanced Analysis**
+### **Advanced Analytics**
 
 - **Temporal Correlation**: Cross-time analysis of events across data sources
-- **Spatial Correlation**: Multi-device failure propagation analysis
-- **Root Cause Analysis**: Automated failure classification and localization
-- **Impact Assessment**: Topology-aware blast radius calculation
+- **Multi-Modal Fusion**: Integration of BGP, SNMP, and syslog signals
+- **Context-Aware Localization**: Topology-aware anomaly identification
+- **Operational Efficiency**: Alert noise reduction and correlation analysis
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -132,26 +132,26 @@ This enhanced version expands beyond BGP-only events to include comprehensive ne
    ./scripts/deploy.sh
    ```
 
-2. **Run the enhanced multi-modal pipeline**:
+2. **Run the multi-modal pipeline**:
 
    ```bash
-   # Full multi-modal detection with SNMP simulation
-   python src/run_enhanced_pipeline.py --demo-mode
+   # Multi-modal detection with BGP, SNMP, and syslog
+   python integration/multi_modal_pipeline.py
    
-   # Or production mode
-   python src/run_enhanced_pipeline.py
+   # Or legacy dual-signal pipeline
+   python dual_signal_pipeline.py
    ```
 
 3. **Run individual components**:
 
    ```bash
-   # SNMP hardware failure simulation only
-   python src/simulators/snmp_simulator.py
+   # SNMP simulation for hardware failure testing
+   python simulators/snmp_simulator.py
    
-   # Legacy dual-signal pipeline (BGP + syslog)
-   python dual_signal_pipeline.py
+   # BGP anomaly detection only
+   python models/matrix_profile_bgp.py
    
-   # Lab integration
+   # Lab integration with Containerlab
    cd ../lab
    python scripts/integrate-with-ml.py
    ```
@@ -159,11 +159,11 @@ This enhanced version expands beyond BGP-only events to include comprehensive ne
 4. **Access the dashboard**:
 
    ```bash
-   # Start the enhanced dashboard
+   # Start the dashboard
    streamlit run dash/simple_dashboard.py
    ```
 
-## 📊 Configuration
+## Configuration
 
 The lab is configured via `configs/lab_config.yml`. Key configuration sections:
 
@@ -215,7 +215,7 @@ scaling:
       syslog_multiplier: 10.0
 ```
 
-## 🔬 Feature Extraction
+## Feature Extraction
 
 The preprocessing pipeline implements the approach from the Feltin 2023 paper:
 
@@ -245,7 +245,7 @@ The preprocessing pipeline implements the approach from the Feltin 2023 paper:
 - Temporal alignment analysis
 - Event sequence scoring
 
-## 📈 Monitoring and Metrics
+## Monitoring and Metrics
 
 The lab provides comprehensive monitoring:
 
@@ -263,7 +263,7 @@ The lab provides comprehensive monitoring:
 - Feature importance scores
 - Anomaly detection results
 
-## 🧪 Testing
+## Testing
 
 ### Component Tests
 
@@ -286,7 +286,7 @@ Modify `configs/lab_config.yml` to create custom test scenarios:
 - Custom scaling phases
 - Specific anomaly injection patterns
 
-## 📁 Directory Structure
+## Directory Structure
 
 ``` text
 
@@ -326,14 +326,14 @@ virtual_lab/
    - Decrease data generation rates
    - Use smaller network topologies
 
-## 📚 References
+## References
 
 - **Feltin, T., et al. (2023)**: "Understanding Semantics in Feature Selection for Fault Diagnosis in Network Telemetry Data"
 - **Matrix Profile**: For time series anomaly detection
 - **NATS**: High-performance messaging system
 - **BGP**: Border Gateway Protocol specifications
 
-## 🤝 Contributing
+## Contributing
 
 To extend the virtual lab:
 
@@ -342,6 +342,6 @@ To extend the virtual lab:
 3. **Custom Anomalies**: Extend `NetworkSwitch` anomaly injection
 4. **Additional Scaling**: Modify `ScalingController` phases
 
-## 📄 License
+## License
 
 This virtual lab is part of the BGP Anomaly Detection project and follows the same licensing terms.

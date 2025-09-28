@@ -2,7 +2,7 @@
 
 This directory contains PDF copies of referenced academic papers for offline access.
 
-## 📋 Organization
+## Organization
 
 Name PDF files using the format: `FirstAuthor_Year_ShortTitle.pdf`
 
@@ -12,7 +12,7 @@ Examples:
 - `Cheng_2021_MultiScale_LSTM.pdf`
 - `Tan_2024_BGP_Communities_GNN.pdf`
 
-## 📚 Core Papers (Priority Download)
+## Core Papers (Priority Download)
 
 Based on [references.md](../research/references.md), prioritize obtaining these papers:
 
@@ -31,7 +31,7 @@ Based on [references.md](../research/references.md), prioritize obtaining these 
 4. **Alqudah & Yaseen (2020)** - Machine learning for traffic analysis review
 5. **Na (2022)** - Computer network fault detection using neural networks
 
-## 📄 Available Papers
+## Available Papers
 
 The following papers are currently available in this directory:
 
@@ -62,7 +62,7 @@ The following papers are currently available in this directory:
 - Google Scholar may have preprint/author versions
 - Contact library for interlibrary loan if needed
 
-## 📄 Citation Management
+## Citation Management
 
 - All papers cited in APA format in [references.md](../research/references.md)
 - Keep this directory in sync with the references list
