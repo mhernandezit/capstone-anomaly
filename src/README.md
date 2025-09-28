@@ -1,6 +1,6 @@
-# BGP Anomaly Detection ML Pipeline
+# Multi-Modal Network Failure Detection ML Pipeline
 
-This Python-based ML pipeline provides real-time BGP anomaly detection using streaming data from a containerlab network environment. It processes BGP updates via NATS messaging, extracts features, and performs anomaly detection using Matrix Profile and other ML techniques.
+This Python-based ML pipeline provides comprehensive real-time network failure detection using streaming data from multiple sources. It processes BGP updates, SNMP metrics, and syslog messages via NATS messaging, extracts multi-modal features, and performs anomaly detection using Matrix Profile and other ML techniques to detect hardware failures, environmental issues, and routing anomalies.
 
 ## 🏗️ Architecture
 
@@ -8,22 +8,29 @@ The ML pipeline consists of several key components:
 
 ### 1. Data Ingestion (`ingest/`)
 
-- **Purpose**: Receives BGP data from the containerlab environment
+- **Purpose**: Receives multi-modal network data from the containerlab environment
 - **Technology**: NATS message bus integration
 - **Sources**:
   - BGP updates from Go BMP collector
   - Syslog messages from Fluent Bit
+  - **SNMP metrics from hardware simulation (NEW)**
+  - **Environmental sensor data (NEW)**
   - Real-time streaming data
 
 ### 2. Feature Extraction (`features/`)
 
-- **Purpose**: Extracts and aggregates features from BGP data
-- **Technology**: `FeatureAggregator` class
-- **Features**:
+- **Purpose**: Extracts and aggregates features from multi-modal network data
+- **Technology**: `FeatureAggregator` and `SNMPFeatureExtractor` classes
+- **BGP Features**:
   - BGP announcement/withdrawal rates
   - AS path analysis and churn
   - Peer diversity metrics
   - Temporal feature bins
+- **SNMP Features**:
+  - Hardware health indicators (CPU, memory, temperature)
+  - Interface performance metrics (errors, utilization)
+  - Environmental anomaly patterns (thermal, power, fan status)
+  - Multi-device correlation analysis
 
 ### 3. Message Bus (`message_bus/`)
 
@@ -32,28 +39,69 @@ The ML pipeline consists of several key components:
 - **Subjects**:
   - `bgp.updates` - BGP update messages from BMP collector
   - `syslog.messages` - Syslog messages from Fluent Bit
+  - `snmp.metrics` - **SNMP hardware metrics (NEW)**
   - `bgp.events` - Anomaly detection events
   - `anomaly.alerts` - Alert notifications
+  - `alerts.multi_modal` - **Multi-modal failure alerts (NEW)**
 
 ### 4. ML Models (`models/`)
 
-- **Purpose**: Anomaly detection using various ML techniques
+- **Purpose**: Multi-modal anomaly detection using various ML techniques
 - **Technologies**:
-  - Matrix Profile (GPU-accelerated)
-  - LSTM networks
-  - Isolation Forest
+  - Matrix Profile (GPU-accelerated) for BGP time series
+  - **Isolation Forest for SNMP hardware anomalies**
+  - LSTM networks for temporal patterns
+  - **Multi-modal fusion algorithms**
 - **Features**:
   - Real-time streaming detection
   - GPU acceleration support
   - Multiple detection algorithms
+  - **Cross-modal correlation analysis (NEW)**
 
-### 5. Dual-Signal Pipeline (`dual_signal_pipeline.py`)
+### 5. Multi-Modal Pipeline (`integration/multi_modal_pipeline.py`) **NEW**
 
-- **Purpose**: Combines BGP and syslog data for enhanced detection
+- **Purpose**: Combines BGP, syslog, and SNMP data for comprehensive failure detection
 - **Features**:
-  - Correlates BGP updates with syslog messages
+  - Correlates BGP updates with syslog messages and SNMP metrics
+  - **Hardware failure detection and classification**
+  - **Environmental anomaly monitoring**
   - Enhanced failure detection accuracy
   - Improved localization capabilities
+  - **Multi-modal alert generation**
+
+### 6. SNMP Simulation (`simulators/snmp_simulator.py`)
+
+- **Purpose**: Simulates hardware failures and environmental issues using snmpsim
+- **Features**:
+  - **Optical transceiver degradation simulation**
+  - **Memory pressure and thermal runaway scenarios**
+  - **Cable intermittent connection patterns**
+  - **Power supply instability modeling**
+  - Realistic SNMP metric generation
+
+## 🌟 Enhanced Capabilities (Addressing Professor Feedback)
+
+This enhanced version expands beyond BGP-only events to include comprehensive network failure detection:
+
+### **Expanded Failure Detection**
+
+- **Hardware Failures**: Bad parts, memory issues, CPU problems, storage failures
+- **Cable/Optics Issues**: Fiber breaks, transceiver degradation, connector problems
+- **Environmental Problems**: Thermal runaway, power instability, cooling failures
+- **Routing Events**: BGP, OSPF, IS-IS convergence issues and policy problems
+
+### **Multi-Modal Data Sources**
+
+- **BGP Updates**: Route announcements, withdrawals, AS path changes
+- **SNMP Metrics**: Hardware health, interface statistics, environmental sensors
+- **Syslog Messages**: System events, error patterns, device correlations
+
+### **Advanced Analysis**
+
+- **Temporal Correlation**: Cross-time analysis of events across data sources
+- **Spatial Correlation**: Multi-device failure propagation analysis
+- **Root Cause Analysis**: Automated failure classification and localization
+- **Impact Assessment**: Topology-aware blast radius calculation
 
 ## 🚀 Quick Start
 
@@ -84,15 +132,26 @@ The ML pipeline consists of several key components:
    ./scripts/deploy.sh
    ```
 
-2. **Run the dual-signal pipeline**:
+2. **Run the enhanced multi-modal pipeline**:
 
    ```bash
-   python dual_signal_pipeline.py
+   # Full multi-modal detection with SNMP simulation
+   python src/run_enhanced_pipeline.py --demo-mode
+   
+   # Or production mode
+   python src/run_enhanced_pipeline.py
    ```
 
-3. **Run with lab integration**:
+3. **Run individual components**:
 
    ```bash
+   # SNMP hardware failure simulation only
+   python src/simulators/snmp_simulator.py
+   
+   # Legacy dual-signal pipeline (BGP + syslog)
+   python dual_signal_pipeline.py
+   
+   # Lab integration
    cd ../lab
    python scripts/integrate-with-ml.py
    ```
@@ -100,7 +159,7 @@ The ML pipeline consists of several key components:
 4. **Access the dashboard**:
 
    ```bash
-   # Start the dashboard
+   # Start the enhanced dashboard
    streamlit run dash/simple_dashboard.py
    ```
 
@@ -229,18 +288,16 @@ Modify `configs/lab_config.yml` to create custom test scenarios:
 
 ## 📁 Directory Structure
 
-```
+``` text
+
 virtual_lab/
 ├── configs/
 │   └── lab_config.yml          # Main configuration
-├── switch_emulator/
-│   └── (removed - using real FRR routers instead)
 ├── message_bus/
 │   └── nats_publisher.py       # Message bus integration
 ├── preprocessing/
 │   └── feature_extractor.py    # Feature extraction pipeline
 ├── scripts/
-│   ├── (removed - using real FRR routers instead)
 │   ├── start_lab.py           # Quick start script
 │   └── test_components.py     # Component testing
 ├── logs/
@@ -268,14 +325,6 @@ virtual_lab/
    - Reduce scaling multipliers
    - Decrease data generation rates
    - Use smaller network topologies
-
-### Debug Mode
-
-Run with debug logging:
-
-```bash
-# Use real FRR routers with Containerlab instead
-```
 
 ## 📚 References
 

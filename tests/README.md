@@ -24,6 +24,7 @@ python tests/data_publisher.py
 ```
 
 This provides 5 different test scenarios:
+
 1. **Normal Traffic** - Baseline BGP activity
 2. **Route Leak Attack** - Simulates route leak anomalies  
 3. **Prefix Hijack** - Simulates prefix hijacking
@@ -33,30 +34,35 @@ This provides 5 different test scenarios:
 ## Test Scenarios Explained
 
 ### Normal Traffic
+
 - **Purpose**: Establish baseline behavior
 - **Events**: 80% announcements, 20% withdrawals
 - **Duration**: 60 seconds at 2 events/sec
 - **Use Case**: Verify system handles normal BGP operations
 
 ### Route Leak Attack
+
 - **Purpose**: Test detection of route leaks
 - **Anomaly**: Peer announces prefixes with suspicious AS paths
 - **Pattern**: Normal traffic + periodic route leaks every 10s
 - **Use Case**: Validate route leak detection algorithms
 
 ### Prefix Hijack
+
 - **Purpose**: Test prefix hijacking detection
 - **Anomaly**: Single AS announces prefixes it shouldn't own
 - **Pattern**: Normal traffic + hijack attempts every 15s
 - **Use Case**: Validate prefix hijack detection
 
 ### Massive Withdrawal  
+
 - **Purpose**: Test outage detection
 - **Anomaly**: Large numbers of routes withdrawn simultaneously
 - **Pattern**: Normal traffic + mass withdrawals every 20s
 - **Use Case**: Validate network outage detection
 
 ### High Volume Traffic
+
 - **Purpose**: Performance and stress testing
 - **Events**: 10 events/sec from multiple peers
 - **Duration**: 2 minutes
@@ -85,7 +91,7 @@ The test suite publishes to these NATS subjects:
 
 ## System Integration
 
-```
+``` text
 Test Publisher → NATS → [Pipeline] → Dashboard
                    ↓
                Processing Chain:
@@ -123,6 +129,7 @@ Edit `tests/data_publisher.py` and add to `TEST_SCENARIOS`:
 ### Modify Event Generation
 
 Edit the `BGPEventGenerator` class methods:
+
 - `generate_normal_update()` - Normal BGP traffic patterns
 - `generate_route_leak()` - Route leak anomaly patterns
 - `generate_prefix_hijack()` - Hijack anomaly patterns
@@ -131,6 +138,7 @@ Edit the `BGPEventGenerator` class methods:
 ## Troubleshooting
 
 ### Connection Issues
+
 ```bash
 # Check NATS is running
 docker ps | grep nats
@@ -140,6 +148,7 @@ telnet localhost 4222
 ```
 
 ### Dashboard Not Updating
+
 ```bash
 # Check dashboard logs
 docker logs capstone-anomaly-dash-1
@@ -149,6 +158,7 @@ make down && make up
 ```
 
 ### Pipeline Not Processing
+
 ```bash
 # Run pipeline manually to see errors
 make pipeline

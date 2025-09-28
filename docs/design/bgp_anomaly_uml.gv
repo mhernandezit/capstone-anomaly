@@ -4,10 +4,10 @@ digraph BGP_Anomaly_Detection {
 	load_configs [label="Load Configurations:
 roles.yml & collector.yml" shape=box]
 	start_nats [label="Start NATS Message Broker" shape=box]
-	start_collector [label="Start BGP Collector (Go)" shape=box]
+	start_collector [label="Start BGP Collector" shape=box]
 	start_pipeline [label="Start Python Pipeline" shape=box]
 	start_dashboard [label="Start Streamlit Dashboard" shape=box]
-	init_gobgp [label="Initialize GoBGP Server" shape=box]
+	init_bgp [label="Initialize BGP Server" shape=box]
 	add_peers [label="Add BGP Peers
 (ToR, Spine, Edge, RR)" shape=box]
 	establish_sessions [label="Establish BGP Sessions" shape=box]
@@ -70,8 +70,8 @@ for Next Updates" shape=box]
 	start_nats -> start_collector
 	start_collector -> start_pipeline
 	start_pipeline -> start_dashboard
-	start_dashboard -> init_gobgp
-	init_gobgp -> add_peers
+	start_dashboard -> init_bgp
+	init_bgp -> add_peers
 	add_peers -> establish_sessions
 	establish_sessions -> session_check
 	session_check -> session_fail [label=No]

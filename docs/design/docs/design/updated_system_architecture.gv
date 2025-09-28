@@ -1,0 +1,59 @@
+digraph Multi_Modal_System_Architecture {
+	rankdir=TB size="10,12" splines=ortho
+	node [fontname=Arial fontsize=11 height=1 width=2.5]
+	edge [fontname=Arial fontsize=9]
+	title [label="Multi-Modal Network Anomaly Detection System
+BGP + SNMP + Syslog Integration" fillcolor=lightblue fontsize=14 shape=box style=filled]
+	subgraph cluster_data_sources {
+		fillcolor=lightcyan fontsize=12 label="Data Sources" style=filled
+		bgp_source [label="BGP Updates
+(BMP Collector)" fillcolor=lightgreen shape=box style=filled]
+		snmp_source [label="SNMP Metrics
+(Hardware Health)" fillcolor=lightyellow shape=box style=filled]
+		syslog_source [label="Syslog Messages
+(Device Events)" fillcolor=lightcoral shape=box style=filled]
+	}
+	nats_bus [label="NATS Message Bus
+(Real-time Streaming)" fillcolor=lightsteelblue fontsize=12 shape=ellipse style=filled]
+	subgraph cluster_processing {
+		fillcolor=mistyrose fontsize=12 label="ML Processing Pipeline" style=filled
+		feature_extraction [label="Multi-Modal
+Feature Extraction" fillcolor=wheat shape=box style=filled]
+		anomaly_detection [label="Anomaly Detection
+(Matrix Profile + ML)" fillcolor=orange shape=box style=filled]
+		impact_classification [label="Impact Classification
+(Topology-Aware)" fillcolor=yellow shape=box style=filled]
+	}
+	subgraph cluster_output {
+		fillcolor=lavender fontsize=12 label="Output & Response" style=filled
+		dashboard [label="Streamlit Dashboard
+(Live Monitoring)" fillcolor=lightpink shape=box style=filled]
+		alerts [label="Smart Alerts
+(Context-Aware)" fillcolor=lightcoral shape=box style=filled]
+		operator [label="Network Operator
+(Decision Maker)" fillcolor=lightgreen shape=box style=filled]
+	}
+	title -> bgp_source [style=invis]
+	bgp_source -> nats_bus [label="bgp.updates"]
+	snmp_source -> nats_bus [label="snmp.metrics"]
+	syslog_source -> nats_bus [label="syslog.messages"]
+	nats_bus -> feature_extraction [label="Multi-Modal Data"]
+	feature_extraction -> anomaly_detection [label="Feature Vectors"]
+	anomaly_detection -> impact_classification [label="Anomaly Scores"]
+	impact_classification -> dashboard [label="Events & Analysis"]
+	impact_classification -> alerts [label="Critical Issues"]
+	alerts -> operator [label="Action Required"]
+	dashboard -> operator [label="Visual Analysis"]
+	subgraph cluster_metrics {
+		fillcolor=honeydew fontsize=11 label="Performance Targets" style=filled
+		latency [label="Detection Latency
+< 60 seconds" fillcolor=lightsteelblue shape=note style=filled]
+		accuracy [label="False Positive Rate
+< 5%" fillcolor=lightsteelblue shape=note style=filled]
+		coverage [label="Multi-Modal Coverage
+BGP + SNMP + Syslog" fillcolor=lightsteelblue shape=note style=filled]
+	}
+	anomaly_detection -> latency [color=blue style=dashed]
+	impact_classification -> accuracy [color=blue style=dashed]
+	feature_extraction -> coverage [color=blue style=dashed]
+}

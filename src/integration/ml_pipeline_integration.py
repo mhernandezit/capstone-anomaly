@@ -44,8 +44,6 @@ class MLPipelineIntegration:
     def __init__(self, config_path: str):
         self.config_path = config_path
 
-        # Initialize virtual lab components
-        # self.telemetry_generator = TelemetryGenerator(config_path)  # Removed - using real FRR data
         self.preprocessing_pipeline = PreprocessingPipeline(config_path)
         self.message_bus_manager = MessageBusManager(config_path)
 

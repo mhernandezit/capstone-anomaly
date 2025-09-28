@@ -1,0 +1,102 @@
+digraph Updated_UseCase_Details {
+	rankdir=TB size="10,14" splines=ortho
+	node [fontname=Arial fontsize=10]
+	edge [fontname=Arial fontsize=9]
+	title [label="Use Case: Network Failure Detection & Response
+Multi-Modal Anomaly Detection Scenario" fillcolor=lightblue fontsize=14 shape=box style=filled]
+	subgraph cluster_main_scenario {
+		fillcolor=lightcyan fontsize=12 label="Primary Scenario: ToR-Spine Link Failure" style=filled
+		preconditions [label="Preconditions:
+• Multi-modal monitoring active
+• Baseline patterns learned
+• All systems operational" fillcolor=lightgreen shape=box style=filled]
+		trigger [label="Trigger Event:
+Physical Link Failure
+(ToR ↔ Spine)" fillcolor=orange shape=box style=filled]
+		step1 [label="Step 1: Data Collection
+BGP withdrawals detected
+SNMP interface down alerts
+Syslog link failure messages" fillcolor=wheat shape=box style=filled]
+		step2 [label="Step 2: Feature Correlation
+Multi-modal feature extraction
+Cross-source correlation
+Temporal pattern analysis" fillcolor=wheat shape=box style=filled]
+		step3 [label="Step 3: Anomaly Detection
+Matrix Profile analysis
+ML-based anomaly scoring
+Threshold evaluation" fillcolor=orange shape=box style=filled]
+		step4 [label="Step 4: Impact Classification
+Topology-aware analysis
+Role-based impact assessment
+Blast radius calculation" fillcolor=yellow shape=box style=filled]
+		step5 [label="Step 5: Response Generation
+Dashboard visualization
+Context-aware alerting
+Operator notification" fillcolor=lightpink shape=box style=filled]
+		success [label="Success Outcome:
+Failure identified within 60s
+Root cause localized
+Appropriate response triggered" fillcolor=lightgreen shape=box style=filled]
+	}
+	subgraph cluster_alternatives {
+		fillcolor=mistyrose fontsize=12 label="Alternative Flows" style=filled
+		alt1 [label="Alternative 1: Partial Data
+Missing BGP session
+→ Infer from SNMP/Syslog
+→ Reduced confidence alert" fillcolor=lightyellow shape=box style=filled]
+		alt2 [label="Alternative 2: Gradual Degradation
+Slow performance decline
+→ Trending analysis
+→ Predictive alerting" fillcolor=lightyellow shape=box style=filled]
+		alt3 [label="Alternative 3: False Positive
+Normal operational change
+→ Enhanced verification
+→ No alert sent" fillcolor=lightyellow shape=box style=filled]
+	}
+	subgraph cluster_exceptions {
+		fillcolor=lavenderblush fontsize=12 label="Exception Handling" style=filled
+		exc1 [label="Exception: Data Source Failure
+BGP collector down
+→ SNMP/Syslog only mode
+→ Degraded monitoring" fillcolor=lightcoral shape=box style=filled]
+		exc2 [label="Exception: ML Model Failure
+Matrix Profile computation error
+→ Fallback to thresholding
+→ Reduced accuracy" fillcolor=lightcoral shape=box style=filled]
+		exc3 [label="Exception: Dashboard Failure
+UI unavailable
+→ Direct alert notifications
+→ Emergency mode" fillcolor=lightcoral shape=box style=filled]
+	}
+	subgraph cluster_metrics {
+		fillcolor=honeydew fontsize=12 label="Success Metrics" style=filled
+		metric_detection [label="Detection Time:
+< 60 seconds" fillcolor=lightsteelblue shape=note style=filled]
+		metric_accuracy [label="Accuracy Rate:
+> 95%" fillcolor=lightsteelblue shape=note style=filled]
+		metric_coverage [label="Coverage:
+Multi-modal correlation" fillcolor=lightsteelblue shape=note style=filled]
+	}
+	preconditions -> trigger
+	trigger -> step1
+	step1 -> step2
+	step2 -> step3
+	step3 -> step4
+	step4 -> step5
+	step5 -> success
+	step1 -> alt1 [label="if partial data" color=blue style=dotted]
+	step3 -> alt2 [label="if gradual change" color=blue style=dotted]
+	step4 -> alt3 [label="if false positive" color=blue style=dotted]
+	step1 -> exc1 [label="data source fails" color=red style=dashed]
+	step3 -> exc2 [label="ML computation fails" color=red style=dashed]
+	step5 -> exc3 [label="dashboard fails" color=red style=dashed]
+	step3 -> metric_detection [label="measured by" color=green style=dashed]
+	step4 -> metric_accuracy [label="validated by" color=green style=dashed]
+	step2 -> metric_coverage [label="ensured by" color=green style=dashed]
+	alt1 -> step4 [label="continue with reduced data"]
+	alt2 -> step5 [label="predictive alert"]
+	alt3 -> success [label="no action needed"]
+	exc1 -> step2 [label="degraded mode"]
+	exc2 -> step4 [label="fallback detection"]
+	exc3 -> success [label="direct notification"]
+}

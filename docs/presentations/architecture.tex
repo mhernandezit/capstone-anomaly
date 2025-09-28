@@ -1,0 +1,17 @@
+% System Architecture Diagram Placeholder
+\begin{center}
+\fbox{\parbox{8cm}{
+\centering
+\textbf{System Architecture Diagram}\\[0.5cm]
+\textbf{Lab Environment:}\\
+Spine-01 (AS65001) -- Spine-02 (AS65001)\\
+$\downarrow$ \hspace{2cm} $\downarrow$\\
+ToR-01 (AS65002) -- ToR-02 (AS65002)\\
+$\downarrow$ \hspace{2cm} $\downarrow$\\
+Edge-01 (AS65003) -- Edge-02 (AS65003)\\
+$\downarrow$ \hspace{2cm} $\downarrow$\\
+Server-01 (AS65010) -- Server-02 (AS65011)\\[0.5cm]
+\textbf{Data Collection:}\\
+BMP Collector (Go-based) $\rightarrow$ NATS Message Bus $\rightarrow$ Python ML Pipeline
+}}
+\end{center}
