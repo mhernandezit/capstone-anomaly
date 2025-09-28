@@ -1,51 +1,80 @@
-# Presentations
+# Final Project Presentation
 
-This directory contains presentation materials for the capstone project.
+This directory contains the LaTeX source files for the IS 499 Final Project presentation.
 
-## 📁 Structure
+## Files
 
+- `final_project_draft.tex` - Main LaTeX document for the final project presentation
+- `build.sh` - Build script for Unix/Linux/macOS systems
+- `build.bat` - Build script for Windows systems
+- `README.md` - This file
+
+## Building the Document
+
+### Prerequisites
+
+You need a LaTeX distribution installed on your system:
+
+- **Windows**: MiKTeX or TeX Live
+- **macOS**: MacTeX or TeX Live
+- **Linux**: TeX Live
+
+### Building on Windows
+
+```cmd
+cd docs/presentations
+build.bat
 ```
-presentations/
-├── proposal/          # Initial project proposal presentation
-├── midterm/          # Mid-semester progress review
-├── final/            # Final capstone presentation
-├── demo/             # Live system demonstration materials
-└── defense/          # Thesis defense (if applicable)
+
+### Building on Unix/Linux/macOS
+
+```bash
+cd docs/presentations
+chmod +x build.sh
+./build.sh
 ```
 
-## 🎯 Presentation Schedule
+### Manual Building
 
-| Milestone | Date | Duration | Audience | Materials |
-|-----------|------|----------|----------|-----------|
-| Proposal | Week 3 | 15 min | Advisor + Committee | Problem statement, approach |
-| Midterm | Week 8 | 20 min | Class | Progress, architecture, demo |
-| Final | Week 15 | 30 min | Public | Complete system, results |
-| Demo | Week 16 | 45 min | Technical | Live system walkthrough |
+If the build scripts don't work, you can build manually:
 
-## 📊 Template Structure
+```bash
+pdflatex final_project_draft.tex
+bibtex final_project_draft
+pdflatex final_project_draft.tex
+pdflatex final_project_draft.tex
+```
 
-Each presentation should include:
+## Document Structure
 
-1. **Problem Statement** - Network failure detection challenges
-2. **Research Foundation** - Literature review summary  
-3. **Technical Approach** - Architecture and methodology
-4. **Implementation** - Code demonstration
-5. **Results** - Performance metrics and evaluation
-6. **Academic Integration** - Program outcome mapping
-7. **Future Work** - Extensions and improvements
+The presentation follows the IS 499 Final Project template requirements:
 
-## 🛠️ Tools
+1. **Cover Page** - Document title, college name, student name, date
+2. **Table of Contents** - Automatic generation from sections
+3. **Introduction** - Project overview and motivation
+4. **Topic Description** - System architecture and research foundation
+5. **Problem Description** - Current challenges and impact
+6. **Solution Discussion** - Technical approach and implementation
+7. **Analysis** - Current status, preliminary results, evaluation framework
+8. **References** - Bibliography using APA style
 
-- **Slides:** PowerPoint/Google Slides with academic template
-- **Diagrams:** Export from [design/](../design/) UML diagrams
-- **Demo:** Live system at http://localhost:8501
-- **Video:** Screen recording for remote presentations
+## Status Indicators
 
-## 📋 Checklist
+The document includes status indicators for sections that need additional data:
 
-Before each presentation:
-- [ ] Test live demo environment
-- [ ] Export latest architecture diagrams
-- [ ] Update progress slides with recent commits
-- [ ] Prepare backup slides for Q&A
-- [ ] Time rehearsal (aim for 80% of allotted time)
+- 🔄 **In Progress** - Currently being worked on
+- ✅ **Completed** - Finished components
+- **\textcolor{red}{[NEEDS MORE DATA]}** - Requires additional data collection
+- **\textcolor{red}{[IN PROGRESS]}** - Currently being developed
+
+## Bibliography
+
+The document references the same bibliography file as the project proposal:
+`../project_proposal/references.bib`
+
+## Notes
+
+- This is a first draft with placeholders for sections requiring additional data
+- The document structure follows the professor's template exactly
+- LaTeX formatting matches the existing proposal style
+- Status indicators clearly mark what needs more work

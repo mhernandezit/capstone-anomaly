@@ -4,7 +4,7 @@ This directory contains all documentation for the BGP Failure Detection capstone
 
 ## 📁 Structure
 
-```
+```text
 docs/
 ├── research/           # Research foundation and references
 │   ├── references.md   # Academic literature (APA format)
@@ -29,6 +29,7 @@ docs/
 ## 📚 Quick Access
 
 ### Essential Documents
+
 - **[References](research/references.md)** - Core academic literature
 - **[System Architecture](design/bgp_anomaly_uml.gv.png)** - Structural flow diagram
 - **[Behavioral Model](design/bgp_action_specification.gv.png)** - Use cases & actions
@@ -37,6 +38,7 @@ docs/
 - **[Program Alignment](development/program_alignment.md)** - Course outcome mapping
 
 ### For Advisors/Review
+
 - **Research Foundation:** [references.md](research/references.md) - 9 peer-reviewed sources
 - **Technical Design:** [design/](design/) - UML diagrams and architecture
 - **Academic Integration:** [program_alignment.md](development/program_alignment.md) - Maps to IS curriculum

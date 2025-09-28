@@ -1,0 +1,343 @@
+# Multi-Modal Network Failure Detection Configuration
+# Addresses professor's feedback to expand beyond BGP events
+
+# Core pipeline settings
+pipeline:
+  bin_seconds: 60              # Time bin duration
+  window_bins: 64              # Rolling window size for anomaly detection
+  correlation_window_seconds: 120  # Time window for cross-modal correlation
+  
+# NATS message bus configuration
+messaging:
+  nats_url: "nats://127.0.0.1:4222"
+  subjects:
+    bgp_updates: "bgp.updates"
+    syslog_messages: "syslog.messages"
+    snmp_metrics: "snmp.metrics"
+    alerts: "alerts.multi_modal"
+    dashboard: "dashboard.updates"
+
+# Alert generation thresholds
+alert_thresholds:
+  # Single-modal thresholds
+  bgp_only: 0.7               # BGP anomaly score threshold
+  hardware_only: 0.6          # SNMP/hardware anomaly threshold
+  syslog_only: 0.65           # Syslog anomaly threshold
+  
+  # Multi-modal fusion thresholds (lower due to correlation)
+  multi_modal: 0.5            # Combined multi-modal threshold
+  environmental: 0.55         # Environmental-specific threshold
+  
+  # Severity escalation thresholds
+  severity_thresholds:
+    info: 0.3
+    warning: 0.5
+    error: 0.7
+    critical: 0.85
+
+# Comprehensive failure taxonomy (expanded from BGP-only)
+failure_taxonomy:
+  # Network layer failures
+  bgp:
+    - route_leak
+    - route_hijack
+    - convergence_delay
+    - session_flapping
+    - policy_misconfiguration
+    
+  ospf:
+    - lsa_flooding
+    - neighbor_timeout
+    - spf_calculation_delay
+    - area_misconfiguration
+    
+  isis:
+    - database_corruption
+    - hello_timeout
+    - metric_inconsistency
+    
+  # Hardware component failures
+  hardware:
+    optical:
+      - transceiver_degradation
+      - laser_failure
+      - wavelength_drift
+      - connector_contamination
+    
+    memory:
+      - memory_pressure
+      - ecc_errors
+      - module_failure
+      - leak_detection
+    
+    cpu:
+      - thermal_throttling
+      - high_utilization
+      - process_hang
+      - interrupt_storm
+    
+    storage:
+      - disk_failure
+      - filesystem_corruption
+      - space_exhaustion
+      
+  # Physical layer issues  
+  cable:
+    - fiber_break
+    - copper_degradation
+    - connector_issues
+    - intermittent_connection
+    - signal_attenuation
+    
+  # Environmental failures
+  environmental:
+    thermal:
+      - overheating
+      - cooling_failure
+      - temperature_gradient
+      - thermal_runaway
+    
+    power:
+      - supply_failure
+      - voltage_instability
+      - power_cycling
+      - ups_failure
+      - redundancy_loss
+    
+    physical:
+      - vibration_damage
+      - electromagnetic_interference
+      - humidity_issues
+      - dust_accumulation
+
+# Device role configuration for impact assessment
+roles:
+  spine:
+    criticality: "high"
+    blast_radius: "datacenter"
+    devices: ["dc1-spine-01", "dc1-spine-02", "dc2-spine-01", "dc2-spine-02"]
+    
+  tor:
+    criticality: "medium"
+    blast_radius: "rack"
+    devices: ["dc1-tor-01", "dc1-tor-02", "dc2-tor-01", "dc2-tor-02"]
+    
+  edge:
+    criticality: "high"
+    blast_radius: "external"
+    devices: ["dc1-edge-01", "dc1-edge-02", "dc2-edge-01", "dc2-edge-02"]
+    
+  server:
+    criticality: "low"
+    blast_radius: "local"
+    devices: ["server-01", "server-02", "server-03", "server-04"]
+
+# Feature extraction configuration
+feature_extraction:
+  # BGP features (existing)
+  bgp:
+    enabled: true
+    features:
+      - withdrawal_rate
+      - announcement_rate
+      - as_path_churn
+      - peer_diversity
+      - burstiness_score
+      - convergence_time
+  
+  # SNMP features (new)
+  snmp:
+    enabled: true
+    features:
+      - interface_error_rate
+      - interface_utilization
+      - interface_flap_count
+      - cpu_utilization
+      - memory_utilization
+      - temperature_metrics
+      - fan_speed_variance
+      - power_stability
+      - threshold_violations
+      - severity_escalations
+      - multi_device_correlation
+      - environmental_stress
+  
+  # Syslog features (enhanced)
+  syslog:
+    enabled: true
+    features:
+      - severity_distribution
+      - message_diversity
+      - burstiness_patterns
+      - error_sequences
+      - device_correlation
+      - temporal_clustering
+
+# Multi-modal correlation settings
+correlation:
+  # Temporal correlation windows
+  temporal:
+    short_window: 30    # seconds
+    medium_window: 120  # seconds
+    long_window: 300    # seconds
+  
+  # Spatial correlation (device proximity)
+  spatial:
+    same_rack_weight: 0.8
+    same_dc_weight: 0.6
+    cross_dc_weight: 0.3
+  
+  # Cross-modal correlation weights
+  modal_weights:
+    bgp_snmp: 0.7      # BGP events correlating with SNMP anomalies
+    bgp_syslog: 0.6    # BGP events correlating with syslog errors
+    snmp_syslog: 0.8   # SNMP metrics correlating with syslog messages
+    
+# Machine learning model configuration
+models:
+  # Matrix Profile for BGP (existing)
+  matrix_profile:
+    enabled: true
+    window_size: 64
+    discord_threshold: 2.5
+    
+  # Isolation Forest for SNMP anomalies
+  isolation_forest:
+    enabled: true
+    contamination: 0.1
+    n_estimators: 100
+    
+  # LSTM for temporal patterns
+  lstm:
+    enabled: false  # Optional advanced model
+    sequence_length: 50
+    hidden_units: 64
+
+# Simulation configuration for testing
+simulation:
+  # SNMP failure simulation
+  snmp_simulation:
+    enabled: true
+    config_path: "configs/snmp_config.yml"
+    
+  # BGP event injection (existing)
+  bgp_injection:
+    enabled: true
+    scenarios: ["route_leak", "convergence_delay", "session_flap"]
+    
+  # Syslog event generation
+  syslog_generation:
+    enabled: true
+    error_rate: 0.05    # 5% of messages are errors
+    burst_probability: 0.1
+
+# Alert management
+alerting:
+  # Deduplication settings
+  deduplication:
+    enabled: true
+    time_window: 300    # 5 minutes
+    similarity_threshold: 0.8
+    
+  # Escalation rules
+  escalation:
+    critical_immediate: true
+    error_delay_minutes: 2
+    warning_delay_minutes: 5
+    
+  # Notification channels
+  channels:
+    - type: "nats"
+      subject: "alerts.notifications"
+    - type: "webhook" 
+      url: "http://localhost:8080/alerts"
+    - type: "dashboard"
+      enabled: true
+
+# Dashboard and visualization
+dashboard:
+  enabled: true
+  update_interval: 5  # seconds
+  
+  # Metrics to display
+  metrics:
+    - name: "Multi-Modal Alerts"
+      type: "timeseries"
+      sources: ["bgp", "snmp", "syslog"]
+      
+    - name: "Failure Type Distribution"
+      type: "pie_chart"
+      breakdown: "failure_type"
+      
+    - name: "Device Health Matrix"
+      type: "heatmap"
+      dimensions: ["device", "metric_type"]
+      
+    - name: "Correlation Analysis"
+      type: "correlation_matrix"
+      modalities: ["bgp", "snmp", "syslog"]
+
+# Performance and resource limits
+performance:
+  # Memory limits
+  max_bins_in_memory: 1000
+  max_alerts_history: 500
+  
+  # Processing limits
+  max_concurrent_analyses: 10
+  batch_size: 100
+  
+  # Cleanup intervals
+  cleanup_interval_minutes: 60
+  alert_retention_hours: 24
+
+# Integration with existing containerlab
+containerlab:
+  enabled: true
+  topology_file: "../lab/topo-dc-expanded.clab.yml"
+  
+  # Device mapping
+  device_mapping:
+    "clab-bgp-anomaly-lab-dc1-spine-01": "dc1-spine-01"
+    "clab-bgp-anomaly-lab-dc1-spine-02": "dc1-spine-02"
+    "clab-bgp-anomaly-lab-dc1-tor-01": "dc1-tor-01"
+    "clab-bgp-anomaly-lab-dc1-tor-02": "dc1-tor-02"
+
+# Evaluation and metrics
+evaluation:
+  # Baseline comparison
+  baseline_methods: ["manual_triage", "snmp_thresholds", "bgp_only"]
+  
+  # Metrics to track
+  metrics:
+    - detection_delay
+    - false_positive_rate
+    - false_negative_rate
+    - localization_accuracy
+    - alert_reduction_percentage
+    
+  # Ground truth scenarios
+  test_scenarios:
+    - name: "optical_degradation"
+      devices: ["dc1-tor-01"]
+      expected_detection_time: 120  # seconds
+      
+    - name: "memory_pressure"
+      devices: ["dc1-spine-01"]
+      expected_detection_time: 180
+      
+    - name: "thermal_runaway"
+      devices: ["dc1-spine-02"]
+      expected_detection_time: 240
+
+# Logging and debugging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # Component-specific logging
+  components:
+    snmp_simulator: "DEBUG"
+    multi_modal_pipeline: "INFO"
+    feature_extraction: "INFO"
+    correlation_analysis: "DEBUG"

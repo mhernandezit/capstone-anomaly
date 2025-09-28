@@ -9,5 +9,5 @@ scipy
 graphviz
 ruff
 black
-# Matrix Profile libraries - using only stumpy for now
-# matrixprofile has Cython compilation issues with newer Python versions
+snmpsim>=0.4.8
+pysnmp>=4.4.0

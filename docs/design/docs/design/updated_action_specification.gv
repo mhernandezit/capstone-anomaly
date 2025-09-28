@@ -1,0 +1,81 @@
+digraph Updated_Action_Specification {
+	rankdir=LR size="12,10" splines=ortho
+	node [fontname=Arial fontsize=10]
+	edge [fontname=Arial fontsize=8]
+	title [label="Multi-Modal Network Anomaly Detection
+Action Specification" fillcolor=lightblue fontsize=14 shape=box style=filled]
+	subgraph cluster_actors {
+		fillcolor=lightcyan fontsize=12 label="System Actors" style=filled
+		operator [label="Network Operator
+(Primary User)" fillcolor=lightgreen shape=box style=filled]
+		network [label="Network Devices
+(BGP, SNMP, Syslog)" fillcolor=lightcoral shape=box style=filled]
+		system [label="Detection System
+(ML Pipeline)" fillcolor=lightyellow shape=box style=filled]
+	}
+	subgraph cluster_use_cases {
+		fillcolor=mistyrose fontsize=12 label="Primary Use Cases" style=filled
+		uc_monitor [label="Monitor Multi-Modal
+Network Data" fillcolor=wheat shape=ellipse style=filled]
+		uc_detect [label="Detect Anomalies
+(ML Analysis)" fillcolor=orange shape=ellipse style=filled]
+		uc_classify [label="Classify Impact
+(Topology Analysis)" fillcolor=yellow shape=ellipse style=filled]
+		uc_respond [label="Respond to Failures
+(Alerts & Actions)" fillcolor=lightpink shape=ellipse style=filled]
+	}
+	subgraph cluster_actions {
+		fillcolor=lavender fontsize=12 label="Key Actions" style=filled
+		action_collect [label="Collect Multi-Modal Data
+(BGP + SNMP + Syslog)" fillcolor=lightsteelblue shape=note style=filled]
+		action_extract [label="Extract Features
+(Multi-Source Correlation)" fillcolor=lightsteelblue shape=note style=filled]
+		action_analyze [label="Analyze with ML
+(Matrix Profile + Others)" fillcolor=lightsteelblue shape=note style=filled]
+		action_classify [label="Classify Impact Scope
+(Edge vs Network-wide)" fillcolor=lightsteelblue shape=note style=filled]
+		action_alert [label="Generate Smart Alerts
+(Context-Aware)" fillcolor=lightsteelblue shape=note style=filled]
+		action_visualize [label="Update Dashboard
+(Real-time Visualization)" fillcolor=lightsteelblue shape=note style=filled]
+	}
+	subgraph cluster_decisions {
+		fillcolor=honeydew fontsize=12 label="Decision Logic" style=filled
+		decision_anomaly [label="Anomaly Detected?
+(ML Threshold)" fillcolor=orange shape=diamond style=filled]
+		decision_impact [label="Impact Level?
+(Edge vs Network)" fillcolor=red shape=diamond style=filled]
+		decision_response [label="Alert Required?
+(Severity Check)" fillcolor=purple shape=diamond style=filled]
+	}
+	subgraph cluster_constraints {
+		fillcolor=aliceblue fontsize=12 label="Performance Constraints" style=filled
+		constraint_speed [label="Real-time Processing
+< 60s Detection" fillcolor=lightsteelblue shape=box style=filled]
+		constraint_accuracy [label="High Accuracy
+< 5% False Positives" fillcolor=lightsteelblue shape=box style=filled]
+		constraint_coverage [label="Multi-Modal Coverage
+All Data Sources" fillcolor=lightsteelblue shape=box style=filled]
+	}
+	operator -> uc_monitor [label=initiates]
+	operator -> uc_respond [label=performs]
+	network -> uc_monitor [label="provides data"]
+	system -> uc_detect [label=executes]
+	system -> uc_classify [label=performs]
+	uc_monitor -> action_collect [label=includes]
+	uc_monitor -> action_extract [label=requires]
+	uc_detect -> action_analyze [label=performs]
+	uc_classify -> action_classify [label=executes]
+	uc_respond -> action_alert [label=triggers]
+	uc_respond -> action_visualize [label=updates]
+	action_analyze -> decision_anomaly [label=determines]
+	action_classify -> decision_impact [label=evaluates]
+	decision_impact -> decision_response [label=influences]
+	action_analyze -> constraint_speed [label="bounded by" style=dashed]
+	decision_anomaly -> constraint_accuracy [label="measured by" style=dashed]
+	action_collect -> constraint_coverage [label=ensures style=dashed]
+	decision_anomaly -> action_classify [label=Yes color=green]
+	decision_impact -> action_alert [label="Network Impact" color=red]
+	decision_impact -> action_visualize [label="Edge Local" color=orange]
+	decision_response -> operator [label="Alert Sent" color=purple]
+}

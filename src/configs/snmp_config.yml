@@ -1,0 +1,241 @@
+# SNMP Simulation Configuration
+# Defines devices, failure scenarios, and simulation parameters
+
+# Network devices to simulate
+devices:
+  - id: "dc1-spine-01"
+    type: "spine"
+    role: "backbone"
+    interfaces: 48
+    location: "datacenter-1"
+    
+  - id: "dc1-spine-02"
+    type: "spine"
+    role: "backbone"
+    interfaces: 48
+    location: "datacenter-1"
+    
+  - id: "dc1-tor-01"
+    type: "tor"
+    role: "access"
+    interfaces: 32
+    location: "datacenter-1"
+    
+  - id: "dc1-tor-02"
+    type: "tor"
+    role: "access"
+    interfaces: 32
+    location: "datacenter-1"
+    
+  - id: "dc1-edge-01"
+    type: "edge"
+    role: "border"
+    interfaces: 16
+    location: "datacenter-1"
+    
+  - id: "dc1-edge-02"
+    type: "edge"
+    role: "border"
+    interfaces: 16
+    location: "datacenter-1"
+
+# Simulation parameters
+simulation:
+  polling_interval: 30  # seconds between SNMP polls
+  nats_subject: "snmp.metrics"
+  baseline_noise_factor: 0.1  # 10% variation in baseline metrics
+  
+# Failure injection configuration
+failure_injection:
+  enabled: true
+  scenario_probability: 0.08  # 8% chance per polling cycle per device
+  max_concurrent_scenarios: 4
+  min_scenario_gap_minutes: 2  # Minimum time between scenarios on same device
+  
+  # Failure scenario weights (higher = more likely)
+  scenario_weights:
+    optical_degradation: 0.25
+    cable_intermittent: 0.20
+    memory_pressure: 0.15
+    thermal_runaway: 0.15
+    power_supply_degradation: 0.10
+    interface_flapping: 0.10
+    cpu_spike: 0.05
+
+# SNMP OID mappings for different vendor equipment
+oid_mappings:
+  # Standard MIB-II OIDs (RFC 1213)
+  interface:
+    ifInOctets: "1.3.6.1.2.1.2.2.1.10"
+    ifOutOctets: "1.3.6.1.2.1.2.2.1.16"
+    ifInErrors: "1.3.6.1.2.1.2.2.1.14"
+    ifOutErrors: "1.3.6.1.2.1.2.2.1.20"
+    ifOperStatus: "1.3.6.1.2.1.2.2.1.8"
+    ifAdminStatus: "1.3.6.1.2.1.2.2.1.7"
+    ifInDiscards: "1.3.6.1.2.1.2.2.1.13"
+    ifOutDiscards: "1.3.6.1.2.1.2.2.1.19"
+    ifSpeed: "1.3.6.1.2.1.2.2.1.5"
+    
+  # Cisco-specific OIDs
+  cisco_system:
+    cpu_utilization: "1.3.6.1.4.1.9.9.109.1.1.1.1.7"
+    memory_utilization: "1.3.6.1.4.1.9.9.48.1.1.1.5"
+    temperature: "1.3.6.1.4.1.9.9.13.1.3.1.3"
+    fan_status: "1.3.6.1.4.1.9.9.13.1.4.1.3"
+    power_supply_status: "1.3.6.1.4.1.9.9.13.1.5.1.3"
+    power_consumption: "1.3.6.1.4.1.9.9.13.1.5.1.4"
+    
+  # Environmental sensors
+  environmental:
+    temperature_celsius: "1.3.6.1.4.1.9.9.13.1.3.1.3"
+    humidity_percent: "1.3.6.1.4.1.9.9.13.1.3.1.6"
+    fan_rpm: "1.3.6.1.4.1.9.9.13.1.4.1.4"
+    voltage_dc: "1.3.6.1.4.1.9.9.13.1.5.1.5"
+
+# Baseline metric ranges for normal operation
+baseline_ranges:
+  interface:
+    utilization_percent: [10, 60]  # 10-60% utilization normal
+    error_rate_ppm: [0, 10]       # 0-10 errors per million packets
+    discard_rate_ppm: [0, 5]      # 0-5 discards per million packets
+    
+  system:
+    cpu_percent: [15, 40]          # 15-40% CPU normal
+    memory_percent: [25, 50]       # 25-50% memory normal
+    
+  environmental:
+    temperature_celsius: [35, 50]  # 35-50°C normal operating range
+    humidity_percent: [20, 60]     # 20-60% humidity normal
+    fan_rpm: [2000, 4000]         # 2000-4000 RPM normal
+    voltage_dc: [11.8, 12.2]      # 11.8-12.2V normal for 12V rail
+
+# Failure scenario definitions
+failure_scenarios:
+  optical_degradation:
+    description: "Gradual optical power loss in SFP/QSFP transceivers"
+    affected_metrics:
+      - "interface.ifInOctets"
+      - "interface.ifOutOctets"  
+      - "interface.ifInErrors"
+    pattern_type: "gradual"
+    typical_duration_minutes: [10, 25]
+    severity_progression: ["info", "warning", "error", "critical"]
+    
+  cable_intermittent:
+    description: "Intermittent cable connection causing packet loss"
+    affected_metrics:
+      - "interface.ifInErrors"
+      - "interface.ifOutErrors"
+      - "interface.ifOperStatus"
+    pattern_type: "intermittent"
+    typical_duration_minutes: [5, 15]
+    severity_progression: ["warning", "error", "warning", "error"]
+    
+  memory_pressure:
+    description: "Increasing memory utilization leading to performance issues"
+    affected_metrics:
+      - "cisco_system.memory_utilization"
+      - "cisco_system.cpu_utilization"
+    pattern_type: "gradual"
+    typical_duration_minutes: [15, 30]
+    severity_progression: ["info", "warning", "error"]
+    
+  thermal_runaway:
+    description: "Overheating due to fan failure or blocked airflow"
+    affected_metrics:
+      - "environmental.temperature_celsius"
+      - "environmental.fan_rpm"
+      - "cisco_system.cpu_utilization"
+    pattern_type: "gradual"
+    typical_duration_minutes: [8, 20]
+    severity_progression: ["warning", "error", "critical"]
+    
+  power_supply_degradation:
+    description: "Power supply voltage instability or failure"
+    affected_metrics:
+      - "cisco_system.power_supply_status"
+      - "cisco_system.power_consumption"
+      - "environmental.voltage_dc"
+    pattern_type: "intermittent"
+    typical_duration_minutes: [5, 12]
+    severity_progression: ["warning", "error", "critical"]
+    
+  interface_flapping:
+    description: "Interface repeatedly going up/down due to physical issues"
+    affected_metrics:
+      - "interface.ifOperStatus"
+      - "interface.ifInOctets"
+      - "interface.ifOutOctets"
+    pattern_type: "intermittent"
+    typical_duration_minutes: [3, 8]
+    severity_progression: ["warning", "error"]
+    
+  cpu_spike:
+    description: "CPU utilization spike due to process issues"
+    affected_metrics:
+      - "cisco_system.cpu_utilization"
+      - "cisco_system.memory_utilization"
+    pattern_type: "instant"
+    typical_duration_minutes: [2, 6]
+    severity_progression: ["error", "critical"]
+
+# Alert thresholds for different severity levels
+alert_thresholds:
+  interface:
+    error_rate_ppm:
+      warning: 50
+      error: 200
+      critical: 1000
+    utilization_percent:
+      warning: 70
+      error: 85
+      critical: 95
+      
+  system:
+    cpu_percent:
+      warning: 60
+      error: 80
+      critical: 95
+    memory_percent:
+      warning: 70
+      error: 85
+      critical: 95
+      
+  environmental:
+    temperature_celsius:
+      warning: 55
+      error: 65
+      critical: 75
+    fan_rpm:
+      warning: 1500  # Below normal range
+      error: 1000
+      critical: 500
+
+# Integration with existing pipeline
+integration:
+  # Correlation with BGP events
+  bgp_correlation:
+    enabled: true
+    correlation_window_seconds: 120
+    correlation_threshold: 0.7
+    
+  # Syslog correlation
+  syslog_correlation:
+    enabled: true
+    correlation_window_seconds: 60
+    severity_mapping:
+      info: ["info"]
+      warning: ["warning", "notice"]
+      error: ["error", "err"]
+      critical: ["critical", "alert", "emergency"]
+      
+  # Feature extraction enhancement
+  feature_extraction:
+    enabled: true
+    aggregation_window_seconds: 60
+    features:
+      - "snmp_metric_variance"
+      - "threshold_violations"
+      - "severity_escalation_rate"
+      - "multi_device_correlation"
+      - "environmental_correlation"

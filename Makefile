@@ -12,7 +12,6 @@ pipeline:
 	./venv/bin/python -m src.ingest.nats_consumer
 
 fmt:
-	# gofmt -w . (disabled - no Go code)
 	./venv/bin/black src || true
 
 lint:

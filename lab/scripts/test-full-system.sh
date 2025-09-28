@@ -96,14 +96,13 @@ fi
 
 print_success "All prerequisites found"
 
-# Step 1: Check BMP collector binary
-print_status "Checking BMP collector binary..."
-if [ ! -f "../cmd/bmp-collector/bmp-collector" ]; then
-    print_error "BMP collector binary not found. Please build it first:"
-    print_error "cd ../cmd/bmp-collector && go build -o bmp-collector ."
+# Step 1: Build BMP collector
+print_status "Building BMP collector Docker image..."
+./scripts/build-bmp-collector.sh
+if [ $? -ne 0 ]; then
+    print_error "Failed to build BMP collector"
     exit 1
 fi
-print_success "BMP collector binary found"
 
 # Step 2: Deploy Containerlab environment
 print_status "Deploying Containerlab environment..."
