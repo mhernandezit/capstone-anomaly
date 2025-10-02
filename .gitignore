@@ -39,12 +39,25 @@ MANIFEST
 
 # Virtual environments
 .env
+.env.local
+.env.development
+.env.test
+.env.production
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Secrets and keys
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+credentials/
+config/secrets/
 
 # IDE
 .vscode/
@@ -97,7 +110,6 @@ lab/clab-bgp-anomaly-lab/.tls/
 lab/clab-bgp-anomaly-lab/*.yml
 lab/clab-bgp-anomaly-lab/authorized_keys
 lab/clab-bgp-anomaly-lab/topology-data.json
-lab/clab-bgp-anomaly-lab/.tls/
-lab/clab-bgp-anomaly-lab/*.yml
-lab/clab-bgp-anomaly-lab/authorized_keys
-lab/clab-bgp-anomaly-lab/topology-data.json
+
+# SSH keys and authorized_keys files
+**/authorized_keys

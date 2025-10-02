@@ -59,7 +59,7 @@ Checks:
 
 ### Dashboard
 
-- **URL**: http://localhost:8501
+- **URL**: [http://localhost:8501](http://localhost:8501)
 - **Features**: Real-time BGP monitoring, anomaly detection, topology view
 
 ### Manual Monitoring

@@ -22,7 +22,6 @@ import time
 import yaml
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, asdict
-from datetime import datetime
 import numpy as np
 
 # Import existing components
@@ -31,7 +30,6 @@ from src.features.snmp_features import SNMPFeatureExtractor
 from src.models.mp_detector import MPDetector
 from src.triage.impact import ImpactScorer
 from src.simulators.snmp_simulator import SNMPFailureSimulator
-from src.message_bus.nats_publisher import NATSPublisher
 from src.alerting.alert_manager import AlertManager
 
 # Import NATS client
@@ -637,7 +635,7 @@ class MultiModalPipeline:
             await self.initialize()
             
             # Start SNMP simulation
-            simulation_task = await self.start_simulation()
+            await self.start_simulation()
             
             # Main processing loop
             while self.running:

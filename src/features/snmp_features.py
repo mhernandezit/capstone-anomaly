@@ -15,12 +15,10 @@ Features extracted:
 
 import logging
 import numpy as np
-import pandas as pd
 from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass, asdict
-from datetime import datetime, timedelta
+from datetime import datetime
 from collections import defaultdict, deque
-import json
 import asyncio
 
 logger = logging.getLogger(__name__)

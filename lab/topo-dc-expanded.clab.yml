@@ -316,15 +316,12 @@ topology:
     # ===========================================
     
     # BMP Collector (Go-based BGP monitoring)
-    bmp-collector:
+    data-collector:
       kind: linux
-      image: capstone-bmp-collector:latest
-      cmd: "./bmp-collector"
-      ports:
-        - 1790:1790
+      image: alpine:latest
+      cmd: /bin/sh -c "while true; do echo 'BGP data simulation'; sleep 1; done"
       labels:
-        role: "bmp-collector"
-        purpose: "bgp-monitoring"
+        role: "collector"
 
     # Fluent Bit for log collection
     fluent-bit:
@@ -666,7 +663,7 @@ topology:
     
     # Collector connections (monitoring all critical nodes)
     - endpoints:
-        - node: bmp-collector
+        - node: data-collector
           interface: e1
         - node: dc1-spine-01
           interface: e5
@@ -675,7 +672,7 @@ topology:
         type: "monitoring"
         purpose: "bgp-collection"
     - endpoints:
-        - node: bmp-collector
+        - node: data-collector
           interface: e2
         - node: dc1-spine-02
           interface: e5
@@ -684,7 +681,7 @@ topology:
         type: "monitoring"
         purpose: "bgp-collection"
     - endpoints:
-        - node: bmp-collector
+        - node: data-collector
           interface: e3
         - node: dc2-spine-01
           interface: e5
@@ -693,7 +690,7 @@ topology:
         type: "monitoring"
         purpose: "bgp-collection"
     - endpoints:
-        - node: bmp-collector
+        - node: data-collector
           interface: e4
         - node: dc2-spine-02
           interface: e5
