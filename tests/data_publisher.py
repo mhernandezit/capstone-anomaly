@@ -24,6 +24,7 @@ from src.utils.schema import BGPUpdate
 @dataclass
 class TestScenario:
     """Configuration for a test scenario"""
+
     name: str
     description: str
     duration_seconds: int
@@ -35,43 +36,43 @@ class TestScenario:
 
 class BGPEventGenerator:
     """Generates realistic BGP events for testing"""
-    
+
     def __init__(self):
         # Common BGP peers based on roles.yml structure
         self.default_peers = [
-            "10.0.1.1",    # ToR switches
-            "10.0.1.2", 
-            "10.0.2.1",    # Spine switches  
+            "10.0.1.1",  # ToR switches
+            "10.0.1.2",
+            "10.0.2.1",  # Spine switches
             "10.0.2.2",
-            "10.0.3.1",    # Edge routers
+            "10.0.3.1",  # Edge routers
             "10.0.3.2",
-            "10.0.4.1",    # Route reflectors
-            "10.0.4.2"
+            "10.0.4.1",  # Route reflectors
+            "10.0.4.2",
         ]
-        
+
         # Common prefixes for testing
         self.default_prefixes = [
             "192.168.1.0/24",
-            "192.168.2.0/24", 
+            "192.168.2.0/24",
             "10.10.0.0/16",
             "172.16.0.0/16",
             "203.0.113.0/24",
-            "198.51.100.0/24"
+            "198.51.100.0/24",
         ]
-        
+
         # AS paths for realistic routing
         self.as_paths = [
             [65001, 65002],
-            [65001, 65003, 65004], 
+            [65001, 65003, 65004],
             [65002, 65005],
-            [65003, 65006, 65007]
+            [65003, 65006, 65007],
         ]
 
     def generate_normal_update(self, peer: str, prefixes: List[str]) -> BGPUpdate:
         """Generate a normal BGP UPDATE message"""
         prefix = random.choice(prefixes)
         as_path = random.choice(self.as_paths)
-        
+
         # 80% announcements, 20% withdrawals for normal traffic
         if random.random() < 0.8:
             return BGPUpdate(
@@ -84,37 +85,39 @@ class BGPEventGenerator:
                     "as_path": as_path,
                     "next_hop": peer,
                     "origin": "IGP",
-                    "med": random.randint(0, 100)
-                }
+                    "med": random.randint(0, 100),
+                },
             )
         else:
             return BGPUpdate(
                 ts=int(time.time()),
                 peer=peer,
-                type="UPDATE", 
+                type="UPDATE",
                 announce=None,
                 withdraw=[prefix],
-                attrs={}
+                attrs={},
             )
 
     def generate_route_leak(self, peer: str, prefixes: List[str]) -> List[BGPUpdate]:
         """Generate a route leak anomaly - peer announces many prefixes at once"""
         events = []
         leak_prefixes = random.sample(prefixes, min(len(prefixes), 3))
-        
+
         for prefix in leak_prefixes:
-            events.append(BGPUpdate(
-                ts=int(time.time()),
-                peer=peer,
-                type="UPDATE",
-                announce=[prefix],
-                withdraw=None,
-                attrs={
-                    "as_path": [65999] + random.choice(self.as_paths),  # Suspicious AS
-                    "next_hop": peer,
-                    "origin": "INCOMPLETE"  # Suspicious origin
-                }
-            ))
+            events.append(
+                BGPUpdate(
+                    ts=int(time.time()),
+                    peer=peer,
+                    type="UPDATE",
+                    announce=[prefix],
+                    withdraw=None,
+                    attrs={
+                        "as_path": [65999] + random.choice(self.as_paths),  # Suspicious AS
+                        "next_hop": peer,
+                        "origin": "INCOMPLETE",  # Suspicious origin
+                    },
+                )
+            )
         return events
 
     def generate_prefix_hijack(self, peer: str, target_prefix: str) -> BGPUpdate:
@@ -125,33 +128,31 @@ class BGPEventGenerator:
             type="UPDATE",
             announce=[target_prefix],
             withdraw=None,
-            attrs={
-                "as_path": [65666],  # Suspicious single AS  
-                "next_hop": peer,
-                "origin": "IGP"
-            }
+            attrs={"as_path": [65666], "next_hop": peer, "origin": "IGP"},  # Suspicious single AS
         )
 
     def generate_massive_withdrawal(self, peer: str, prefixes: List[str]) -> List[BGPUpdate]:
         """Generate massive withdrawal anomaly"""
         events = []
         withdraw_prefixes = random.sample(prefixes, min(len(prefixes), 4))
-        
+
         # Single update with multiple withdrawals
-        events.append(BGPUpdate(
-            ts=int(time.time()),
-            peer=peer,
-            type="UPDATE",
-            announce=None,
-            withdraw=withdraw_prefixes,
-            attrs={}
-        ))
+        events.append(
+            BGPUpdate(
+                ts=int(time.time()),
+                peer=peer,
+                type="UPDATE",
+                announce=None,
+                withdraw=withdraw_prefixes,
+                attrs={},
+            )
+        )
         return events
 
 
 class DataPublisher:
     """Publishes test data to NATS"""
-    
+
     def __init__(self, nats_url: str = "nats://localhost:4222"):
         self.nats_url = nats_url
         self.nc: Optional[NATS] = None
@@ -173,7 +174,7 @@ class DataPublisher:
         """Publish a single BGP event"""
         if not self.nc:
             raise RuntimeError("Not connected to NATS. Call connect() first.")
-        
+
         event_json = event.model_dump_json()
         await self.nc.publish(subject, event_json.encode())
 
@@ -188,10 +189,10 @@ class DataPublisher:
         print(f"📄 Description: {scenario.description}")
         print(f"⏱️  Duration: {scenario.duration_seconds}s")
         print(f"Event rate: {scenario.event_rate_per_second}/s")
-        
+
         start_time = time.time()
         event_count = 0
-        
+
         while time.time() - start_time < scenario.duration_seconds:
             # Generate events based on scenario type
             if scenario.anomaly_type == "route_leak":
@@ -206,7 +207,7 @@ class DataPublisher:
                     peer = random.choice(scenario.peers)
                     event = self.generator.generate_normal_update(peer, scenario.prefixes)
                     await self.publish_event(event)
-                    
+
             elif scenario.anomaly_type == "prefix_hijack":
                 # Inject hijack every 15 seconds
                 if event_count % int(15 * scenario.event_rate_per_second) == 0:
@@ -220,7 +221,7 @@ class DataPublisher:
                     peer = random.choice(scenario.peers)
                     event = self.generator.generate_normal_update(peer, scenario.prefixes)
                     await self.publish_event(event)
-                    
+
             elif scenario.anomaly_type == "massive_withdrawal":
                 # Inject massive withdrawal every 20 seconds
                 if event_count % int(20 * scenario.event_rate_per_second) == 0:
@@ -238,17 +239,17 @@ class DataPublisher:
                 peer = random.choice(scenario.peers)
                 event = self.generator.generate_normal_update(peer, scenario.prefixes)
                 await self.publish_event(event)
-                
+
             event_count += 1
-            
+
             # Control event rate
             await asyncio.sleep(1.0 / scenario.event_rate_per_second)
-            
+
             # Progress indicator
             if event_count % int(scenario.event_rate_per_second * 10) == 0:
                 elapsed = time.time() - start_time
                 print(f" Published {event_count} events in {elapsed:.1f}s")
-        
+
         print(f"Completed scenario: {scenario.name} ({event_count} events)")
 
 
@@ -260,9 +261,8 @@ TEST_SCENARIOS = {
         duration_seconds=60,
         event_rate_per_second=2.0,
         peers=["10.0.1.1", "10.0.1.2", "10.0.2.1"],
-        prefixes=["192.168.1.0/24", "192.168.2.0/24", "10.10.0.0/16"]
+        prefixes=["192.168.1.0/24", "192.168.2.0/24", "10.10.0.0/16"],
     ),
-    
     "route_leak_attack": TestScenario(
         name="Route Leak Attack",
         description="Simulates a route leak where a peer announces prefixes it shouldn't",
@@ -270,9 +270,8 @@ TEST_SCENARIOS = {
         event_rate_per_second=3.0,
         peers=["10.0.1.1", "10.0.2.1", "10.0.3.1"],
         prefixes=["192.168.1.0/24", "192.168.2.0/24", "203.0.113.0/24"],
-        anomaly_type="route_leak"
+        anomaly_type="route_leak",
     ),
-    
     "prefix_hijack": TestScenario(
         name="Prefix Hijack",
         description="Simulates prefix hijacking with suspicious AS paths",
@@ -280,9 +279,8 @@ TEST_SCENARIOS = {
         event_rate_per_second=2.5,
         peers=["10.0.1.2", "10.0.2.2", "10.0.4.1"],
         prefixes=["198.51.100.0/24", "172.16.0.0/16"],
-        anomaly_type="prefix_hijack"
+        anomaly_type="prefix_hijack",
     ),
-    
     "massive_withdrawal": TestScenario(
         name="Massive Withdrawal",
         description="Simulates massive route withdrawals indicating network problems",
@@ -290,60 +288,68 @@ TEST_SCENARIOS = {
         event_rate_per_second=4.0,
         peers=["10.0.3.1", "10.0.4.1", "10.0.4.2"],
         prefixes=["192.168.1.0/24", "192.168.2.0/24", "10.10.0.0/16", "203.0.113.0/24"],
-        anomaly_type="massive_withdrawal"
+        anomaly_type="massive_withdrawal",
     ),
-    
     "high_volume": TestScenario(
         name="High Volume Traffic",
         description="High volume normal traffic to test system performance",
         duration_seconds=120,
         event_rate_per_second=10.0,
         peers=["10.0.1.1", "10.0.1.2", "10.0.2.1", "10.0.2.2", "10.0.3.1", "10.0.3.2"],
-        prefixes=["192.168.1.0/24", "192.168.2.0/24", "10.10.0.0/16", "172.16.0.0/16", "203.0.113.0/24", "198.51.100.0/24"]
-    )
+        prefixes=[
+            "192.168.1.0/24",
+            "192.168.2.0/24",
+            "10.10.0.0/16",
+            "172.16.0.0/16",
+            "203.0.113.0/24",
+            "198.51.100.0/24",
+        ],
+    ),
 }
 
 
 async def main():
     """Interactive test runner"""
     publisher = DataPublisher()
-    
+
     try:
         await publisher.connect()
-        
+
         print("\n🧪 BGP Event Test Publisher")
         print("=" * 50)
         print("Available test scenarios:")
-        
+
         for i, (key, scenario) in enumerate(TEST_SCENARIOS.items(), 1):
             print(f"{i}. {scenario.name}")
             print(f"   {scenario.description}")
-            print(f"   Duration: {scenario.duration_seconds}s, Rate: {scenario.event_rate_per_second}/s")
+            print(
+                f"   Duration: {scenario.duration_seconds}s, Rate: {scenario.event_rate_per_second}/s"
+            )
             print()
-        
+
         while True:
             try:
                 choice = input("Enter scenario number (1-5) or 'q' to quit: ").strip()
-                
-                if choice.lower() == 'q':
+
+                if choice.lower() == "q":
                     break
-                    
+
                 choice_num = int(choice)
                 if 1 <= choice_num <= len(TEST_SCENARIOS):
                     scenario_key = list(TEST_SCENARIOS.keys())[choice_num - 1]
                     scenario = TEST_SCENARIOS[scenario_key]
-                    
+
                     confirm = input(f"Run '{scenario.name}'? (y/n): ").strip().lower()
-                    if confirm == 'y':
+                    if confirm == "y":
                         await publisher.run_scenario(scenario)
-                        print("\n" + "="*50)
+                        print("\n" + "=" * 50)
                 else:
                     print("Invalid choice. Please try again.")
-                    
+
             except (ValueError, KeyboardInterrupt):
                 print("\nExiting...")
                 break
-                
+
     finally:
         await publisher.disconnect()
 
