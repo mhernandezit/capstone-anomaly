@@ -57,13 +57,13 @@
 
 This paper examines machine learning techniques for detecting and localizing network anomalies and failures in large-scale environments, using data from BGP routing updates, SNMP metrics, and syslog messages.
 
-\textcolor{blue}{\textbf{[Note:]} Based on professor feedback, this project has been expanded from an initial BGP-focused approach to include comprehensive multi-modal network monitoring, incorporating SNMP metrics and syslog messages alongside BGP updates for more holistic anomaly detection and failure localization.}
+\textcolor{blue}{\textbf{[Note:]} This project has been expanded from an initial BGP-focused approach to include comprehensive multi-modal network monitoring, incorporating SNMP metrics and syslog messages alongside BGP updates for more holistic anomaly detection and failure localization.}
 
 Traditional network monitoring relies on threshold-based alerts from SNMP and syslog, often producing many false positives and offering little context for locating failures (Wang, 2020; Manna \& Alkasassbeh, 2019). Recent research has demonstrated that machine learning approaches applied to SNMP-MIB datasets can significantly improve anomaly detection accuracy and operational efficiency, with Random Forest classifiers achieving up to 100\% accuracy in identifying network failures (Manna \& Alkasassbeh, 2019). This project uses a machine learning pipeline to process streaming telemetry from multiple sources, detect anomalies, and pinpoint failure origins.
 
 The system integrates BGP monitoring, SNMP metrics, and syslog messages for comprehensive network anomaly detection. Using unsupervised learning such as Matrix Profile analysis (Scott et al., 2024) and multi-modal feature fusion, it reduces alert noise while enhancing detection accuracy and localization.
 
-\textcolor{blue}{\textbf{[PROFESSOR FEEDBACK QUESTION:]} Does this introduction effectively establish the problem context and research foundation? Should I expand on the specific challenges of multi-modal data integration or focus more on the operational impact of current monitoring limitations?}
+\textcolor{blue}{\textbf{[FEEDBACK QUESTION:]} Does this introduction effectively establish the problem context? Should I expand on the specific challenges of multi-modal data integration or focus more on the operational impact of current monitoring limitations?}
 
 \section{Topic Description}
 
@@ -84,7 +84,7 @@ The system uses Matrix Profile for time-series anomaly detection, Isolation Fore
 
 Figure \ref{fig:architecture} illustrates the complete system architecture including the lab environment and data collection pipeline.
 
-\textcolor{blue}{\textbf{[PROFESSOR FEEDBACK QUESTION:]} Regarding the images in this document: Are the current figure placements effective for supporting the narrative flow? I have additional images available (action\_specification.png, usecase\_details.png) that could illustrate the decision-making process and failure scenarios. Would it be more helpful to include these figures in the Problem Description section to better visualize the specific failure modes and detection scenarios, or should they be placed elsewhere in the document? Also, what is your preference for figure sizing and positioning - should figures be placed immediately after their first reference or grouped together in a dedicated section?}
+\textcolor{blue}{\textbf{[FEEDBACK QUESTION:]} Regarding the images in this document: Are the current figure placements effective for supporting the narrative flow? I have additional images available that could illustrate the decision-making process and failure scenarios. Would it be more helpful to include these figures inline in each section to better visualize the specific failure modes and detection scenarios, or should they be placed at the end of the document?}
 
 \subsection{Why This Topic Was Chosen}
 
@@ -94,7 +94,7 @@ This problem is serious, as network failures can disrupt service, raise costs, a
 
 This problem is urgent due to increasingly complex networks and the need for adaptive monitoring that adjusts to changing conditions without frequent manual recalibration.
 
-\textcolor{blue}{\textbf{[PROFESSOR FEEDBACK QUESTION:]} Is the technical depth appropriate for this section? Should I provide more specific details about the machine learning algorithms (Matrix Profile, Isolation Forest) or focus more on the practical implementation challenges of multi-modal data processing?}
+\textcolor{blue}{\textbf{[FEEDBACK QUESTION:]} Is the technical depth appropriate for this section? I feel like there is room to expand on the use cases, but I also think that I am providing not enough context. Should I provide more specific details about the machine learning algorithms (Matrix Profile, Isolation Forest) or focus more on the practical implementation challenges of multi-modal data processing?}
 
 \section{Problem Description}
 
@@ -116,13 +116,13 @@ The scale and complexity of modern networks intensify monitoring challenges. Lar
 
 Current monitoring systems lack topology awareness to identify failure propagation patterns, making it hard to distinguish harmless edge-local flaps from fabric-wide issues needing immediate action. This leads to longer resolution times as engineers manually analyze logs and correlate events.
 
-\textcolor{blue}{\textbf{[PROFESSOR FEEDBACK QUESTION:]} Does this problem description effectively quantify the scope and impact of the monitoring challenges? Should I include more specific examples of failure scenarios or focus more on the economic impact of these problems? Also, is the balance between technical detail and accessibility appropriate for the target audience?}
+\textcolor{blue}{\textbf{[FEEDBACK QUESTION:]} Does this problem description effectively quantify the scope and impact of the monitoring challenges? Should I include more specific examples of failure scenarios or focus more on the economic impact of these problems? Also, is the balance between technical detail and accessibility appropriate for the target audience?}
 
 \section{Analysis}
 
 \textcolor{red}{\textbf{[SECTION PLACEHOLDER - TO BE COMPLETED]}}
 
-This section will include detailed analysis of how the topic was chosen, how problems were identified, how solutions fulfill operational and strategic goals, implementation timeline, and current implementation status.
+This section will include analysis of how the topic was chosen, how problems were identified, how solutions fulfill operational and strategic goals, implementation timeline, and current implementation status.
 
 \section{Research}
 
