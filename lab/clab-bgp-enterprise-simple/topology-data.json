@@ -1,0 +1,1410 @@
+{
+  "name": "bgp-enterprise-simple",
+  "type": "clab",
+  "clab": {
+    "config": {
+      "prefix": "clab",
+      "mgmt": {
+        "network": "clab",
+        "bridge": "br-00d2e8251cc6",
+        "ipv4-subnet": "172.20.20.0/24",
+        "ipv4-gw": "172.20.20.1",
+        "ipv6-subnet": "3fff:172:20:20::/64",
+        "ipv6-gw": "3fff:172:20:20::1",
+        "mtu": 1500,
+        "external-access": true
+      }
+    }
+  },
+  "ssh-pub-keys": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKCsdv64sittvhfSwPHiDhwtHb69kUEG7PJzjWZpGdMP"],
+  "nodes": {
+    "access-01": {
+      "index": "0",
+      "shortname": "access-01",
+      "longname": "clab-bgp-enterprise-simple-access-01",
+      "fqdn": "access-01.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-01",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.34",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::22",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65200",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-01",
+        "clab-node-longname": "clab-bgp-enterprise-simple-access-01",
+        "clab-node-name": "access-01",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "access"
+      },
+      "port-bindings": [
+      ]
+    },
+    "access-02": {
+      "index": "1",
+      "shortname": "access-02",
+      "longname": "clab-bgp-enterprise-simple-access-02",
+      "fqdn": "access-02.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-02",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.17",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::11",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65200",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-02",
+        "clab-node-longname": "clab-bgp-enterprise-simple-access-02",
+        "clab-node-name": "access-02",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "access"
+      },
+      "port-bindings": [
+      ]
+    },
+    "access-03": {
+      "index": "2",
+      "shortname": "access-03",
+      "longname": "clab-bgp-enterprise-simple-access-03",
+      "fqdn": "access-03.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-03",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.20",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::14",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65200",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-03",
+        "clab-node-longname": "clab-bgp-enterprise-simple-access-03",
+        "clab-node-name": "access-03",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "access"
+      },
+      "port-bindings": [
+      ]
+    },
+    "access-04": {
+      "index": "3",
+      "shortname": "access-04",
+      "longname": "clab-bgp-enterprise-simple-access-04",
+      "fqdn": "access-04.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-04",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.18",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::12",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65200",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-04",
+        "clab-node-longname": "clab-bgp-enterprise-simple-access-04",
+        "clab-node-name": "access-04",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "access"
+      },
+      "port-bindings": [
+      ]
+    },
+    "access-05": {
+      "index": "4",
+      "shortname": "access-05",
+      "longname": "clab-bgp-enterprise-simple-access-05",
+      "fqdn": "access-05.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-05",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.26",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::1a",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65200",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-05",
+        "clab-node-longname": "clab-bgp-enterprise-simple-access-05",
+        "clab-node-name": "access-05",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "access"
+      },
+      "port-bindings": [
+      ]
+    },
+    "access-06": {
+      "index": "5",
+      "shortname": "access-06",
+      "longname": "clab-bgp-enterprise-simple-access-06",
+      "fqdn": "access-06.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-06",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.35",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::23",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65200",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-06",
+        "clab-node-longname": "clab-bgp-enterprise-simple-access-06",
+        "clab-node-name": "access-06",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "access"
+      },
+      "port-bindings": [
+      ]
+    },
+    "access-07": {
+      "index": "6",
+      "shortname": "access-07",
+      "longname": "clab-bgp-enterprise-simple-access-07",
+      "fqdn": "access-07.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-07",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.22",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::16",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65200",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-07",
+        "clab-node-longname": "clab-bgp-enterprise-simple-access-07",
+        "clab-node-name": "access-07",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "access"
+      },
+      "port-bindings": [
+      ]
+    },
+    "access-08": {
+      "index": "7",
+      "shortname": "access-08",
+      "longname": "clab-bgp-enterprise-simple-access-08",
+      "fqdn": "access-08.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-08",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.40",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::28",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65200",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-08",
+        "clab-node-longname": "clab-bgp-enterprise-simple-access-08",
+        "clab-node-name": "access-08",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "access"
+      },
+      "port-bindings": [
+      ]
+    },
+    "access-09": {
+      "index": "8",
+      "shortname": "access-09",
+      "longname": "clab-bgp-enterprise-simple-access-09",
+      "fqdn": "access-09.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-09",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.29",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::1d",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65200",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-09",
+        "clab-node-longname": "clab-bgp-enterprise-simple-access-09",
+        "clab-node-name": "access-09",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "access"
+      },
+      "port-bindings": [
+      ]
+    },
+    "access-10": {
+      "index": "9",
+      "shortname": "access-10",
+      "longname": "clab-bgp-enterprise-simple-access-10",
+      "fqdn": "access-10.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-10",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.42",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::2a",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65200",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/access-10",
+        "clab-node-longname": "clab-bgp-enterprise-simple-access-10",
+        "clab-node-name": "access-10",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "access"
+      },
+      "port-bindings": [
+      ]
+    },
+    "core-01": {
+      "index": "10",
+      "shortname": "core-01",
+      "longname": "clab-bgp-enterprise-simple-core-01",
+      "fqdn": "core-01.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/core-01",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.27",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::1b",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65000",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/core-01",
+        "clab-node-longname": "clab-bgp-enterprise-simple-core-01",
+        "clab-node-name": "core-01",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "core"
+      },
+      "port-bindings": [
+      ]
+    },
+    "core-02": {
+      "index": "11",
+      "shortname": "core-02",
+      "longname": "clab-bgp-enterprise-simple-core-02",
+      "fqdn": "core-02.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/core-02",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.15",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::f",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65000",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/core-02",
+        "clab-node-longname": "clab-bgp-enterprise-simple-core-02",
+        "clab-node-name": "core-02",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "core"
+      },
+      "port-bindings": [
+      ]
+    },
+    "data-collector": {
+      "index": "12",
+      "shortname": "data-collector",
+      "longname": "clab-bgp-enterprise-simple-data-collector",
+      "fqdn": "data-collector.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/data-collector",
+      "kind": "linux",
+      "image": "alpine:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.16",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::10",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/data-collector",
+        "clab-node-longname": "clab-bgp-enterprise-simple-data-collector",
+        "clab-node-name": "data-collector",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "collector"
+      },
+      "port-bindings": [
+      ]
+    },
+    "dist-01": {
+      "index": "13",
+      "shortname": "dist-01",
+      "longname": "clab-bgp-enterprise-simple-dist-01",
+      "fqdn": "dist-01.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/dist-01",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.30",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::1e",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65100",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/dist-01",
+        "clab-node-longname": "clab-bgp-enterprise-simple-dist-01",
+        "clab-node-name": "dist-01",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "distribution"
+      },
+      "port-bindings": [
+      ]
+    },
+    "dist-02": {
+      "index": "14",
+      "shortname": "dist-02",
+      "longname": "clab-bgp-enterprise-simple-dist-02",
+      "fqdn": "dist-02.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/dist-02",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.39",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::27",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65100",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/dist-02",
+        "clab-node-longname": "clab-bgp-enterprise-simple-dist-02",
+        "clab-node-name": "dist-02",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "distribution"
+      },
+      "port-bindings": [
+      ]
+    },
+    "dist-03": {
+      "index": "15",
+      "shortname": "dist-03",
+      "longname": "clab-bgp-enterprise-simple-dist-03",
+      "fqdn": "dist-03.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/dist-03",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.31",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::1f",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65100",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/dist-03",
+        "clab-node-longname": "clab-bgp-enterprise-simple-dist-03",
+        "clab-node-name": "dist-03",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "distribution"
+      },
+      "port-bindings": [
+      ]
+    },
+    "dist-04": {
+      "index": "16",
+      "shortname": "dist-04",
+      "longname": "clab-bgp-enterprise-simple-dist-04",
+      "fqdn": "dist-04.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/dist-04",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.38",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::26",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65100",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/dist-04",
+        "clab-node-longname": "clab-bgp-enterprise-simple-dist-04",
+        "clab-node-name": "dist-04",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "distribution"
+      },
+      "port-bindings": [
+      ]
+    },
+    "edge-01": {
+      "index": "17",
+      "shortname": "edge-01",
+      "longname": "clab-bgp-enterprise-simple-edge-01",
+      "fqdn": "edge-01.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/edge-01",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.23",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::17",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65300",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/edge-01",
+        "clab-node-longname": "clab-bgp-enterprise-simple-edge-01",
+        "clab-node-name": "edge-01",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "edge"
+      },
+      "port-bindings": [
+      ]
+    },
+    "edge-02": {
+      "index": "18",
+      "shortname": "edge-02",
+      "longname": "clab-bgp-enterprise-simple-edge-02",
+      "fqdn": "edge-02.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/edge-02",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.21",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::15",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65300",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/edge-02",
+        "clab-node-longname": "clab-bgp-enterprise-simple-edge-02",
+        "clab-node-name": "edge-02",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "edge"
+      },
+      "port-bindings": [
+      ]
+    },
+    "fluent-bit": {
+      "index": "19",
+      "shortname": "fluent-bit",
+      "longname": "clab-bgp-enterprise-simple-fluent-bit",
+      "fqdn": "fluent-bit.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/fluent-bit",
+      "kind": "linux",
+      "image": "fluent/fluent-bit:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.19",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::13",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/fluent-bit",
+        "clab-node-longname": "clab-bgp-enterprise-simple-fluent-bit",
+        "clab-node-name": "fluent-bit",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "monitoring"
+      },
+      "port-bindings": [
+        {
+          "host-ip": "",
+          "host-port": 0,
+          "port": 2020,
+          "protocol": "tcp"
+        }
+      ]
+    },
+    "server-01": {
+      "index": "20",
+      "shortname": "server-01",
+      "longname": "clab-bgp-enterprise-simple-server-01",
+      "fqdn": "server-01.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-01",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.7",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::7",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65400",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-01",
+        "clab-node-longname": "clab-bgp-enterprise-simple-server-01",
+        "clab-node-name": "server-01",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "server"
+      },
+      "port-bindings": [
+      ]
+    },
+    "server-02": {
+      "index": "21",
+      "shortname": "server-02",
+      "longname": "clab-bgp-enterprise-simple-server-02",
+      "fqdn": "server-02.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-02",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.24",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::18",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65400",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-02",
+        "clab-node-longname": "clab-bgp-enterprise-simple-server-02",
+        "clab-node-name": "server-02",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "server"
+      },
+      "port-bindings": [
+      ]
+    },
+    "server-03": {
+      "index": "22",
+      "shortname": "server-03",
+      "longname": "clab-bgp-enterprise-simple-server-03",
+      "fqdn": "server-03.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-03",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.28",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::1c",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65400",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-03",
+        "clab-node-longname": "clab-bgp-enterprise-simple-server-03",
+        "clab-node-name": "server-03",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "server"
+      },
+      "port-bindings": [
+      ]
+    },
+    "server-04": {
+      "index": "23",
+      "shortname": "server-04",
+      "longname": "clab-bgp-enterprise-simple-server-04",
+      "fqdn": "server-04.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-04",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.37",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::25",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65400",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-04",
+        "clab-node-longname": "clab-bgp-enterprise-simple-server-04",
+        "clab-node-name": "server-04",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "server"
+      },
+      "port-bindings": [
+      ]
+    },
+    "server-05": {
+      "index": "24",
+      "shortname": "server-05",
+      "longname": "clab-bgp-enterprise-simple-server-05",
+      "fqdn": "server-05.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-05",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.6",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::6",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65400",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-05",
+        "clab-node-longname": "clab-bgp-enterprise-simple-server-05",
+        "clab-node-name": "server-05",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "server"
+      },
+      "port-bindings": [
+      ]
+    },
+    "server-06": {
+      "index": "25",
+      "shortname": "server-06",
+      "longname": "clab-bgp-enterprise-simple-server-06",
+      "fqdn": "server-06.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-06",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.25",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::19",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65400",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-06",
+        "clab-node-longname": "clab-bgp-enterprise-simple-server-06",
+        "clab-node-name": "server-06",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "server"
+      },
+      "port-bindings": [
+      ]
+    },
+    "server-07": {
+      "index": "26",
+      "shortname": "server-07",
+      "longname": "clab-bgp-enterprise-simple-server-07",
+      "fqdn": "server-07.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-07",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.32",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::20",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65400",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-07",
+        "clab-node-longname": "clab-bgp-enterprise-simple-server-07",
+        "clab-node-name": "server-07",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "server"
+      },
+      "port-bindings": [
+      ]
+    },
+    "server-08": {
+      "index": "27",
+      "shortname": "server-08",
+      "longname": "clab-bgp-enterprise-simple-server-08",
+      "fqdn": "server-08.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-08",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.33",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::21",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65400",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-08",
+        "clab-node-longname": "clab-bgp-enterprise-simple-server-08",
+        "clab-node-name": "server-08",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "server"
+      },
+      "port-bindings": [
+      ]
+    },
+    "server-09": {
+      "index": "28",
+      "shortname": "server-09",
+      "longname": "clab-bgp-enterprise-simple-server-09",
+      "fqdn": "server-09.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-09",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.36",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::24",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65400",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-09",
+        "clab-node-longname": "clab-bgp-enterprise-simple-server-09",
+        "clab-node-name": "server-09",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "server"
+      },
+      "port-bindings": [
+      ]
+    },
+    "server-10": {
+      "index": "29",
+      "shortname": "server-10",
+      "longname": "clab-bgp-enterprise-simple-server-10",
+      "fqdn": "server-10.bgp-enterprise-simple.io",
+      "group": "",
+      "labdir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-10",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.41",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::29",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "asn": "65400",
+        "clab-mgmt-net-bridge": "br-00d2e8251cc6",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/clab-bgp-enterprise-simple/server-10",
+        "clab-node-longname": "clab-bgp-enterprise-simple-server-10",
+        "clab-node-name": "server-10",
+        "clab-node-type": "",
+        "clab-owner": "hernandm",
+        "clab-topo-file": "/mnt/c/Users/PC/Documents/GitHub/capstone-anomaly/lab/topo-enterprise-simple.clab.yml",
+        "containerlab": "bgp-enterprise-simple",
+        "role": "server"
+      },
+      "port-bindings": [
+      ]
+    }
+  },
+  "links": [
+    {
+      "a": {
+        "node": "core-01",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:e1:5b:0a",
+        "peer": "z"
+      },
+      "z": {
+        "node": "core-02",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:ad:c2:0b",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "core-01",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:bc:5c:c7",
+        "peer": "z"
+      },
+      "z": {
+        "node": "dist-01",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:01:65:02",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "core-01",
+        "interface": "eth3",
+        "mac": "aa:c1:ab:21:31:d7",
+        "peer": "z"
+      },
+      "z": {
+        "node": "dist-02",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:32:ac:31",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "core-02",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:4f:30:ae",
+        "peer": "z"
+      },
+      "z": {
+        "node": "dist-03",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:aa:d4:42",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "core-02",
+        "interface": "eth3",
+        "mac": "aa:c1:ab:82:4d:c0",
+        "peer": "z"
+      },
+      "z": {
+        "node": "dist-04",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:3b:4a:9d",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "dist-01",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:f5:b3:7c",
+        "peer": "z"
+      },
+      "z": {
+        "node": "access-01",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:1c:d9:3c",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "dist-01",
+        "interface": "eth3",
+        "mac": "aa:c1:ab:ea:5f:95",
+        "peer": "z"
+      },
+      "z": {
+        "node": "access-02",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:6f:68:84",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "dist-02",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:dd:1d:dd",
+        "peer": "z"
+      },
+      "z": {
+        "node": "access-03",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:b7:c0:db",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "dist-02",
+        "interface": "eth3",
+        "mac": "aa:c1:ab:3e:69:c8",
+        "peer": "z"
+      },
+      "z": {
+        "node": "access-04",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:47:fd:68",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "dist-03",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:09:3b:e3",
+        "peer": "z"
+      },
+      "z": {
+        "node": "access-05",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:10:90:8a",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "dist-03",
+        "interface": "eth3",
+        "mac": "aa:c1:ab:49:00:60",
+        "peer": "z"
+      },
+      "z": {
+        "node": "access-06",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:e0:0c:e7",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "dist-04",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:ad:1d:90",
+        "peer": "z"
+      },
+      "z": {
+        "node": "access-07",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:83:ba:58",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "dist-04",
+        "interface": "eth3",
+        "mac": "aa:c1:ab:08:b6:90",
+        "peer": "z"
+      },
+      "z": {
+        "node": "access-08",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:24:e8:7b",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "dist-01",
+        "interface": "eth4",
+        "mac": "aa:c1:ab:93:28:bd",
+        "peer": "z"
+      },
+      "z": {
+        "node": "access-09",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:c1:03:ae",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "dist-02",
+        "interface": "eth4",
+        "mac": "aa:c1:ab:4d:33:8c",
+        "peer": "z"
+      },
+      "z": {
+        "node": "access-10",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:85:e7:d1",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "access-01",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:d1:2a:29",
+        "peer": "z"
+      },
+      "z": {
+        "node": "server-01",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:26:0d:71",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "access-02",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:ed:08:53",
+        "peer": "z"
+      },
+      "z": {
+        "node": "server-02",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:0d:93:5a",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "access-03",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:e9:0f:5d",
+        "peer": "z"
+      },
+      "z": {
+        "node": "server-03",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:0f:64:ae",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "access-04",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:9a:dc:51",
+        "peer": "z"
+      },
+      "z": {
+        "node": "server-04",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:9d:67:15",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "access-05",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:98:c8:ac",
+        "peer": "z"
+      },
+      "z": {
+        "node": "server-05",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:7f:4e:74",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "access-06",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:40:33:02",
+        "peer": "z"
+      },
+      "z": {
+        "node": "server-06",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:5a:18:03",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "access-07",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:d4:a3:f0",
+        "peer": "z"
+      },
+      "z": {
+        "node": "server-07",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:ec:11:f6",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "access-08",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:0e:d7:f0",
+        "peer": "z"
+      },
+      "z": {
+        "node": "server-08",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:2c:5d:9c",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "access-09",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:c9:96:90",
+        "peer": "z"
+      },
+      "z": {
+        "node": "server-09",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:82:be:7e",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "access-10",
+        "interface": "eth2",
+        "mac": "aa:c1:ab:03:54:8a",
+        "peer": "z"
+      },
+      "z": {
+        "node": "server-10",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:92:79:ec",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "core-01",
+        "interface": "eth4",
+        "mac": "aa:c1:ab:41:96:c0",
+        "peer": "z"
+      },
+      "z": {
+        "node": "edge-01",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:30:01:92",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "core-02",
+        "interface": "eth4",
+        "mac": "aa:c1:ab:b1:7b:18",
+        "peer": "z"
+      },
+      "z": {
+        "node": "edge-02",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:65:fe:ac",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "core-01",
+        "interface": "eth5",
+        "mac": "aa:c1:ab:0b:cb:1b",
+        "peer": "z"
+      },
+      "z": {
+        "node": "data-collector",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:11:59:5a",
+        "peer": "a"
+      }
+    }
+  ]
+}

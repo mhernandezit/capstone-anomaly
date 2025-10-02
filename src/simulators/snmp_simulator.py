@@ -17,14 +17,10 @@ import json
 import time
 import random
 import yaml
-from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any
 from dataclasses import dataclass, asdict
-from datetime import datetime, timedelta
 
 import nats
-from pysnmp.hlapi import *
-from pysnmp.entity.rfc3413.oneliner import cmdgen
 
 logger = logging.getLogger(__name__)
 

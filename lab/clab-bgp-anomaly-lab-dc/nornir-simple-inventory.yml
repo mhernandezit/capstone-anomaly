@@ -1,0 +1,91 @@
+---
+data-collector:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.55
+dc1-inet-edge-01:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.50
+dc1-inet-edge-02:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.59
+dc1-spine-01:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.51
+dc1-spine-02:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.44
+dc1-svc-leaf-01:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.45
+dc1-svc-leaf-02:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.47
+dc2-inet-edge-01:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.52
+dc2-inet-edge-02:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.58
+dc2-spine-01:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.49
+dc2-spine-02:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.60
+dc2-svc-leaf-01:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.48
+dc2-svc-leaf-02:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.56
+extranet-cp-01:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.57
+extranet-cp-02:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.53
+fluent-bit:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.46
+isp-01:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.54
+isp-02:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.43

@@ -1,0 +1,423 @@
+name: bgp-enterprise-lab
+
+topology:
+  nodes:
+    # Core Layer - 4 Core Routers
+    core-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/core-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/core-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "core"
+        asn: "65000"
+        priority: "1"
+
+    core-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/core-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/core-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "core"
+        asn: "65000"
+        priority: "2"
+
+    core-03:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/core-03/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/core-03:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "core"
+        asn: "65000"
+        priority: "3"
+
+    core-04:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/core-04/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/core-04:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "core"
+        asn: "65000"
+        priority: "4"
+
+    # Distribution Layer - 8 Distribution Switches
+    dist-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/dist-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dist-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "distribution"
+        asn: "65100"
+        priority: "1"
+
+    dist-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/dist-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dist-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "distribution"
+        asn: "65100"
+        priority: "2"
+
+    dist-03:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/dist-03/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dist-03:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "distribution"
+        asn: "65100"
+        priority: "3"
+
+    dist-04:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/dist-04/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dist-04:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "distribution"
+        asn: "65100"
+        priority: "4"
+
+    dist-05:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/dist-05/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dist-05:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "distribution"
+        asn: "65100"
+        priority: "5"
+
+    dist-06:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/dist-06/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dist-06:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "distribution"
+        asn: "65100"
+        priority: "6"
+
+    dist-07:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/dist-07/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dist-07:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "distribution"
+        asn: "65100"
+        priority: "7"
+
+    dist-08:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/dist-08/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/dist-08:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "distribution"
+        asn: "65100"
+        priority: "8"
+
+    # Access Layer - 20 Access Switches
+    access-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/access-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/access-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "access"
+        asn: "65200"
+        priority: "1"
+
+    access-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/access-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/access-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "access"
+        asn: "65200"
+        priority: "2"
+
+    # Edge Routers - 4 Edge Devices
+    edge-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/edge-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/edge-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "edge"
+        asn: "65300"
+        priority: "1"
+
+    edge-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/edge-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/edge-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "edge"
+        asn: "65300"
+        priority: "2"
+
+    edge-03:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/edge-03/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/edge-03:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "edge"
+        asn: "65300"
+        priority: "3"
+
+    edge-04:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/edge-04/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/edge-04:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "edge"
+        asn: "65300"
+        priority: "4"
+
+    # Servers - 10 Server Nodes
+    server-01:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/server-01/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/server-01:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "server"
+        asn: "65400"
+        priority: "1"
+
+    server-02:
+      kind: linux
+      image: frrouting/frr:latest
+      cmd: /usr/lib/frr/docker-start
+      binds:
+        - ./configs/enterprise/server-02/frr.conf:/etc/frr/frr.conf:ro
+        - ./configs/common/daemons:/etc/frr/daemons:ro
+        - ./configs/common/vtysh.conf:/etc/frr/vtysh.conf:ro
+        - ./configs/common/zebra.conf:/etc/frr/zebra.conf:ro
+        - ./logs/server-02:/var/log/frr:rw
+      env:
+        FRR_DAEMONS: "zebra,bgpd"
+      labels:
+        role: "server"
+        asn: "65400"
+        priority: "2"
+
+    # Monitoring and Collection
+    bmp-collector:
+      kind: linux
+      image: capstone-bmp-collector:latest
+      cmd: ./bmp-collector
+      binds:
+        - ./logs/collector:/var/log:rw
+      env:
+        NATS_URL: "nats://nats-server:4222"
+        COLLECTOR_CONFIG: "/etc/collector/config.yml"
+      labels:
+        role: "collector"
+        priority: "1"
+
+    fluent-bit:
+      kind: linux
+      image: fluent/fluent-bit:latest
+      cmd: /fluent-bit/bin/fluent-bit
+      binds:
+        - ./monitoring/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+        - ./logs:/var/log:ro
+      labels:
+        role: "monitoring"
+        priority: "1"
+
+    nats-server:
+      kind: linux
+      image: nats:latest
+      cmd: nats-server --jetstream --store_dir /data --port 4222
+      binds:
+        - ./logs/nats:/var/log:rw
+      labels:
+        role: "messaging"
+        priority: "1"
+
+  links:
+    # Core to Core (full mesh)
+    - endpoints: ["core-01:eth1", "core-02:eth1"]
+    - endpoints: ["core-01:eth2", "core-03:eth1"]
+    - endpoints: ["core-01:eth3", "core-04:eth1"]
+    - endpoints: ["core-02:eth2", "core-03:eth2"]
+    - endpoints: ["core-02:eth3", "core-04:eth2"]
+    - endpoints: ["core-03:eth3", "core-04:eth3"]
+
+    # Core to Distribution (redundant)
+    - endpoints: ["core-01:eth4", "dist-01:eth1"]
+    - endpoints: ["core-01:eth5", "dist-02:eth1"]
+    - endpoints: ["core-02:eth4", "dist-03:eth1"]
+    - endpoints: ["core-02:eth5", "dist-04:eth1"]
+    - endpoints: ["core-03:eth4", "dist-05:eth1"]
+    - endpoints: ["core-03:eth5", "dist-06:eth1"]
+    - endpoints: ["core-04:eth4", "dist-07:eth1"]
+    - endpoints: ["core-04:eth5", "dist-08:eth1"]
+
+    # Distribution to Access (multiple per dist)
+    - endpoints: ["dist-01:eth2", "access-01:eth1"]
+    - endpoints: ["dist-01:eth3", "access-02:eth1"]
+    - endpoints: ["dist-02:eth2", "access-03:eth1"]
+    - endpoints: ["dist-02:eth3", "access-04:eth1"]
+
+    # Access to Servers
+    - endpoints: ["access-01:eth2", "server-01:eth1"]
+    - endpoints: ["access-02:eth2", "server-02:eth1"]
+
+    # Edge connectivity
+    - endpoints: ["core-01:eth6", "edge-01:eth1"]
+    - endpoints: ["core-02:eth6", "edge-02:eth1"]
+    - endpoints: ["core-03:eth5", "edge-03:eth1"]
+    - endpoints: ["core-04:eth5", "edge-04:eth1"]
+
+    # Monitoring connections
+    - endpoints: ["core-01:eth7", "bmp-collector:eth1"]
+    - endpoints: ["bmp-collector:eth2", "nats-server:eth1"]
+    - endpoints: ["fluent-bit:eth1", "nats-server:eth2"]
