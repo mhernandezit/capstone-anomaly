@@ -61,7 +61,7 @@ My coursework provided the foundation, while industry experience added domain de
 
 \section{Development \& Evaluation Plan}
 
-Implementation will be in Python, using libraries for streaming feature extraction and unsupervised detection, with a containerized virtual lab generating realistic BGP updates and logs. The lab includes two spines, two top-of-rack switches, two edges, and multiple "server" peers. I will inject failures—one-way signal loss, a route-reflector crash, an edge/provider outage, and a server crash—and compare alerts against a baseline of manual SNMP/syslog triage. The repository contains the dashboard, ingestion scripts, experiment notebooks, diagrams, and a LaTeX/BibTeX setup for citation and PDF export.
+Implementation will be in Python, using libraries for streaming feature extraction and unsupervised detection, with realistic data simulators generating BGP updates and SNMP metrics. The simulated network includes two spines, two top-of-rack switches, two edges, and multiple server peers. I will test with realistic failures—link failures, router overload, hardware degradation, and route leaks—and evaluate the system's detection performance. The repository contains the dashboard, ingestion scripts, experiment notebooks, diagrams, and a LaTeX/BibTeX setup for citation and PDF export.
 
 \subsection{Evaluation Metrics}
 
@@ -69,7 +69,7 @@ To show practical value, I will report three measures against the baseline. F1 r
 
 \section{Deliverables \& Timeline}
 
-The final submission will include a paper, a presentation, a live demo against the virtual lab, and a public repository with code, documentation, and weekly updates. Early work centers on stabilizing the lab and data plumbing, then moves to feature extraction, unsupervised scoring, topology-aware localization, and the dashboard. The final phase focuses on experiments, ablations, results packaging, and presentation polish. The scope is sized for a semester, aiming for measurable outcomes and a working proof of concept.
+The final submission will include a paper, a presentation, a live demo with test scenarios, and a public repository with code, documentation, and weekly updates. Early work centers on creating data simulators and pipeline infrastructure, then moves to feature extraction, unsupervised scoring, topology-aware localization, and the dashboard. The final phase focuses on experiments, ablations, results packaging, and presentation polish. The scope is sized for a semester, aiming for measurable outcomes and a working proof of concept.
 
 \section{Writing \& Formatting}
 

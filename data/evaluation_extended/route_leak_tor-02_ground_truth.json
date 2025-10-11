@@ -1,0 +1,22 @@
+{
+  "name": "route_leak_tor-02",
+  "description": "Route leak from tor-02: 0.0.0.0/0",
+  "failure_type": "route_leak",
+  "failure_location": {
+    "device": "tor-02",
+    "peer": "10.0.2.2",
+    "prefix": "0.0.0.0/0"
+  },
+  "expected_detections": 1,
+  "expected_alerts": 1,
+  "start_time": 1760118103.6605866,
+  "events": [
+    {
+      "timestamp": 1760118103.6606715,
+      "type": "route_leak",
+      "prefix": "0.0.0.0/0"
+    }
+  ],
+  "end_time": 1760118108.674571,
+  "duration_sec": 5.013984441757202
+}

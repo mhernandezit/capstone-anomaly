@@ -1,0 +1,30 @@
+{
+  "test_run_timestamp": "2025-10-10T09:23:24.351884",
+  "total_scenarios": 4,
+  "scenarios": [
+    {
+      "name": "baseline_normal_operation",
+      "duration_sec": 20.04894256591797,
+      "expected_alerts": 0,
+      "events_count": 10
+    },
+    {
+      "name": "bgp_route_flapping",
+      "duration_sec": 16.157776832580566,
+      "expected_alerts": 1,
+      "events_count": 16
+    },
+    {
+      "name": "hardware_degradation",
+      "duration_sec": 30.007164001464844,
+      "expected_alerts": 1,
+      "events_count": 0
+    },
+    {
+      "name": "multimodal_correlated_failure",
+      "duration_sec": 22.570550441741943,
+      "expected_alerts": 1,
+      "events_count": 5
+    }
+  ]
+}

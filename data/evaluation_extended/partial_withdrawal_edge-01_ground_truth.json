@@ -1,0 +1,24 @@
+{
+  "name": "partial_withdrawal_edge-01",
+  "description": "Partial route withdrawal from edge-01",
+  "failure_type": "partial_failure",
+  "failure_location": {
+    "device": "edge-01",
+    "peer": "10.0.3.1"
+  },
+  "expected_detections": 1,
+  "expected_alerts": 0,
+  "start_time": 1760118172.2330184,
+  "events": [
+    {
+      "timestamp": 1760118172.2330947,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118173.2433739,
+      "type": "withdraw"
+    }
+  ],
+  "end_time": 1760118174.2493029,
+  "duration_sec": 2.016284465789795
+}

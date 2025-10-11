@@ -1,0 +1,47 @@
+{
+  "name": "multimodal_correlated_failure",
+  "description": "Link failure causing both BGP route loss and interface errors",
+  "failure_type": "link_failure",
+  "failure_location": {
+    "device": "tor-01",
+    "interface": "eth2",
+    "bgp_peer": "10.0.2.1"
+  },
+  "expected_detections": 2,
+  "expected_alerts": 1,
+  "start_time": 1760102581.7794437,
+  "events": [
+    {
+      "timestamp": 1760102581.7795954,
+      "type": "withdraw",
+      "peer": "10.0.2.1",
+      "prefix": "10.20.0.0/24"
+    },
+    {
+      "timestamp": 1760102582.293997,
+      "type": "withdraw",
+      "peer": "10.0.2.1",
+      "prefix": "10.20.1.0/24"
+    },
+    {
+      "timestamp": 1760102582.80585,
+      "type": "withdraw",
+      "peer": "10.0.2.1",
+      "prefix": "10.20.2.0/24"
+    },
+    {
+      "timestamp": 1760102583.3190854,
+      "type": "withdraw",
+      "peer": "10.0.2.1",
+      "prefix": "10.20.3.0/24"
+    },
+    {
+      "timestamp": 1760102583.8295486,
+      "type": "withdraw",
+      "peer": "10.0.2.1",
+      "prefix": "10.20.4.0/24"
+    }
+  ],
+  "end_time": 1760102604.3499942,
+  "duration_sec": 22.570550441741943
+}

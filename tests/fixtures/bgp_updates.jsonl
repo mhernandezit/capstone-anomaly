@@ -1,0 +1,11 @@
+{"timestamp": "2024-10-09T15:30:00.000Z", "peer_ip": "10.0.1.1", "peer_asn": 65001, "update_type": "announcement", "prefix": "192.168.1.0/24", "as_path": [65001, 65002], "next_hop": "10.0.1.1", "origin": "IGP"}
+{"timestamp": "2024-10-09T15:30:05.000Z", "peer_ip": "10.0.1.1", "peer_asn": 65001, "update_type": "announcement", "prefix": "192.168.1.0/24", "as_path": [65001, 65002], "next_hop": "10.0.1.1", "origin": "IGP"}
+{"timestamp": "2024-10-09T15:30:10.000Z", "peer_ip": "10.0.1.1", "peer_asn": 65001, "update_type": "withdrawal", "prefix": "192.168.1.0/24"}
+{"timestamp": "2024-10-09T15:30:12.000Z", "peer_ip": "10.0.1.1", "peer_asn": 65001, "update_type": "announcement", "prefix": "192.168.1.0/24", "as_path": [65001, 65002], "next_hop": "10.0.1.1", "origin": "IGP"}
+{"timestamp": "2024-10-09T15:30:14.000Z", "peer_ip": "10.0.1.1", "peer_asn": 65001, "update_type": "withdrawal", "prefix": "192.168.1.0/24"}
+{"timestamp": "2024-10-09T15:30:16.000Z", "peer_ip": "10.0.1.1", "peer_asn": 65001, "update_type": "announcement", "prefix": "192.168.1.0/24", "as_path": [65001, 65002], "next_hop": "10.0.1.1", "origin": "IGP"}
+{"timestamp": "2024-10-09T15:30:18.000Z", "peer_ip": "10.0.1.1", "peer_asn": 65001, "update_type": "withdrawal", "prefix": "192.168.1.0/24"}
+{"timestamp": "2024-10-09T15:30:20.000Z", "peer_ip": "10.0.1.1", "peer_asn": 65001, "update_type": "announcement", "prefix": "192.168.1.0/24", "as_path": [65001, 65002], "next_hop": "10.0.1.1", "origin": "IGP"}
+{"timestamp": "2024-10-09T15:30:25.000Z", "peer_ip": "10.0.1.2", "peer_asn": 65002, "update_type": "announcement", "prefix": "10.20.0.0/16", "as_path": [65002], "next_hop": "10.0.1.2", "origin": "IGP"}
+{"timestamp": "2024-10-09T15:30:30.000Z", "peer_ip": "10.0.1.1", "peer_asn": 65001, "update_type": "announcement", "prefix": "192.168.2.0/24", "as_path": [65001, 65003], "next_hop": "10.0.1.1", "origin": "IGP"}
+

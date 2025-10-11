@@ -1,0 +1,37 @@
+{
+  "name": "multimodal_spine-01_eth3",
+  "description": "Link failure on spine-01 eth3 causing BGP+SNMP anomalies",
+  "failure_type": "multimodal_link_failure",
+  "failure_location": {
+    "device": "spine-01",
+    "interface": "eth3",
+    "bgp_peer": "10.0.1.1"
+  },
+  "expected_detections": 2,
+  "expected_alerts": 1,
+  "start_time": 1760118117.2481198,
+  "events": [
+    {
+      "timestamp": 1760118117.2482216,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118117.7621531,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118118.274318,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118118.7872248,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118119.2967594,
+      "type": "withdraw"
+    }
+  ],
+  "end_time": 1760118119.8085716,
+  "duration_sec": 2.5604517459869385
+}

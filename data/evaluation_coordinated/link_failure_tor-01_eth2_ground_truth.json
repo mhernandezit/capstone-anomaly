@@ -1,0 +1,14 @@
+{
+  "name": "link_failure_tor-01_eth2",
+  "device": "tor-01",
+  "interface": "eth2",
+  "bgp_peer": "10.0.2.1",
+  "failure_time": 1760119642.4695737,
+  "expected_correlation": {
+    "snmp_traps": 2,
+    "bgp_updates": 5,
+    "syslog_messages": 2
+  },
+  "expected_alerts": 1,
+  "failure_type": "link_failure"
+}

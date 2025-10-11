@@ -1,0 +1,121 @@
+{
+  "test_run_timestamp": "2025-10-10T13:43:07.240808",
+  "total_scenarios": 15,
+  "scenarios_by_type": {
+    "baseline": 3,
+    "bgp_route_flapping": 4,
+    "link_failure": 1,
+    "route_leak": 1,
+    "multimodal_link_failure": 4,
+    "partial_failure": 1,
+    "bgp_session_reset": 1
+  },
+  "expected_alerts_total": 11,
+  "scenarios": [
+    {
+      "name": "baseline_baseline_1",
+      "failure_type": "baseline",
+      "duration_sec": 10.03658390045166,
+      "expected_alerts": 0,
+      "events_count": 5
+    },
+    {
+      "name": "baseline_baseline_2",
+      "failure_type": "baseline",
+      "duration_sec": 10.02982783317566,
+      "expected_alerts": 0,
+      "events_count": 5
+    },
+    {
+      "name": "baseline_baseline_3",
+      "failure_type": "baseline",
+      "duration_sec": 10.041069269180298,
+      "expected_alerts": 0,
+      "events_count": 5
+    },
+    {
+      "name": "bgp_flapping_tor-01_192.168.10.0_24",
+      "failure_type": "bgp_route_flapping",
+      "duration_sec": 16.14140820503235,
+      "expected_alerts": 1,
+      "events_count": 20
+    },
+    {
+      "name": "bgp_flapping_spine-01_192.168.20.0_24",
+      "failure_type": "bgp_route_flapping",
+      "duration_sec": 16.12196969985962,
+      "expected_alerts": 1,
+      "events_count": 20
+    },
+    {
+      "name": "mass_withdrawal_edge-01",
+      "failure_type": "link_failure",
+      "duration_sec": 1.5307037830352783,
+      "expected_alerts": 1,
+      "events_count": 3
+    },
+    {
+      "name": "route_leak_tor-02",
+      "failure_type": "route_leak",
+      "duration_sec": 5.013984441757202,
+      "expected_alerts": 1,
+      "events_count": 1
+    },
+    {
+      "name": "multimodal_tor-01_eth1",
+      "failure_type": "multimodal_link_failure",
+      "duration_sec": 2.5538742542266846,
+      "expected_alerts": 1,
+      "events_count": 5
+    },
+    {
+      "name": "multimodal_spine-01_eth3",
+      "failure_type": "multimodal_link_failure",
+      "duration_sec": 2.5604517459869385,
+      "expected_alerts": 1,
+      "events_count": 5
+    },
+    {
+      "name": "multimodal_edge-02_eth0",
+      "failure_type": "multimodal_link_failure",
+      "duration_sec": 2.5534873008728027,
+      "expected_alerts": 1,
+      "events_count": 5
+    },
+    {
+      "name": "bgp_flapping_tor-01_192.168.100.0_24",
+      "failure_type": "bgp_route_flapping",
+      "duration_sec": 16.12054467201233,
+      "expected_alerts": 1,
+      "events_count": 20
+    },
+    {
+      "name": "bgp_flapping_spine-02_192.168.50.0_24",
+      "failure_type": "bgp_route_flapping",
+      "duration_sec": 16.15025568008423,
+      "expected_alerts": 1,
+      "events_count": 20
+    },
+    {
+      "name": "multimodal_tor-02_eth2",
+      "failure_type": "multimodal_link_failure",
+      "duration_sec": 2.558682918548584,
+      "expected_alerts": 1,
+      "events_count": 5
+    },
+    {
+      "name": "partial_withdrawal_edge-01",
+      "failure_type": "partial_failure",
+      "duration_sec": 2.016284465789795,
+      "expected_alerts": 0,
+      "events_count": 2
+    },
+    {
+      "name": "session_reset_spine-01",
+      "failure_type": "bgp_session_reset",
+      "duration_sec": 6.968172073364258,
+      "expected_alerts": 1,
+      "events_count": 16
+    }
+  ]
+}

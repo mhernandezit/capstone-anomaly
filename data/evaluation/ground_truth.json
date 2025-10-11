@@ -1,0 +1,40 @@
+[
+  {
+    "scenario": "link_failure",
+    "timestamp": 1760127090.7500956,
+    "device": "tor-01",
+    "interface": "eth1",
+    "severity": "critical",
+    "expected_sources": [
+      "bgp",
+      "snmp"
+    ]
+  },
+  {
+    "scenario": "bgp_flapping",
+    "timestamp": 1760127106.4870102,
+    "device": "spine-01",
+    "severity": "critical",
+    "expected_sources": [
+      "bgp"
+    ]
+  },
+  {
+    "scenario": "hardware_degradation",
+    "timestamp": 1760127129.1573308,
+    "device": "spine-02",
+    "severity": "warning",
+    "expected_sources": [
+      "snmp"
+    ]
+  },
+  {
+    "scenario": "server_failure",
+    "timestamp": 1760127144.1872842,
+    "device": "server-01",
+    "severity": "info",
+    "expected_sources": [
+      "bgp"
+    ]
+  }
+]

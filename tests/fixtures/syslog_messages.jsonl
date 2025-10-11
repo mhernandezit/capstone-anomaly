@@ -1,0 +1,9 @@
+{"timestamp": "2024-10-09T15:30:00Z", "device": "spine-01", "severity": "info", "facility": "bgp", "message": "BGP session to 10.0.1.1 established"}
+{"timestamp": "2024-10-09T15:30:10Z", "device": "spine-01", "severity": "warning", "facility": "interface", "message": "Interface eth1: Input errors incrementing"}
+{"timestamp": "2024-10-09T15:30:12Z", "device": "spine-01", "severity": "warning", "facility": "bgp", "message": "BGP peer 10.0.1.1: Route flapping detected for prefix 192.168.1.0/24"}
+{"timestamp": "2024-10-09T15:30:30Z", "device": "spine-01", "severity": "error", "facility": "interface", "message": "Interface eth1: High error rate detected (342 input errors in 30s window)"}
+{"timestamp": "2024-10-09T15:30:32Z", "device": "spine-01", "severity": "error", "facility": "hardware", "message": "Optics module eth1: Signal degradation detected"}
+{"timestamp": "2024-10-09T15:31:30Z", "device": "spine-01", "severity": "info", "facility": "interface", "message": "Interface eth1: Error rate returned to normal"}
+{"timestamp": "2024-10-09T15:31:32Z", "device": "spine-01", "severity": "info", "facility": "bgp", "message": "BGP peer 10.0.1.1: Route stability restored"}
+{"timestamp": "2024-10-09T15:32:00Z", "device": "tor-01", "severity": "info", "facility": "system", "message": "System health check: All parameters normal"}
+

@@ -1,0 +1,31 @@
+{
+  "name": "mass_withdrawal_edge-01",
+  "description": "Link failure on edge-01 causing mass withdrawals",
+  "failure_type": "link_failure",
+  "failure_location": {
+    "device": "edge-01",
+    "peer": "10.0.3.1"
+  },
+  "expected_detections": 1,
+  "expected_alerts": 1,
+  "start_time": 1760118099.1215708,
+  "events": [
+    {
+      "timestamp": 1760118099.1216702,
+      "type": "withdraw",
+      "prefix": "10.30.0.0/24"
+    },
+    {
+      "timestamp": 1760118099.6319764,
+      "type": "withdraw",
+      "prefix": "10.30.1.0/24"
+    },
+    {
+      "timestamp": 1760118100.1404998,
+      "type": "withdraw",
+      "prefix": "10.30.2.0/24"
+    }
+  ],
+  "end_time": 1760118100.6522746,
+  "duration_sec": 1.5307037830352783
+}

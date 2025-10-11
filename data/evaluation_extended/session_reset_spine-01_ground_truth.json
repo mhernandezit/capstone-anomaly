@@ -1,0 +1,96 @@
+{
+  "name": "session_reset_spine-01",
+  "description": "BGP session reset on spine-01 peer 10.0.1.1",
+  "failure_type": "bgp_session_reset",
+  "failure_location": {
+    "device": "spine-01",
+    "peer": "10.0.1.1"
+  },
+  "expected_detections": 1,
+  "expected_alerts": 1,
+  "start_time": 1760118177.2563777,
+  "events": [
+    {
+      "timestamp": 1760118177.2565029,
+      "type": "withdraw",
+      "prefix": "10.50.0.0/24"
+    },
+    {
+      "timestamp": 1760118177.5684893,
+      "type": "withdraw",
+      "prefix": "10.51.0.0/24"
+    },
+    {
+      "timestamp": 1760118177.8810868,
+      "type": "withdraw",
+      "prefix": "10.52.0.0/24"
+    },
+    {
+      "timestamp": 1760118178.1908402,
+      "type": "withdraw",
+      "prefix": "10.53.0.0/24"
+    },
+    {
+      "timestamp": 1760118178.5012615,
+      "type": "withdraw",
+      "prefix": "10.54.0.0/24"
+    },
+    {
+      "timestamp": 1760118178.8138795,
+      "type": "withdraw",
+      "prefix": "10.55.0.0/24"
+    },
+    {
+      "timestamp": 1760118179.122369,
+      "type": "withdraw",
+      "prefix": "10.56.0.0/24"
+    },
+    {
+      "timestamp": 1760118179.4303486,
+      "type": "withdraw",
+      "prefix": "10.57.0.0/24"
+    },
+    {
+      "timestamp": 1760118181.741279,
+      "type": "announce",
+      "prefix": "10.50.0.0/24"
+    },
+    {
+      "timestamp": 1760118182.0518248,
+      "type": "announce",
+      "prefix": "10.51.0.0/24"
+    },
+    {
+      "timestamp": 1760118182.3639653,
+      "type": "announce",
+      "prefix": "10.52.0.0/24"
+    },
+    {
+      "timestamp": 1760118182.6736069,
+      "type": "announce",
+      "prefix": "10.53.0.0/24"
+    },
+    {
+      "timestamp": 1760118182.985611,
+      "type": "announce",
+      "prefix": "10.54.0.0/24"
+    },
+    {
+      "timestamp": 1760118183.2940583,
+      "type": "announce",
+      "prefix": "10.55.0.0/24"
+    },
+    {
+      "timestamp": 1760118183.6043434,
+      "type": "announce",
+      "prefix": "10.56.0.0/24"
+    },
+    {
+      "timestamp": 1760118183.9149373,
+      "type": "announce",
+      "prefix": "10.57.0.0/24"
+    }
+  ],
+  "end_time": 1760118184.2245498,
+  "duration_sec": 6.968172073364258
+}

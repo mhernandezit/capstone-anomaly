@@ -1,0 +1,107 @@
+{
+  "trained_date": "2025-10-10 17:56:31",
+  "num_training_samples": 200,
+  "contamination": 0.05,
+  "n_estimators": 150,
+  "features": [
+    "interface_error_rate",
+    "interface_utilization_mean",
+    "interface_utilization_std",
+    "interface_flap_count",
+    "cpu_utilization_mean",
+    "cpu_utilization_max",
+    "memory_utilization_mean",
+    "memory_utilization_max",
+    "temperature_mean",
+    "temperature_max",
+    "temperature_variance",
+    "fan_speed_variance",
+    "power_stability_score",
+    "threshold_violations",
+    "severity_escalations",
+    "multi_device_correlation",
+    "environmental_stress_score",
+    "bgp_correlation",
+    "syslog_correlation"
+  ],
+  "feature_ranges": {
+    "interface_error_rate": [
+      0.0,
+      0.08
+    ],
+    "interface_utilization_mean": [
+      0.05,
+      0.7
+    ],
+    "interface_utilization_std": [
+      0.01,
+      0.15
+    ],
+    "interface_flap_count": [
+      0,
+      3
+    ],
+    "cpu_utilization_mean": [
+      0.1,
+      0.5
+    ],
+    "cpu_utilization_max": [
+      0.15,
+      0.65
+    ],
+    "memory_utilization_mean": [
+      0.2,
+      0.55
+    ],
+    "memory_utilization_max": [
+      0.25,
+      0.7
+    ],
+    "temperature_mean": [
+      30,
+      55
+    ],
+    "temperature_max": [
+      35,
+      60
+    ],
+    "temperature_variance": [
+      0,
+      8
+    ],
+    "fan_speed_variance": [
+      0,
+      300
+    ],
+    "power_stability_score": [
+      0.8,
+      1.0
+    ],
+    "threshold_violations": [
+      0,
+      3
+    ],
+    "severity_escalations": [
+      0,
+      1
+    ],
+    "multi_device_correlation": [
+      0.0,
+      0.15
+    ],
+    "environmental_stress_score": [
+      0.0,
+      0.2
+    ],
+    "bgp_correlation": [
+      0.0,
+      0.1
+    ],
+    "syslog_correlation": [
+      0.0,
+      0.12
+    ]
+  },
+  "validation_fp_rate": 16.666666666666664,
+  "test_detection_rate": 100.0
+}

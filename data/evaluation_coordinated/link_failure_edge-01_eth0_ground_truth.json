@@ -1,0 +1,14 @@
+{
+  "name": "link_failure_edge-01_eth0",
+  "device": "edge-01",
+  "interface": "eth0",
+  "bgp_peer": "10.0.3.1",
+  "failure_time": 1760119692.5043926,
+  "expected_correlation": {
+    "snmp_traps": 2,
+    "bgp_updates": 5,
+    "syslog_messages": 2
+  },
+  "expected_alerts": 1,
+  "failure_type": "link_failure"
+}

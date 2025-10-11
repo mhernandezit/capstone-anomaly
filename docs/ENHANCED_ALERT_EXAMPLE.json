@@ -1,0 +1,164 @@
+{
+  "alert_id": "alert_0001",
+  "timestamp": "2025-10-10T09:03:24.768Z",
+  "alert_type": "multimodal_link_failure",
+  "confidence": 0.92,
+  
+  "detection": {
+    "sources": ["bgp", "snmp", "syslog"],
+    "bgp_evidence": {
+      "type": "mass_withdrawals",
+      "peer": "10.0.1.1",
+      "withdrawal_count": 3,
+      "affected_prefixes": ["10.20.0.0/24", "10.20.1.0/24", "10.20.2.0/24"],
+      "anomaly_score": 0.89
+    },
+    "snmp_evidence": {
+      "type": "interface_down",
+      "device": "tor-01",
+      "interface": "eth2",
+      "error_rate": 342,
+      "anomaly_score": 0.94
+    },
+    "syslog_evidence": {
+      "matching_events": 3,
+      "keywords": ["interface down", "link loss", "BGP neighbor down"]
+    },
+    "detection_delay_sec": 25.6
+  },
+  
+  "location": {
+    "primary": {
+      "device": "tor-01",
+      "interface": "eth2",
+      "bgp_peer": "10.0.1.1",
+      "rack": "rack-a",
+      "datacenter": "dc1"
+    },
+    "topology_role": "tor",
+    "role_description": "Top-of-Rack Switch",
+    "ranked_predictions": [
+      {
+        "rank": 1,
+        "device": "tor-01",
+        "interface": "eth2",
+        "confidence": 0.92,
+        "reasoning": "Direct BGP peer match + SNMP interface errors"
+      },
+      {
+        "rank": 2,
+        "device": "spine-01",
+        "interface": "eth5",
+        "confidence": 0.65,
+        "reasoning": "Upstream device showing correlated metrics"
+      },
+      {
+        "rank": 3,
+        "device": "tor-02",
+        "interface": "eth2",
+        "confidence": 0.45,
+        "reasoning": "Peer device in same rack"
+      }
+    ]
+  },
+  
+  "impact": {
+    "severity": "critical",
+    "blast_radius": {
+      "affected_devices": 12,
+      "affected_servers": 8,
+      "affected_services": ["web-cluster-1", "db-replica-3"],
+      "redundancy_available": false,
+      "spof": true
+    },
+    "service_impact": {
+      "customer_facing": true,
+      "estimated_users_affected": 1500,
+      "redundant_paths": 0,
+      "failover_available": false
+    },
+    "failure_domain": "rack-a",
+    "downstream_impact": [
+      {
+        "device": "server-01",
+        "type": "connectivity_loss",
+        "status": "unreachable"
+      },
+      {
+        "device": "server-02", 
+        "type": "connectivity_loss",
+        "status": "unreachable"
+      },
+      {
+        "device": "edge-router-01",
+        "type": "degraded_redundancy",
+        "status": "single_path_remaining"
+      }
+    ]
+  },
+  
+  "criticality": {
+    "score": 9.2,
+    "scale": "0-10 (10 = most critical)",
+    "factors": {
+      "topology_role": "ToR (high - aggregates multiple servers)",
+      "redundancy": "None (SPOF - single point of failure)",
+      "service_impact": "Customer-facing (high)",
+      "blast_radius": "12 devices (medium-high)",
+      "time_of_day": "Business hours (high)"
+    },
+    "priority": "P1",
+    "sla_breach": {
+      "likely": true,
+      "time_to_breach": "15 minutes",
+      "affected_sla": "99.9% uptime guarantee"
+    }
+  },
+  
+  "recommended_actions": [
+    {
+      "priority": 1,
+      "action": "Check physical link status on tor-01 interface eth2",
+      "estimated_time": "2 minutes",
+      "runbook": "https://wiki.example.com/runbooks/link-failure"
+    },
+    {
+      "priority": 2,
+      "action": "Verify BGP session health with peer 10.0.1.1",
+      "estimated_time": "1 minute",
+      "command": "show bgp neighbor 10.0.1.1"
+    },
+    {
+      "priority": 3,
+      "action": "Consider failover to tor-02 if available",
+      "estimated_time": "5 minutes",
+      "warning": "Redundancy not detected - manual intervention required"
+    },
+    {
+      "priority": 4,
+      "action": "Notify affected application teams",
+      "teams": ["web-ops", "database-team"],
+      "notification_template": "link-failure-p1"
+    }
+  ],
+  
+  "context": {
+    "recent_changes": {
+      "found": false,
+      "checked_window": "24 hours"
+    },
+    "maintenance_window": false,
+    "historical_failures": {
+      "device": "tor-01",
+      "last_failure": "2025-09-15T14:23:00Z",
+      "failure_count_30d": 0,
+      "mtbf_days": 45
+    }
+  },
+  
+  "dashboard_link": "https://monitoring.example.com/alerts/alert_0001",
+  "grafana_link": "https://grafana.example.com/d/network/tor-01?from=now-10m",
+  "ticket_auto_created": true,
+  "ticket_id": "INC-2025-10-0045"
+}
+

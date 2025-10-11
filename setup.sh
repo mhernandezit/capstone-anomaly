@@ -17,17 +17,6 @@ else
     pip install -r requirements.txt
 fi
 
-# Check Go
-echo "✅ Checking Go..."
-if command -v go &> /dev/null; then
-    echo "   Go $(go version | cut -d' ' -f3) installed"
-    echo "   Installing Go dependencies..."
-    go mod tidy
-else
-    echo "   ❌ Go not found. Run: brew install go"
-    exit 1
-fi
-
 # Check Docker
 echo "✅ Checking Docker..."
 if command -v docker &> /dev/null; then
@@ -46,8 +35,8 @@ echo ""
 echo "🚀 Setup complete! Next steps:"
 echo "   1. Start Docker Desktop if not running"
 echo "   2. Run 'make up' to start NATS + Dashboard"
-echo "   3. Run 'make collector' to start the BGP collector"
-echo "   4. Run 'make pipeline' to start the Python pipeline"
+echo "   3. Run 'make pipeline' to start the Python pipeline"
+echo "   4. Run examples: python examples/demo_multimodal_correlation.py"
 echo ""
 echo "📊 Dashboard will be at: http://localhost:8501"
 echo "📡 NATS will be at: nats://localhost:4222"

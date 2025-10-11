@@ -1,0 +1,8 @@
+{
+  "name": "hardware_spine-02_eth1",
+  "device": "spine-02",
+  "interface": "eth1",
+  "failure_time": 1760119679.4788165,
+  "expected_alerts": 1,
+  "failure_type": "hardware"
+}

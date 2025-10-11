@@ -37,7 +37,7 @@ I will use recent papers and accessible methods: Matrix Profile for BGP time ser
 
 ### Development & Evaluation Resources
 
-A containerized **virtual lab** (FRRouting with two spines, two ToRs, two edges, and multiple "server" peers) will generate realistic BGP updates and logs. I will inject four representative failures—**one-way loss of signal, route-reflector crash, edge/provider outage, and server crash**—then compare the system's alerts against a **baseline of manual SNMP/syslog triage**. Event-level precision, recall, and **F1** will be reported along with the **detection delay** to first alert and localization **Hit@k**; results will be summarized in a short paper, an 18-slide presentation, and a live demo.
+Realistic simulated data generators will produce BGP updates and SNMP metrics representing a network with two spines, two ToRs, two edges, and multiple server peers. I will test with four representative failures—**link failure, router overload, hardware degradation, and route leak**—then evaluate the system's detection performance. Event-level precision, recall, and **F1** will be reported along with the **detection delay** to first alert and localization **Hit@k**; results will be summarized in a short paper, an 18-slide presentation, and a live demo.
 
 ## Writing & Formatting
 
