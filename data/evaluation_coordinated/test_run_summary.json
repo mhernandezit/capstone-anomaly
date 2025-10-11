@@ -1,0 +1,60 @@
+{
+  "test_run_timestamp": "2025-10-10T14:08:39.467164",
+  "total_scenarios": 6,
+  "scenarios": [
+    {
+      "name": "link_failure_tor-01_eth2",
+      "device": "tor-01",
+      "interface": "eth2",
+      "bgp_peer": "10.0.2.1",
+      "failure_time": 1760119642.4695737,
+      "expected_correlation": {
+        "snmp_traps": 2,
+        "bgp_updates": 5,
+        "syslog_messages": 2
+      },
+      "expected_alerts": 1,
+      "failure_type": "link_failure"
+    },
+    {
+      "name": "bgp_flapping_spine-01_192.168.20.0_24",
+      "device": "spine-01",
+      "bgp_peer": "10.0.1.1",
+      "prefix": "192.168.20.0/24",
+      "failure_time": 1760119653.318841,
+      "expected_alerts": 1,
+      "failure_type": "bgp_flapping"
+    },
+    {
+      "name": "hardware_spine-02_eth1",
+      "device": "spine-02",
+      "interface": "eth1",
+      "failure_time": 1760119679.4788165,
+      "expected_alerts": 1,
+      "failure_type": "hardware"
+    },
+    {
+      "name": "link_failure_edge-01_eth0",
+      "device": "edge-01",
+      "interface": "eth0",
+      "bgp_peer": "10.0.3.1",
+      "failure_time": 1760119692.5043926,
+      "expected_correlation": {
+        "snmp_traps": 2,
+        "bgp_updates": 5,
+        "syslog_messages": 2
+      },
+      "expected_alerts": 1,
+      "failure_type": "link_failure"
+    },
+    {
+      "name": "bgp_flapping_tor-02_192.168.100.0_24",
+      "device": "tor-02",
+      "bgp_peer": "10.0.2.2",
+      "prefix": "192.168.100.0/24",
+      "failure_time": 1760119703.3373055,
+      "expected_alerts": 1,
+      "failure_type": "bgp_flapping"
+    }
+  ]
+}

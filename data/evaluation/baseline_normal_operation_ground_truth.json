@@ -1,0 +1,71 @@
+{
+  "name": "baseline_normal_operation",
+  "description": "Normal BGP updates with no failures",
+  "expected_detections": 0,
+  "expected_alerts": 0,
+  "start_time": 1760102500.5355635,
+  "events": [
+    {
+      "timestamp": 1760102500.5356765,
+      "type": "bgp_update",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.0.0/24"
+    },
+    {
+      "timestamp": 1760102502.538442,
+      "type": "bgp_update",
+      "peer": "10.0.2.1",
+      "prefix": "192.168.1.0/24"
+    },
+    {
+      "timestamp": 1760102504.5425572,
+      "type": "bgp_update",
+      "peer": "10.0.3.1",
+      "prefix": "192.168.2.0/24"
+    },
+    {
+      "timestamp": 1760102506.5475566,
+      "type": "bgp_update",
+      "peer": "10.0.4.1",
+      "prefix": "192.168.3.0/24"
+    },
+    {
+      "timestamp": 1760102508.5574393,
+      "type": "bgp_update",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.4.0/24"
+    },
+    {
+      "timestamp": 1760102510.5618157,
+      "type": "bgp_update",
+      "peer": "10.0.2.1",
+      "prefix": "192.168.5.0/24"
+    },
+    {
+      "timestamp": 1760102512.5680175,
+      "type": "bgp_update",
+      "peer": "10.0.3.1",
+      "prefix": "192.168.6.0/24"
+    },
+    {
+      "timestamp": 1760102514.5718586,
+      "type": "bgp_update",
+      "peer": "10.0.4.1",
+      "prefix": "192.168.7.0/24"
+    },
+    {
+      "timestamp": 1760102516.5734236,
+      "type": "bgp_update",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.8.0/24"
+    },
+    {
+      "timestamp": 1760102518.5745723,
+      "type": "bgp_update",
+      "peer": "10.0.2.1",
+      "prefix": "192.168.9.0/24"
+    }
+  ],
+  "end_time": 1760102520.584506,
+  "duration_sec": 20.04894256591797
+}

@@ -1,0 +1,37 @@
+{
+  "name": "multimodal_edge-02_eth0",
+  "description": "Link failure on edge-02 eth0 causing BGP+SNMP anomalies",
+  "failure_type": "multimodal_link_failure",
+  "failure_location": {
+    "device": "edge-02",
+    "interface": "eth0",
+    "bgp_peer": "10.0.3.2"
+  },
+  "expected_detections": 2,
+  "expected_alerts": 1,
+  "start_time": 1760118122.8256202,
+  "events": [
+    {
+      "timestamp": 1760118122.8257587,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118123.334861,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118123.8476844,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118124.3596027,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118124.8700671,
+      "type": "withdraw"
+    }
+  ],
+  "end_time": 1760118125.3791075,
+  "duration_sec": 2.5534873008728027
+}

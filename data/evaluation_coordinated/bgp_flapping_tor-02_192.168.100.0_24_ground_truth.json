@@ -1,0 +1,9 @@
+{
+  "name": "bgp_flapping_tor-02_192.168.100.0_24",
+  "device": "tor-02",
+  "bgp_peer": "10.0.2.2",
+  "prefix": "192.168.100.0/24",
+  "failure_time": 1760119703.3373055,
+  "expected_alerts": 1,
+  "failure_type": "bgp_flapping"
+}

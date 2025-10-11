@@ -1,0 +1,31 @@
+{
+  "name": "baseline_baseline_2",
+  "description": "Normal BGP updates with no failures",
+  "expected_detections": 0,
+  "expected_alerts": 0,
+  "start_time": 1760118034.74217,
+  "events": [
+    {
+      "timestamp": 1760118034.7422657,
+      "type": "announce"
+    },
+    {
+      "timestamp": 1760118036.7575321,
+      "type": "announce"
+    },
+    {
+      "timestamp": 1760118038.7599351,
+      "type": "announce"
+    },
+    {
+      "timestamp": 1760118040.7621884,
+      "type": "announce"
+    },
+    {
+      "timestamp": 1760118042.7628138,
+      "type": "announce"
+    }
+  ],
+  "end_time": 1760118044.771998,
+  "duration_sec": 10.02982783317566
+}

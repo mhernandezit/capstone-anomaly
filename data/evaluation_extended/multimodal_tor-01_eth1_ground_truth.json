@@ -1,0 +1,37 @@
+{
+  "name": "multimodal_tor-01_eth1",
+  "description": "Link failure on tor-01 eth1 causing BGP+SNMP anomalies",
+  "failure_type": "multimodal_link_failure",
+  "failure_location": {
+    "device": "tor-01",
+    "interface": "eth1",
+    "bgp_peer": "10.0.2.1"
+  },
+  "expected_detections": 2,
+  "expected_alerts": 1,
+  "start_time": 1760118111.686497,
+  "events": [
+    {
+      "timestamp": 1760118111.686612,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118112.194195,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118112.707112,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118113.2180316,
+      "type": "withdraw"
+    },
+    {
+      "timestamp": 1760118113.7307525,
+      "type": "withdraw"
+    }
+  ],
+  "end_time": 1760118114.2403712,
+  "duration_sec": 2.5538742542266846
+}

@@ -1,0 +1,9 @@
+{
+  "name": "bgp_flapping_spine-01_192.168.20.0_24",
+  "device": "spine-01",
+  "bgp_peer": "10.0.1.1",
+  "prefix": "192.168.20.0/24",
+  "failure_time": 1760119653.318841,
+  "expected_alerts": 1,
+  "failure_type": "bgp_flapping"
+}

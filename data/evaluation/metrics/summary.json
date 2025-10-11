@@ -1,0 +1,21 @@
+{
+  "f1": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp": 4,
+    "fp": 0,
+    "fn": 0
+  },
+  "delay": {
+    "mean": 29.4,
+    "median": 40.91,
+    "p95": 55.94
+  },
+  "localization": {
+    "hit@1": 1.0,
+    "hit@3": 1.0,
+    "hit@5": 1.0
+  },
+  "targets_met": true
+}

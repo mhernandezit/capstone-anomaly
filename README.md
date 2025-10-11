@@ -1,160 +1,373 @@
 # Machine Learning for Network Anomaly and Failure Detection
 
-A comprehensive machine learning system for real-time detection and localization of network failures using multi-modal data sources including BGP routing updates, SNMP metrics, and syslog messages.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Project Structure
+A capstone project implementing a multimodal machine learning system for network anomaly detection and failure localization using BGP routing data and SNMP metrics.
 
-```text
-capstone-anomaly/
-├── src/                          # Python ML pipeline source code
-│   ├── models/                   # ML models (Matrix Profile, LSTM, etc.)
-│   ├── features/                 # Feature extraction and aggregation
-│   ├── ingest/                   # Data ingestion from NATS
-│   ├── dash/                     # Streamlit dashboards
-│   ├── alerting/                 # Alert management
-│   ├── triage/                   # Impact classification
-│   ├── preprocessing/            # Data preprocessing
-│   ├── integration/              # ML pipeline integration
-│   ├── message_bus/              # NATS message bus integration
-│   └── utils/                    # Utility functions and schemas
-├── cmd/                          # Go-based components
-│   └── bmp-collector/            # BGP Monitoring Protocol collector
-├── lab/                         # Containerlab network environment
-│   ├── topo.clab.yml           # Basic lab topology
-│   ├── topo-dc-expanded.clab.yml # Expanded datacenter topology
-│   ├── configs/                # FRR router configurations
-│   ├── scripts/                # Lab management scripts
-│   └── monitoring/             # Fluent Bit log collection
-├── config/                      # Configuration files
-│   └── configs/                # System configurations
-├── tests/                       # Test files and test data
-├── data/                        # Data storage
-│   ├── lab_traces/             # Lab-generated traces
-│   └── public_traces/          # Public BGP traces
-├── docs/                        # Documentation
-│   ├── project_proposal/       # LaTeX proposal documents
-│   ├── presentations/          # Final project presentation
-│   ├── design/                 # System design diagrams
-│   ├── papers/                 # Research papers
-│   └── development/            # Development documentation
-├── docker-compose.yml          # Container orchestration
-└── go.mod                       # Go module dependencies
+## Overview
+
+This project addresses the challenges of network monitoring in large-scale environments where traditional threshold-based alerting produces excessive false positives and lacks context for failure localization. The system uses unsupervised machine learning techniques to detect anomalies across multiple data sources and an intelligent correlation agent to provide enriched, actionable alerts.
+
+### Key Features
+
+- **Dual-Pipeline Anomaly Detection**
+  - Matrix Profile analysis for BGP time-series anomalies
+  - Isolation Forest for SNMP hardware and environmental anomalies
+  
+- **Multimodal Correlation Agent**
+  - Temporal and spatial event correlation
+  - Cross-modal validation to reduce false positives
+  - Topology-aware impact assessment
+  
+- **Enriched Alerting**
+  - Root cause inference from multi-modal evidence
+  - Blast radius calculation and SPOF detection
+  - Criticality scoring (0-10) and priority classification (P1/P2/P3)
+  - Actionable recommendations with CLI commands
+
+- **Comprehensive Failure Coverage**
+  - Link failures
+  - Router overload
+  - Optical degradation
+  - Hardware failures
+  - Route leaks
+  - BGP flapping
+
+## Architecture
+
+```
+Network Events (BGP, SNMP)
+         |
+         v
+  [Data Collection]
+    BGP: Simulators (Python)
+    SNMP: Simulators (Python)
+         |
+         +------------------+
+         |                  |
+    BGP Updates        SNMP Metrics
+         |                  |
+         v                  v
+  [Matrix Profile]   [Isolation Forest]
+   (BGP Pipeline)     (SNMP Pipeline)
+         |                  |
+    BGP Anomaly        SNMP Anomaly
+         |                  |
+         +--------+---------+
+                  |
+                  v
+       [Correlation Agent]
+          - Correlates events
+          - Topology triage
+          - Impact assessment
+                  |
+                  v
+         [Enriched Alerts]
+       - Root cause
+       - Impact details
+       - Actions
 ```
 
 ## Quick Start
 
 ### Prerequisites
 
-- Docker and Docker Compose
 - Python 3.8+
-- Go 1.21+ (for BMP collector)
-- Containerlab (for network lab)
-- NATS server
+- pip (Python package manager)
 
-### Running the System
+### Installation
 
-1. **Start the lab environment:**
+1. Clone the repository:
 
    ```bash
-   cd lab
-   ./scripts/deploy.sh
+   git clone https://github.com/your-username/capstone-anomaly.git
+   cd capstone-anomaly
    ```
 
-2. **Build and run the BMP collector:**
+2. Install the package in editable mode (recommended):
+  
+```bash
+   pip install -e .
+   ```
+  
+   This installs all dependencies and sets up the package for development.
+  
+   Alternatively, install just the dependencies:
+  
+```bash
+   pip install -r requirements.txt
+   ```
 
+1. Run the quick demonstration:
+  
    ```bash
-   # Build the Go BMP collector
-   docker build -t capstone-bmp-collector:latest -f cmd/bmp-collector/Dockerfile .
-   
-   # The collector is automatically started with the lab
+python examples/demo_multimodal_correlation.py
+
    ```
 
-3. **Run the ML pipeline:**
+**Note**: The editable install (`pip install -e .`) is recommended as it allows you to import from `src` anywhere in the project without path manipulation.
 
-   ```bash
-   cd src
-   python dual_signal_pipeline.py
-   ```
+### Running Scenarios
 
-4. **Access the dashboard:**
-   - Open `http://localhost:8501` in your browser
-
-### Testing
+Test different failure scenarios:
 
 ```bash
-# Quick test
-make test-quick
+# Link failure (both BGP and SNMP affected)
+python examples/run_multimodal_correlation.py --scenario link_failure
 
-# Full test suite
-make test-scenarios
+# Router overload (CPU/memory + routing issues)
+python examples/run_multimodal_correlation.py --scenario router_overload
+
+# Hardware failure (thermal/power + BGP session loss)
+python examples/run_multimodal_correlation.py --scenario hardware_failure
 ```
 
-## Research Components
+See [QUICK_START_MULTIMODAL.md](QUICK_START_MULTIMODAL.md) for detailed usage instructions.
 
-### Machine Learning Models
+## Project Structure
 
-- **Matrix Profile**: Time-series anomaly detection for BGP streams
-- **Isolation Forest**: Unsupervised anomaly detection for log patterns
-- **LSTM Baseline**: Supervised learning approach for comparison
+```
+capstone-anomaly/
+├── src/                          # Core source code
+│   ├── correlation/              # Multimodal correlation agent
+│   ├── models/                   # ML detectors (Matrix Profile, Isolation Forest)
+│   ├── features/                 # Feature extraction (BGP, SNMP)
+│   ├── simulators/               # Failure scenario simulators
+│   ├── triage/                   # Topology-aware triage system
+│   ├── alerting/                 # Alert generation and logging
+│   └── utils/                    # Shared utilities and schemas
+├── examples/                     # Demo and integration scripts
+├── tests/                        # Test suite
+├── docs/                         # Documentation
+│   ├── MULTIMODAL_CORRELATION.md  # Comprehensive architecture guide
+│   ├── presentations/            # Academic presentation materials
+│   └── papers/                   # Research papers
+├── config/                       # Configuration files
+├── data/                         # Models and results
+└── evaluation/                   # Topology and evaluation scripts
+```
 
-### Data Sources
+## Core Components
 
-- **BGP Updates**: Real-time routing change messages via BGP Monitoring Protocol (BMP)
-- **SNMP Metrics**: Hardware health indicators and interface performance data
-- **Syslog**: Device logs and system events
-- **Lab Traces**: Generated from virtual lab environment with Containerlab and FRR routers
+### 1. Matrix Profile Detector (BGP)
+- Detects anomalies in BGP update streams
+- Uses time-series discord detection
+- Identifies route withdrawals, announcements, and AS path churn
+- Location: `src/models/cpu_mp_detector.py`
 
-### Evaluation Metrics
+### 2. Isolation Forest Detector (SNMP)
+- Detects anomalies in SNMP metrics
+- 19-dimensional feature space (interface, CPU, memory, temperature, etc.)
+- Pre-trained model with 5% false positive rate, 100% detection rate
+- Location: `src/models/isolation_forest_detector.py`
 
-- Operational efficiency improvements
-- Precision/Recall/F1 scores for anomaly detection
-- Context-aware anomaly localization accuracy
-- Alert noise reduction vs. traditional threshold-based monitoring
+### 3. Multimodal Correlation Agent
+- Correlates anomalies across BGP and SNMP pipelines
+- Temporal correlation (60-second window)
+- Spatial correlation (same device/interface/peer)
+- Multi-modal validation (higher confidence when both sources agree)
+- Location: `src/correlation/multimodal_correlator.py`
+
+### 4. Topology Triage System
+- Maps devices to roles (spine, edge, ToR, etc.)
+- Calculates blast radius
+- Detects single points of failure (SPOF)
+- Assigns criticality scores and priorities
+- Location: `src/triage/topology_triage.py`
 
 ## Documentation
 
-- [Project Proposal](docs/project_proposal/) - LaTeX proposal documents
-- [Final Project Presentation](docs/presentations/) - Final project presentation
-- [Testing Guide](TESTING_GUIDE.md) - Comprehensive testing instructions
-- [Lab Documentation](lab/README.md) - Virtual lab setup and usage
-- [Research Papers](docs/papers/) - Supporting research literature
+- **[QUICK_START_MULTIMODAL.md](QUICK_START_MULTIMODAL.md)** - Quick start guide for the correlation system
+- **[README_MULTIMODAL.md](README_MULTIMODAL.md)** - Overview of the multimodal system
+- **[docs/MULTIMODAL_CORRELATION.md](docs/MULTIMODAL_CORRELATION.md)** - Comprehensive architecture and API documentation
+- **[MULTIMODAL_SYSTEM_SUMMARY.md](MULTIMODAL_SYSTEM_SUMMARY.md)** - Implementation summary
+- **[CHANGELOG.md](CHANGELOG.md)** - Project changelog
 
-## Development
+## Performance Metrics
 
-### Code Organization
+Based on realistic failure scenario testing:
 
-- **`src/`**: Python ML pipeline and analysis code
-- **`cmd/bmp-collector/`**: Go-based BGP Monitoring Protocol collector
-- **`lab/`**: Containerlab network environment with real FRR routers
-- **`scripts/`**: Deployment and management automation
+- **Correlation Rate**: 60-80% (events successfully correlated)
+- **Multi-modal Confirmation**: 40-60% (events confirmed by both sources)
+- **False Positive Suppression**: 30-50% (reduction through cross-validation)
+- **Alert Confidence**: 0.75-0.95 (combined confidence scores)
 
-### Key Features
+## Example Output
 
-- Multi-modal network anomaly detection (BGP, SNMP, syslog)
-- Real-time streaming analytics with NATS message bus
-- Matrix Profile and Isolation Forest ML algorithms
-- Topology-aware failure localization
-- Context-aware correlation analysis
-- Interactive dashboard for Network Operation Centers
+When both pipelines detect anomalies, the system generates enriched alerts:
 
-## Project Status
+```
+[ENRICHED ALERT] Multimodal Correlation Detected
+Alert Type: link_failure
+Severity: CRITICAL | Priority: P1
+Confidence: 92%
 
-This project is part of the Information Systems Capstone program.
+CORRELATION:
+  Multi-modal: YES
+  Sources: BGP, SNMP
+  Strength: 0.87
 
-**Current Focus:**
+TOPOLOGY ANALYSIS:
+  Device: spine-01
+  Role: spine
+  Criticality: 9.0/10
 
-- Project proposal completed
-- Virtual lab environment established with Containerlab and FRR routers
-- ML pipeline implementation with multi-modal data processing
-- Go-based BMP collector for BGP data ingestion
-- Final project presentation completed
-- System integration and comprehensive testing
-- Performance evaluation and validation
+IMPACT ASSESSMENT:
+  Affected devices: 15
+  Services: east_west_traffic
+  SPOF: YES - CRITICAL!
+
+ROOT CAUSE:
+  Physical link failure on spine-01
+  Evidence:
+    - BGP: wdr_total, as_path_churn (0.89)
+    - SNMP: interface_error_rate (0.95)
+
+RECOMMENDED ACTIONS:
+  1. Check physical link status
+  2. Verify BGP session health
+  3. Escalate immediately
+```
+
+## Academic Context
+
+This is a capstone project for the CUNY School of Professional Studies IS 499 Information Systems Capstone course. The work builds on research in:
+
+- Matrix Profile data mining for BGP anomaly detection (Scott et al., 2024)
+- Machine learning for SNMP-MIB anomaly detection (Manna & Alkasassbeh, 2019)
+- ML-based action recommenders for Network Operation Centers (Mohammed et al., 2021)
+- Semantic feature selection in network telemetry (Feltin et al., 2023)
+
+See [docs/presentations/final_project_draft.pdf](docs/presentations/final_project_draft.pdf) for the complete academic paper.
+
+## Integration with Existing Infrastructure
+
+The correlation agent can be integrated with production monitoring systems:
+
+```python
+from src.correlation.multimodal_correlator import MultiModalCorrelator
+
+# Initialize
+correlator = MultiModalCorrelator(
+    topology_path="path/to/topology.yml",
+    roles_config_path="path/to/roles.yml"
+)
+
+# In your BGP monitoring pipeline:
+if bgp_anomaly_detected:
+    alert = correlator.ingest_bgp_anomaly(
+        timestamp=current_time,
+        confidence=detection_confidence,
+        detected_series=['wdr_total', 'as_path_churn'],
+        peer='spine-01'
+    )
+    if alert:
+        send_to_operations(alert)
+
+# In your SNMP monitoring pipeline:
+if snmp_anomaly_detected:
+    alert = correlator.ingest_snmp_anomaly(
+        timestamp=current_time,
+        confidence=detection_confidence,
+        severity='critical',
+        device='spine-01',
+        affected_features=['interface_error_rate']
+    )
+    if alert:
+        send_to_operations(alert)
+```
+
+## Configuration
+
+### Topology Configuration
+Define your network topology in YAML format:
+
+```yaml
+devices:
+  spine-01:
+    role: spine
+    asn: 65001
+    priority: critical
+    blast_radius: 15
+
+bgp_peers:
+  - [spine-01, tor-01]
+  - [spine-01, edge-01]
+```
+
+### Role Mapping
+Map device identifiers to roles in `config/configs/roles.yml`:
+
+```yaml
+roles:
+  spine-01: spine
+  edge-01: edge
+  tor-01: tor
+```
+
+## Testing
+
+Run the test suite:
+
+```bash
+# Run all tests
+python -m pytest tests/
+
+# Run specific test categories
+python -m pytest tests/test_isolation_forest.py
+python -m pytest tests/test_correlation.py
+```
 
 ## Contributing
 
-This is a research project. All code is a work in progress by Mike Hernandez.
+This is an academic project completed for CUNY SPS. For questions or collaboration:
+
+- **Author**: Michael Hernandez
+- **Course**: IS 499 Information Systems Capstone
+- **Institution**: CUNY School of Professional Studies
+- **Professor**: John Bouma
 
 ## License
 
-This project is for educational purposes as part of the Information Systems Capstone program.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Citation
+
+If you use this work in your research, please cite:
+
+```bibtex
+@mastersthesis{hernandez2025multimodal,
+  author = {Hernandez, Michael},
+  title = {Machine Learning for Network Anomaly and Failure Detection},
+  school = {CUNY School of Professional Studies},
+  year = {2025},
+  type = {Capstone Project}
+}
+```
+
+## Acknowledgments
+
+- Professor John Bouma for guidance and feedback
+- CUNY School of Professional Studies for academic support
+- Research community for foundational work in network anomaly detection
+- Open source projects: stumpy (Matrix Profile), scikit-learn (Isolation Forest), NATS
+
+## References
+
+Key references that informed this work:
+
+1. Scott, B., Johnstone, M. N., Szewczyk, P., & Richardson, S. (2024). Matrix Profile data mining for BGP anomaly detection. *Computer Networks*, 242, 110257.
+
+2. Manna, A., & Alkasassbeh, M. (2019). Detecting network anomalies using machine learning and SNMP-MIB IP group data. *arXiv preprint arXiv:1906.00863*.
+
+3. Mohammed, S. A., Mohammed, A. R., Côté, D., & Shirmohammadi, S. (2021). A machine-learning-based action recommender for Network Operation Centers. *IEEE Transactions on Network and Service Management*, 18(3), 2702-2713.
+
+4. Feltin, T., Cordero Fuertes, J. A., Brockners, F., & Clausen, T. H. (2023). Understanding Semantics in Feature Selection for Fault Diagnosis in Network Telemetry Data. *NOMS 2023-2023 IEEE/IFIP Network Operations and Management Symposium*, 1-9.
+
+For the complete list of references, see [docs/presentations/final_project_draft.pdf](docs/presentations/final_project_draft.pdf).
+
+---
+
+**Project Status**: ✅ Complete (October 2025)
+
+For detailed technical documentation, see [docs/MULTIMODAL_CORRELATION.md](docs/MULTIMODAL_CORRELATION.md).

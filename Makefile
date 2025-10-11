@@ -1,4 +1,4 @@
-.PHONY: up down collector pipeline fmt lint test-quick test-scenarios
+.PHONY: up down pipeline fmt lint test-quick test-scenarios
 
 up:
 	docker compose up -d
@@ -15,7 +15,6 @@ fmt:
 	./venv/bin/black src || true
 
 lint:
-	# golangci-lint run || true (disabled - no Go code)
 	ruff check src || true
 
 test-quick:

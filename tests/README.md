@@ -1,172 +1,354 @@
-# BGP Event Testing Suite
+# Test Suite
 
-This directory contains tools for testing the BGP anomaly detection system by publishing synthetic BGP events to NATS.
+This directory contains the test suite for the network anomaly detection system, organized using pytest conventions.
 
-## Quick Start
+## Directory Structure
 
-### 1. Test Dashboard Connection (Immediate)
+```
+tests/
+├── conftest.py           # Pytest configuration and shared fixtures
+├── unit/                 # Unit tests for individual components
+├── integration/          # Integration tests for pipelines
+├── fixtures/             # Test data and fixtures
+└── smoke/               # Quick smoke tests for validation
+```
+
+## Prerequisites
+
+Install the package in editable mode (required for tests to work):
 
 ```bash
-# Make sure your application is running first
-make up
-
-# Publish a few test events immediately
-python tests/quick_test.py
+pip install -e .
 ```
 
-This will send 3 test BGP events and you should see them appear in your Streamlit dashboard at `http://localhost:8501`.
-
-### 2. Run Full Test Scenarios (Comprehensive)
+Or install with dev dependencies:
 
 ```bash
-# Interactive test runner with multiple scenarios
-python tests/data_publisher.py
+pip install -e ".[dev]"
 ```
 
-This provides 5 different test scenarios:
+## Running Tests
 
-1. **Normal Traffic** - Baseline BGP activity
-2. **Route Leak Attack** - Simulates route leak anomalies  
-3. **Prefix Hijack** - Simulates prefix hijacking
-4. **Massive Withdrawal** - Simulates network outages
-5. **High Volume Traffic** - Performance testing
+### All Tests
 
-## Test Scenarios Explained
+```bash
+# Run entire test suite
+pytest tests/
 
-### Normal Traffic
+# Run with verbose output
+pytest tests/ -v
 
-- **Purpose**: Establish baseline behavior
-- **Events**: 80% announcements, 20% withdrawals
-- **Duration**: 60 seconds at 2 events/sec
-- **Use Case**: Verify system handles normal BGP operations
+# Run with coverage
+pytest tests/ --cov=src --cov-report=html
+```
 
-### Route Leak Attack
+### By Category
 
-- **Purpose**: Test detection of route leaks
-- **Anomaly**: Peer announces prefixes with suspicious AS paths
-- **Pattern**: Normal traffic + periodic route leaks every 10s
-- **Use Case**: Validate route leak detection algorithms
+```bash
+# Unit tests (fast, < 10 seconds)
+pytest tests/unit/ -v
 
-### Prefix Hijack
+# Integration tests (slower, < 60 seconds)
+pytest tests/integration/ -v
 
-- **Purpose**: Test prefix hijacking detection
-- **Anomaly**: Single AS announces prefixes it shouldn't own
-- **Pattern**: Normal traffic + hijack attempts every 15s
-- **Use Case**: Validate prefix hijack detection
+# Smoke tests (quick validation)
+pytest tests/smoke/ -v
+```
 
-### Massive Withdrawal  
+### By Marker
 
-- **Purpose**: Test outage detection
-- **Anomaly**: Large numbers of routes withdrawn simultaneously
-- **Pattern**: Normal traffic + mass withdrawals every 20s
-- **Use Case**: Validate network outage detection
+```bash
+# Run only unit tests
+pytest -m unit
 
-### High Volume Traffic
+# Run only integration tests
+pytest -m integration
 
-- **Purpose**: Performance and stress testing
-- **Events**: 10 events/sec from multiple peers
-- **Duration**: 2 minutes
-- **Use Case**: Ensure system scales under load
+# Run smoke tests
+pytest -m smoke
 
-## Data Format
+# Skip slow tests
+pytest -m "not slow"
+```
 
-All test events follow the `BGPUpdate` schema defined in `python/utils/schema.py`:
+### Specific Tests
+
+```bash
+# Test specific file
+pytest tests/unit/test_isolation_forest.py -v
+
+# Test specific class
+pytest tests/unit/test_isolation_forest.py::TestIsolationForestDetector -v
+
+# Test specific function
+pytest tests/unit/test_matrix_profile.py::TestStumpyBasic::test_stumpy_basic_calculation -v
+```
+
+## Test Categories
+
+### Unit Tests (`unit/`)
+
+Fast, isolated tests for individual components:
+
+- `test_isolation_forest.py` - Isolation Forest detector tests
+- `test_matrix_profile.py` - Matrix Profile/stumpy tests
+
+**Characteristics:**
+- Run in < 10 seconds total
+- No external dependencies (NATS, files, etc.)
+- Test single functions/classes
+- Use mocked data
+
+### Integration Tests (`integration/`)
+
+End-to-end pipeline tests:
+
+- `test_multimodal.py` - Full multimodal correlation pipeline
+
+**Characteristics:**
+- Run in < 60 seconds total
+- May use temporary files
+- Test component interactions
+- Validate full workflows
+
+### Smoke Tests (`smoke/`)
+
+Quick validation tests:
+
+- `test_nats_connection.py` - NATS connectivity and basic operations
+- `test_imports.py` - Core module imports
+
+**Characteristics:**
+- Run in < 5 seconds total
+- Check basic functionality
+- Validate environment setup
+- Useful for CI/CD pipelines
+
+### Fixtures (`fixtures/`)
+
+Reusable test data:
+
+- `bgp_updates.jsonl` - Sample BGP updates
+- `snmp_metrics.csv` - Sample SNMP metrics
+- `syslog_messages.jsonl` - Sample syslog messages
+
+## Writing New Tests
+
+### Unit Test Template
 
 ```python
-class BGPUpdate(BaseModel):
-    ts: int                           # Unix timestamp
-    peer: str                         # BGP peer IP address  
-    type: str                         # "UPDATE" | "NOTIFICATION"
-    announce: Optional[List[str]]     # Announced prefixes
-    withdraw: Optional[List[str]]     # Withdrawn prefixes  
-    attrs: Optional[Dict[str, Any]]   # BGP attributes (AS path, etc.)
+"""Unit tests for [Component]."""
+import pytest
+from src.models.your_module import YourClass
+
+
+@pytest.mark.unit
+class TestYourClass:
+    """Test suite for YourClass."""
+    
+    def test_initialization(self):
+        """Test component initializes correctly."""
+        obj = YourClass(param=value)
+        assert obj.param == value
+    
+    def test_normal_operation(self, sample_fixture):
+        """Test normal operation."""
+        result = obj.process(sample_fixture)
+        assert result is not None
 ```
 
-## NATS Subjects
-
-The test suite publishes to these NATS subjects:
-
-- `bgp.updates` - Consumed by the Python pipeline for processing
-- `bgp.events` - Consumed directly by the dashboard for display
-
-## System Integration
-
-``` text
-Test Publisher → NATS → [Pipeline] → Dashboard
-                   ↓
-               Processing Chain:
-               1. Feature Aggregation
-               2. Matrix Profile Detection  
-               3. Impact Classification
-               4. Alert Generation
-```
-
-## Monitoring Test Results
-
-1. **Dashboard**: Real-time event display at `http://localhost:8501`
-2. **Pipeline Logs**: Check console output of `make pipeline`
-3. **NATS Logs**: Monitor NATS server activity
-4. **Container Logs**: `docker logs capstone-anomaly-dash-1`
-
-## Customizing Tests
-
-### Add New Scenarios
-
-Edit `tests/data_publisher.py` and add to `TEST_SCENARIOS`:
+### Integration Test Template
 
 ```python
-"my_scenario": TestScenario(
-    name="My Custom Scenario",
-    description="Description of what this tests",
-    duration_seconds=120,
-    event_rate_per_second=5.0,
-    peers=["10.0.1.1", "10.0.2.1"],
-    prefixes=["192.168.100.0/24"],
-    anomaly_type="custom"  # or None for normal
-)
+"""Integration tests for [Pipeline]."""
+import pytest
+
+
+@pytest.mark.integration
+class TestYourPipeline:
+    """Test suite for pipeline integration."""
+    
+    def test_end_to_end(self):
+        """Test complete pipeline flow."""
+        # Setup
+        pipeline = YourPipeline()
+        
+        # Execute
+        result = pipeline.run(test_data)
+        
+        # Verify
+        assert result.success
 ```
 
-### Modify Event Generation
+## Available Fixtures
 
-Edit the `BGPEventGenerator` class methods:
+Defined in `conftest.py`:
 
-- `generate_normal_update()` - Normal BGP traffic patterns
-- `generate_route_leak()` - Route leak anomaly patterns
-- `generate_prefix_hijack()` - Hijack anomaly patterns
-- `generate_massive_withdrawal()` - Withdrawal anomaly patterns
+- `sample_bgp_update` - Normal BGP update
+- `sample_bgp_anomaly` - BGP update with anomaly
+- `sample_snmp_metrics` - Normal SNMP metrics
+- `sample_snmp_anomaly` - SNMP metrics with anomaly
+- `sample_topology` - Network topology for testing
+- `sample_roles_config` - Device roles configuration
+- `fixtures_dir` - Path to fixtures directory
+
+Example usage:
+
+```python
+def test_with_fixture(sample_bgp_update):
+    """Test using a fixture."""
+    assert sample_bgp_update["peer"] == "10.0.1.1"
+```
+
+## CI/CD Integration
+
+### GitHub Actions Example
+
+```yaml
+name: Tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run smoke tests
+        run: pytest tests/smoke/ -v
+      - name: Run unit tests
+        run: pytest tests/unit/ -v --cov=src
+      - name: Run integration tests
+        run: pytest tests/integration/ -v
+```
+
+## Pytest Configuration
+
+### Markers
+
+- `@pytest.mark.unit` - Unit tests
+- `@pytest.mark.integration` - Integration tests
+- `@pytest.mark.smoke` - Smoke tests
+- `@pytest.mark.slow` - Tests that take longer to run
+- `@pytest.mark.asyncio` - Async tests
+
+### Command Line Options
+
+```bash
+# Show print statements
+pytest -s
+
+# Stop on first failure
+pytest -x
+
+# Run last failed tests
+pytest --lf
+
+# Run tests matching pattern
+pytest -k "test_isolation"
+
+# Parallel execution (requires pytest-xdist)
+pytest -n auto
+```
 
 ## Troubleshooting
 
-### Connection Issues
+### Import Errors
+
+Ensure you're running pytest from the project root:
 
 ```bash
-# Check NATS is running
-docker ps | grep nats
-
-# Check NATS connectivity  
-telnet localhost 4222
+cd /path/to/capstone-anomaly
+pytest tests/
 ```
 
-### Dashboard Not Updating
+### NATS Connection Errors
+
+For smoke tests requiring NATS:
 
 ```bash
-# Check dashboard logs
-docker logs capstone-anomaly-dash-1
+# Start NATS server
+docker compose up -d nats
 
-# Restart dashboard
-make down && make up
+# Or use Docker directly
+docker run -p 4222:4222 nats:latest
 ```
 
-### Pipeline Not Processing
+### Missing Dependencies
 
 ```bash
-# Run pipeline manually to see errors
-make pipeline
+# Install test dependencies
+pip install -r requirements.txt
+
+# Install pytest plugins
+pip install pytest pytest-asyncio pytest-cov
 ```
 
-## Next Steps
+### GPU Tests Failing
 
-1. Run `quick_test.py` to verify basic connectivity
-2. Use `data_publisher.py` scenarios to test anomaly detection
-3. Monitor results in dashboard and pipeline logs
-4. Customize scenarios for your specific testing needs
+GPU tests (Matrix Profile acceleration) require CUDA:
+
+```bash
+# Skip GPU tests if CUDA not available
+pytest -m "not slow"
+```
+
+## Coverage Reports
+
+```bash
+# Generate HTML coverage report
+pytest tests/ --cov=src --cov-report=html
+
+# Open report
+open htmlcov/index.html  # macOS
+start htmlcov/index.html # Windows
+xdg-open htmlcov/index.html # Linux
+```
+
+## Comparison: Tests vs Evaluation
+
+| Directory | Purpose | Focus | Runtime |
+|-----------|---------|-------|---------|
+| `tests/` | Verify code correctness | Algorithm logic | < 2 min |
+| `evaluation/` | Measure system performance | Metrics (F1, delay, Hit@k) | 5-30 min |
+
+**Use tests/** for:
+- Verifying bug fixes
+- Testing new features
+- CI/CD pipelines
+- Development workflow
+
+**Use evaluation/** for:
+- Academic paper metrics
+- Performance benchmarks
+- Scenario-based validation
+- System evaluation
+
+## Best Practices
+
+1. **Keep tests fast** - Unit tests should run in seconds
+2. **Use fixtures** - Avoid duplicating test data setup
+3. **Test one thing** - Each test should verify one behavior
+4. **Clear names** - Test names should describe what they test
+5. **Arrange-Act-Assert** - Follow the AAA pattern
+6. **No external deps** - Unit tests should not require NATS, files, etc.
+7. **Mark appropriately** - Use pytest markers for organization
+
+## Additional Resources
+
+- [Pytest Documentation](https://docs.pytest.org/)
+- [Testing Best Practices](https://docs.pytest.org/en/latest/goodpractices.html)
+- Project evaluation framework: `evaluation/README.md`
+
+## Quick Reference
+
+```bash
+# Common commands
+pytest tests/                     # All tests
+pytest tests/unit/ -v             # Unit tests, verbose
+pytest tests/smoke/               # Quick validation
+pytest -m "unit and not slow"     # Fast unit tests only
+pytest --lf                       # Re-run failed tests
+pytest -k "isolation"             # Tests matching pattern
+pytest --cov=src                  # With coverage
+```

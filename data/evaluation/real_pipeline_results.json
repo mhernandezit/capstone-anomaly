@@ -1,0 +1,30 @@
+{
+  "total_alerts": 2,
+  "by_detector": {
+    "rule_based": 2
+  },
+  "alerts": [
+    {
+      "timestamp": 1760130969.3255389,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "linkDown",
+        "device": "tor-01"
+      }
+    },
+    {
+      "timestamp": 1760131006.8346477,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "temperatureHigh",
+        "device": "spine-02"
+      }
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "name": "bgp_flapping_spine-02_192.168.50.0_24",
+  "description": "Route flapping on spine-02 for 192.168.50.0/24",
+  "failure_type": "bgp_route_flapping",
+  "failure_location": {
+    "device": "spine-02",
+    "peer": "10.0.1.2",
+    "prefix": "192.168.50.0/24"
+  },
+  "expected_detections": 1,
+  "expected_alerts": 1,
+  "start_time": 1760118147.5113,
+  "events": [
+    {
+      "timestamp": 1760118147.5113792,
+      "type": "announce",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118148.3131094,
+      "type": "withdraw",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118149.1275296,
+      "type": "announce",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118149.9296174,
+      "type": "withdraw",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118150.7315855,
+      "type": "announce",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118151.5344996,
+      "type": "withdraw",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118152.3484719,
+      "type": "announce",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118153.163261,
+      "type": "withdraw",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118153.9782162,
+      "type": "announce",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118154.7853556,
+      "type": "withdraw",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118155.593524,
+      "type": "announce",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118156.3990753,
+      "type": "withdraw",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118157.2067714,
+      "type": "announce",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118158.0156126,
+      "type": "withdraw",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118158.8212073,
+      "type": "announce",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118159.6243308,
+      "type": "withdraw",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118160.4325373,
+      "type": "announce",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118161.2399595,
+      "type": "withdraw",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118162.0434763,
+      "type": "announce",
+      "prefix": "192.168.50.0/24"
+    },
+    {
+      "timestamp": 1760118162.8517299,
+      "type": "withdraw",
+      "prefix": "192.168.50.0/24"
+    }
+  ],
+  "end_time": 1760118163.6615558,
+  "duration_sec": 16.15025568008423
+}

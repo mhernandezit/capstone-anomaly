@@ -1,0 +1,112 @@
+{
+  "name": "bgp_route_flapping",
+  "description": "Route flapping: rapid announce/withdraw cycles on 192.168.100.0/24",
+  "failure_type": "routing",
+  "failure_location": {
+    "peer": "10.0.1.1",
+    "prefix": "192.168.100.0/24"
+  },
+  "expected_detections": 1,
+  "expected_alerts": 1,
+  "start_time": 1760102525.5910313,
+  "events": [
+    {
+      "timestamp": 1760102525.5911593,
+      "type": "announce",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102526.599588,
+      "type": "withdraw",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102527.607901,
+      "type": "announce",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102528.6192796,
+      "type": "withdraw",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102529.6307676,
+      "type": "announce",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102530.6444056,
+      "type": "withdraw",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102531.6522589,
+      "type": "announce",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102532.6615727,
+      "type": "withdraw",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102533.6744041,
+      "type": "announce",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102534.685373,
+      "type": "withdraw",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102535.689354,
+      "type": "announce",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102536.693043,
+      "type": "withdraw",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102537.7072687,
+      "type": "announce",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102538.716379,
+      "type": "withdraw",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102539.7272255,
+      "type": "announce",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    },
+    {
+      "timestamp": 1760102540.7384162,
+      "type": "withdraw",
+      "peer": "10.0.1.1",
+      "prefix": "192.168.100.0/24"
+    }
+  ],
+  "end_time": 1760102541.7488081,
+  "duration_sec": 16.157776832580566
+}
