@@ -4,7 +4,7 @@ import yaml
 from nats.aio.client import Client as NATS
 
 from anomaly_detection.features.stream_features import FeatureAggregator
-from anomaly_detection.models.mp_detector import MPDetector
+from anomaly_detection.models.matrix_profile_detector import MatrixProfileDetector
 from anomaly_detection.triage.impact import ImpactScorer
 from anomaly_detection.utils.schema import BGPUpdate
 
@@ -17,7 +17,7 @@ async def main():
     await nc.connect(servers=["nats://127.0.0.1:4222"])
 
     agg = FeatureAggregator(bin_seconds=BIN_SECS)
-    mp = MPDetector(window_bins=CFG_ROLES["binning"]["window_bins"])
+    mp = MatrixProfileDetector(window_bins=CFG_ROLES["binning"]["window_bins"])
     impact = ImpactScorer(CFG_ROLES)
 
     async def handler(msg):

@@ -18,7 +18,6 @@ from .features import (
     SNMPFeatureExtractor,
 )
 from .models import (
-    GPUMPDetector,
     IsolationForestDetector,
     MatrixProfileDetector,
 )
@@ -28,7 +27,13 @@ from .triage import (
     ImpactScorer,
     TopologyTriage,
     TopologyTriageSystem,
+    TopologyLocation,
+    BlastRadius,
+    CriticalityAssessment,
+    TriageResult,
 )
+
+# Note: Complex topology system archived - using simple role mapping in triage
 
 # Data Schemas
 from .utils import (
@@ -40,7 +45,6 @@ __all__ = [
     # Models
     "MatrixProfileDetector",
     "IsolationForestDetector",
-    "GPUMPDetector",
     # Correlation
     "MultiModalCorrelator",
     # Features
@@ -50,6 +54,10 @@ __all__ = [
     "TopologyTriage",
     "TopologyTriageSystem",
     "ImpactScorer",
+    "TopologyLocation",
+    "BlastRadius",
+    "CriticalityAssessment",
+    "TriageResult",
     # Utils
     "BGPUpdate",
     "FeatureBin",
