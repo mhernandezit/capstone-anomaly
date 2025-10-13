@@ -2,6 +2,72 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2025-10-12] - Simplified BGP Simulator and Enhanced Topology Configuration
+
+### Changed
+
+**BGP Simulator** (`src/anomaly_detection/simulators/bgp_simulator.py`) - **SIMPLIFIED**:
+- Rolled back from complex FSM/RIB implementation to simple message generator
+- Kept simulation lightweight and focused on testing anomaly detection
+- Added BGP peer state event generation (`peer_down`/`peer_up` with reasons)
+- Added realistic failure reasons: `interface_down`, `hold_timer_expired`, `connection_reset`
+- Maintains simple API: `send_update()`, `send_peer_event()`
+- Added peer flapping simulation: `inject_peer_flap()` with configurable cycles
+- Supports all original failure scenarios: link failure, route flapping, route leak, mass withdrawal
+- Removed complex FSM state management, routing tables (RIB-In/Loc-RIB/RIB-Out), and cascading logic
+- Focus: Generate realistic BGP messages for testing, not implement full BGP protocol
+
+**Topology Configuration** (`evaluation/topology.yml`) - **ENHANCED**:
+- Added full leaf-spine topology with proper BGP peering relationships
+- Defined **8 BGP peer sessions** (was 1) across spine, ToR, edge, and server layers
+- Added ASN assignments for all devices (AS 65001-65302)
+- Added router IDs (loopback addresses) for all BGP speakers
+- Added interface-level details: IP addresses, peer mappings
+- Added session types: eBGP between different autonomous systems
+- Properly defined prefix ownership per device (loopbacks, subnets, host routes)
+- Topology now ready for both Python simulator and future containerlab integration
+
+**Multimodal Simulator** (`src/anomaly_detection/simulators/multimodal_simulator.py`):
+- Removed complex BGP FSM integration code
+- Reverted to simple synthetic BGP feature generation
+- Cleaned up FSM-specific methods and state tracking
+- Maintains backward compatibility with existing evaluation code
+
+### Added
+
+**Integration Tests** (`tests/integration/test_bgp_pipeline.py`):
+- Test BGP simulator initialization and topology loading
+- Test baseline traffic generation
+- Test peer down event generation with reasons
+- Test peer flapping (multiple up/down cycles)
+- Test Matrix Profile detection with BGP data
+- Test topology configuration validity (ASNs, router IDs, prefixes)
+
+### Removed
+
+- Complex FSM state machine implementation (BGPState enum, BGPPeer class)
+- Routing table management (RIB-In, Loc-RIB, RIB-Out)
+- Best path selection algorithm
+- Cascading withdrawal logic
+- Route learning and propagation methods
+- FSM-specific demo scripts and documentation
+- `examples/demo_bgp_fsm.py` - FSM demonstration
+- `examples/demo_multimodal_with_bgp.py` - FSM integration demo
+- `BGP_SIMULATOR_ENHANCEMENTS.md` - FSM documentation
+- `MULTIMODAL_BGP_INTEGRATION.md` - FSM integration docs
+- `BGP_MULTIMODAL_INTEGRATION_SUMMARY.md` - FSM summary
+- `evaluation/test_bgp_fsm_with_pipeline.py` - Complex FSM test harness
+
+### Rationale
+
+The complex FSM/RIB implementation was attempting to recreate what containerlab + FRRouting + BMP would provide for free. The simple message generator is sufficient for:
+- Testing Matrix Profile anomaly detection
+- Generating realistic BGP UPDATE messages
+- Simulating various failure scenarios
+- Fast iteration and CI/CD integration
+
+For realistic BGP testing with full protocol compliance, the project can use containerlab with real routers in the future. The enhanced topology configuration supports both approaches.
+
 ## [2025-10-11] - Real ML Dashboard with Actual Algorithms
 
 ### Added

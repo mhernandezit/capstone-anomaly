@@ -1,0 +1,128 @@
+{
+  "config": {
+    "num_devices": 20,
+    "num_failures": 5
+  },
+  "performance": {
+    "mean_detection_time_sec": 0.0009491443634033203,
+    "min_detection_time_sec": 0.0008625984191894531,
+    "max_detection_time_sec": 0.0010690689086914062,
+    "detection_rate": 1.0,
+    "total_alerts": 9
+  },
+  "failures": {
+    "device-0013": 1760194154.3435924,
+    "device-0011": 1760194162.850503,
+    "device-0020": 1760194171.3589454,
+    "device-0017": 1760194179.8664496,
+    "device-0010": 1760194188.3606172
+  },
+  "detection_delays": {
+    "device-0011": 0.0009415149688720703,
+    "device-0020": 0.0009093284606933594,
+    "device-0017": 0.0009632110595703125,
+    "device-0013": 0.0010690689086914062,
+    "device-0010": 0.0008625984191894531
+  },
+  "alerts": [
+    {
+      "timestamp": 1760194154.344534,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "temperatureHigh",
+        "device": "device-0013"
+      }
+    },
+    {
+      "timestamp": 1760194162.8514123,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "temperatureHigh",
+        "device": "device-0011"
+      }
+    },
+    {
+      "timestamp": 1760194162.8692489,
+      "source": "snmp",
+      "detector": "isolation_forest",
+      "confidence": 1.0,
+      "severity": "error",
+      "details": {
+        "affected_features": [],
+        "anomaly_score": -0.6475368002583359
+      }
+    },
+    {
+      "timestamp": 1760194171.3599086,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "temperatureHigh",
+        "device": "device-0020"
+      }
+    },
+    {
+      "timestamp": 1760194171.3768926,
+      "source": "snmp",
+      "detector": "isolation_forest",
+      "confidence": 1.0,
+      "severity": "error",
+      "details": {
+        "affected_features": [],
+        "anomaly_score": -0.6994620035997829
+      }
+    },
+    {
+      "timestamp": 1760194179.8675187,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "temperatureHigh",
+        "device": "device-0017"
+      }
+    },
+    {
+      "timestamp": 1760194188.3614798,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "temperatureHigh",
+        "device": "device-0010"
+      }
+    },
+    {
+      "timestamp": 1760194188.3778942,
+      "source": "snmp",
+      "detector": "isolation_forest",
+      "confidence": 1.0,
+      "severity": "error",
+      "details": {
+        "affected_features": [],
+        "anomaly_score": -0.6994620035997829
+      }
+    },
+    {
+      "timestamp": 1760194196.8888571,
+      "source": "snmp",
+      "detector": "isolation_forest",
+      "confidence": 1.0,
+      "severity": "error",
+      "details": {
+        "affected_features": [],
+        "anomaly_score": -0.6994620035997829
+      }
+    }
+  ]
+}

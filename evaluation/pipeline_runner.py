@@ -41,12 +41,12 @@ class ProductionPipelineRunner:
         except ImportError:
             # Fall back to CPU
             self.bgp_detector = MatrixProfileDetector(
-                window_bins=8,
+                window_bins=12,  # Increased from 8 to 12 (120s window for better pattern detection)
                 series_keys=["wdr_total", "ann_total"],
-                discord_threshold=1.5,
+                discord_threshold=1.2,  # Lowered from 1.5 to 1.2 (more sensitive)
                 mp_library="stumpy",
             )
-            logger.info("[OK] Using CPU Matrix Profile (stumpy)")
+            logger.info("[OK] Using CPU Matrix Profile (stumpy) - Enhanced sensitivity: window=12, threshold=1.2")
 
         # Try to load pre-trained Isolation Forest
         logger.info("Initializing Isolation Forest detector...")
@@ -69,7 +69,10 @@ class ProductionPipelineRunner:
             logger.info("[OK] Using pre-trained Isolation Forest model with scaler")
         else:
             logger.warning("No pre-trained model found - will train online")
-            self.snmp_detector = IsolationForestDetector(n_estimators=100, contamination=0.1)
+            self.snmp_detector = IsolationForestDetector(
+                n_estimators=150,  # More trees for better detection
+                contamination=0.05  # More sensitive (5% instead of 10%)
+            )
             self.snmp_trained = False
             self.training_samples = []
 
@@ -132,21 +135,29 @@ class ProductionPipelineRunner:
         )
 
         if result.get("is_anomaly"):
+            # Extract confidence properly (overall_score is a dict)
+            if isinstance(result.get("anomaly_confidence"), dict):
+                confidence = float(result["anomaly_confidence"].get("confidence", 1.0))
+                overall_score_val = float(result["anomaly_confidence"].get("score", 0.0))
+            else:
+                confidence = float(result.get("anomaly_confidence", 1.0))
+                overall_score_val = float(result.get("overall_score", {}).get("score", 0.0)) if isinstance(result.get("overall_score"), dict) else float(result.get("overall_score", 0.0))
+            
             alert = {
                 "timestamp": time.time(),
                 "source": "bgp",
                 "detector": "matrix_profile",
-                "confidence": result["anomaly_confidence"],
+                "confidence": confidence,
                 "details": {
-                    "series": result["detected_series"],
-                    "overall_score": result["overall_score"],
-                    "withdrawals": self.bgp_bin_data["wdr_total"],
-                    "announcements": self.bgp_bin_data["ann_total"],
+                    "series": [str(s) for s in result["detected_series"]] if isinstance(result["detected_series"], list) else str(result["detected_series"]),
+                    "overall_score": overall_score_val,
+                    "withdrawals": int(self.bgp_bin_data["wdr_total"]),
+                    "announcements": int(self.bgp_bin_data["ann_total"]),
                 },
             }
             self.alerts.append(alert)
             logger.warning(
-                f"[BGP ANOMALY] Matrix Profile detected! Confidence: {result['anomaly_confidence']:.2f}"
+                f"[BGP ANOMALY] Matrix Profile detected! Confidence: {confidence:.2f}"
             )
             logger.warning(
                 f"  Withdrawals: {self.bgp_bin_data['wdr_total']}, Announcements: {self.bgp_bin_data['ann_total']}"
@@ -194,11 +205,11 @@ class ProductionPipelineRunner:
                         "timestamp": time.time(),
                         "source": "snmp",
                         "detector": "isolation_forest",
-                        "confidence": result.confidence,
-                        "severity": result.severity,
+                        "confidence": float(result.confidence),  # Convert to native Python float
+                        "severity": str(result.severity),
                         "details": {
-                            "affected_features": result.affected_features[:3],
-                            "anomaly_score": result.anomaly_score,
+                            "affected_features": [str(f) for f in result.affected_features[:3]],
+                            "anomaly_score": float(result.anomaly_score),
                         },
                     }
                     self.alerts.append(alert)

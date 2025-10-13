@@ -70,7 +70,7 @@ except Exception:
 # Correlator
 correlator = MultiModalCorrelator(
     topology_path="evaluation/topology.yml",
-    roles_config_path="config/configs/roles.yml",
+    roles_config_path="config/roles.yml",
     correlation_window=60.0,
 )
 print("  [OK] Correlation agent ready")
@@ -154,7 +154,7 @@ for bin_idx in range(5):
 
     # Process through Matrix Profile
     feature_bin = FeatureBin(
-        bin_start=bin_start, bin_end=bin_end, totals=bgp_data, by_peer={}, by_prefix={}
+        bin_start=int(bin_start), bin_end=int(bin_end), totals=bgp_data, peers={}
     )
     bgp_result = bgp_detector.update(feature_bin)
 

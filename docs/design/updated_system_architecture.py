@@ -12,7 +12,7 @@ def create_updated_system_architecture():
         filename="docs/design/updated_system_architecture.gv",
         format="png",
     )
-    dot.attr(rankdir="TB", splines="ortho", size="10,12")
+    dot.attr(rankdir="TB", splines="polyline", size="10,12")
     dot.attr("node", fontname="Arial", fontsize="11", width="2.5", height="1")
     dot.attr("edge", fontname="Arial", fontsize="9")
 
@@ -75,32 +75,32 @@ def create_updated_system_architecture():
         )
         processing.node(
             "anomaly_detection",
-            "Anomaly Detection\n(Matrix Profile + ML)",
+            "Anomaly Detection\n(Matrix Profile +\nIsolation Forest)",
             shape="box",
             style="filled",
             fillcolor="orange",
         )
         processing.node(
-            "impact_classification",
-            "Impact Classification\n(Topology-Aware)",
+            "multimodal_fusion",
+            "Multi-Modal Fusion\n(Correlation Engine)",
             shape="box",
             style="filled",
-            fillcolor="yellow",
+            fillcolor="gold",
+        )
+        processing.node(
+            "topology_triage",
+            "Topology-Aware Triage\n(Impact Assessment)",
+            shape="box",
+            style="filled",
+            fillcolor="lightgreen",
         )
 
     # Output Layer
     with dot.subgraph(name="cluster_output") as output:
         output.attr(label="Output & Response", style="filled", fillcolor="lavender", fontsize="12")
         output.node(
-            "dashboard",
-            "Streamlit Dashboard\n(Live Monitoring)",
-            shape="box",
-            style="filled",
-            fillcolor="lightpink",
-        )
-        output.node(
             "alerts",
-            "Smart Alerts\n(Context-Aware)",
+            "Enriched Alerts\n(Root Cause +\nRecommendations)",
             shape="box",
             style="filled",
             fillcolor="lightcoral",
@@ -110,7 +110,7 @@ def create_updated_system_architecture():
             "Network Operator\n(Decision Maker)",
             shape="box",
             style="filled",
-            fillcolor="lightgreen",
+            fillcolor="lightskyblue",
         )
 
     # Data flow connections
@@ -126,13 +126,12 @@ def create_updated_system_architecture():
 
     # Processing pipeline
     dot.edge("feature_extraction", "anomaly_detection", label="Feature Vectors")
-    dot.edge("anomaly_detection", "impact_classification", label="Anomaly Scores")
-
+    dot.edge("anomaly_detection", "multimodal_fusion", label="Anomaly Scores\n(BGP + SNMP)")
+    dot.edge("multimodal_fusion", "topology_triage", label="Correlated\nDetections")
+    
     # Processing to output
-    dot.edge("impact_classification", "dashboard", label="Events & Analysis")
-    dot.edge("impact_classification", "alerts", label="Critical Issues")
-    dot.edge("alerts", "operator", label="Action Required")
-    dot.edge("dashboard", "operator", label="Visual Analysis")
+    dot.edge("topology_triage", "alerts", label="Enriched Context\n(Impact + Root Cause)")
+    dot.edge("alerts", "operator", label="Actionable Intelligence")
 
     # Key metrics annotation
     with dot.subgraph(name="cluster_metrics") as metrics:
@@ -162,8 +161,8 @@ def create_updated_system_architecture():
         )
 
     # Connect metrics to main flow
-    dot.edge("anomaly_detection", "latency", style="dashed", color="blue")
-    dot.edge("impact_classification", "accuracy", style="dashed", color="blue")
+    dot.edge("multimodal_fusion", "latency", style="dashed", color="blue")
+    dot.edge("topology_triage", "accuracy", style="dashed", color="blue")
     dot.edge("feature_extraction", "coverage", style="dashed", color="blue")
 
     return dot

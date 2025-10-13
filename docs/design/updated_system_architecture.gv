@@ -1,0 +1,63 @@
+digraph Multi_Modal_System_Architecture {
+	rankdir=TB size="10,12" splines=ortho
+	node [fontname=Arial fontsize=11 height=1 width=2.5]
+	edge [fontname=Arial fontsize=9]
+	title [label="Multi-Modal Network Anomaly Detection System
+BGP + SNMP + Syslog Integration" fillcolor=lightblue fontsize=14 shape=box style=filled]
+	subgraph cluster_data_sources {
+		fillcolor=lightcyan fontsize=12 label="Data Sources" style=filled
+		bgp_source [label="BGP Updates
+(BMP Collector)" fillcolor=lightgreen shape=box style=filled]
+		snmp_source [label="SNMP Metrics
+(Hardware Health)" fillcolor=lightyellow shape=box style=filled]
+		syslog_source [label="Syslog Messages
+(Device Events)" fillcolor=lightcoral shape=box style=filled]
+	}
+	nats_bus [label="NATS Message Bus
+(Real-time Streaming)" fillcolor=lightsteelblue fontsize=12 shape=ellipse style=filled]
+	subgraph cluster_processing {
+		fillcolor=mistyrose fontsize=12 label="ML Processing Pipeline" style=filled
+		feature_extraction [label="Multi-Modal
+Feature Extraction" fillcolor=wheat shape=box style=filled]
+		anomaly_detection [label="Anomaly Detection
+(Matrix Profile +
+Isolation Forest)" fillcolor=orange shape=box style=filled]
+		multimodal_fusion [label="Multi-Modal Fusion
+(Correlation Engine)" fillcolor=gold shape=box style=filled]
+		topology_triage [label="Topology-Aware Triage
+(Impact Assessment)" fillcolor=lightgreen shape=box style=filled]
+	}
+	subgraph cluster_output {
+		fillcolor=lavender fontsize=12 label="Output & Response" style=filled
+		alerts [label="Enriched Alerts
+(Root Cause +
+Recommendations)" fillcolor=lightcoral shape=box style=filled]
+		operator [label="Network Operator
+(Decision Maker)" fillcolor=lightskyblue shape=box style=filled]
+	}
+	title -> bgp_source [style=invis]
+	bgp_source -> nats_bus [label="bgp.updates"]
+	snmp_source -> nats_bus [label="snmp.metrics"]
+	syslog_source -> nats_bus [label="syslog.messages"]
+	nats_bus -> feature_extraction [label="Multi-Modal Data"]
+	feature_extraction -> anomaly_detection [label="Feature Vectors"]
+	anomaly_detection -> multimodal_fusion [label="Anomaly Scores
+(BGP + SNMP)"]
+	multimodal_fusion -> topology_triage [label="Correlated
+Detections"]
+	topology_triage -> alerts [label="Enriched Context
+(Impact + Root Cause)"]
+	alerts -> operator [label="Actionable Intelligence"]
+	subgraph cluster_metrics {
+		fillcolor=honeydew fontsize=11 label="Performance Targets" style=filled
+		latency [label="Detection Latency
+< 60 seconds" fillcolor=lightsteelblue shape=note style=filled]
+		accuracy [label="False Positive Rate
+< 5%" fillcolor=lightsteelblue shape=note style=filled]
+		coverage [label="Multi-Modal Coverage
+BGP + SNMP + Syslog" fillcolor=lightsteelblue shape=note style=filled]
+	}
+	multimodal_fusion -> latency [color=blue style=dashed]
+	topology_triage -> accuracy [color=blue style=dashed]
+	feature_extraction -> coverage [color=blue style=dashed]
+}

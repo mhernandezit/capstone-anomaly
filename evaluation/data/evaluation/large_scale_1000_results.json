@@ -1,0 +1,94 @@
+{
+  "test_config": {
+    "num_devices": 1000,
+    "num_spine": 16,
+    "num_tor": 96,
+    "num_leaf": 888,
+    "num_failures": 5
+  },
+  "performance": {
+    "mean_detection_time": 0.0012321949005126953,
+    "min_detection_time": 0.0009391307830810547,
+    "max_detection_time": 0.0018994808197021484,
+    "detection_rate": 1.0
+  },
+  "alerts": [
+    {
+      "timestamp": 1760193541.7113912,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "interfaceDown",
+        "device": "spine-05"
+      }
+    },
+    {
+      "timestamp": 1760193553.5196044,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "interfaceDown",
+        "device": "tor-042"
+      }
+    },
+    {
+      "timestamp": 1760193565.3067334,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "interfaceDown",
+        "device": "leaf-0521"
+      }
+    },
+    {
+      "timestamp": 1760193577.1092725,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "interfaceDown",
+        "device": "spine-12"
+      }
+    },
+    {
+      "timestamp": 1760193588.9122183,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "interfaceDown",
+        "device": "tor-078"
+      }
+    }
+  ],
+  "failure_times": [
+    {
+      "device": "spine-05",
+      "time": 1760193541.7102313
+    },
+    {
+      "device": "tor-042",
+      "time": 1760193553.517705
+    },
+    {
+      "device": "leaf-0521",
+      "time": 1760193565.3055997
+    },
+    {
+      "device": "spine-12",
+      "time": 1760193577.1083333
+    },
+    {
+      "device": "tor-078",
+      "time": 1760193588.9111896
+    }
+  ]
+}

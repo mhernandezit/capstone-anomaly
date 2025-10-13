@@ -1,0 +1,190 @@
+# Network topology for evaluation
+# Leaf-Spine topology with BGP peering relationships
+
+devices:
+  # 2 Spine routers (core)
+  spine-01:
+    role: spine
+    asn: 65001
+    router_id: 10.0.0.1
+    interfaces:
+      - name: eth0
+        ip: 10.1.1.1/30
+        peer: tor-01
+      - name: eth1
+        ip: 10.1.1.5/30
+        peer: tor-02
+      - name: eth2
+        ip: 10.1.1.9/30
+        peer: edge-01
+        
+  spine-02:
+    role: spine
+    asn: 65002
+    router_id: 10.0.0.2
+    interfaces:
+      - name: eth0
+        ip: 10.1.2.1/30
+        peer: tor-01
+      - name: eth1
+        ip: 10.1.2.5/30
+        peer: tor-02
+      - name: eth2
+        ip: 10.1.2.9/30
+        peer: edge-01
+
+  # 2 ToR switches (distribution)
+  tor-01:
+    role: tor
+    asn: 65101
+    router_id: 10.0.1.1
+    interfaces:
+      - name: eth0
+        ip: 10.1.1.2/30
+        peer: spine-01
+      - name: eth1
+        ip: 10.1.2.2/30
+        peer: spine-02
+      - name: eth2
+        ip: 10.2.1.1/30
+        peer: server-01
+        
+  tor-02:
+    role: tor
+    asn: 65102
+    router_id: 10.0.1.2
+    interfaces:
+      - name: eth0
+        ip: 10.1.1.6/30
+        peer: spine-01
+      - name: eth1
+        ip: 10.1.2.6/30
+        peer: spine-02
+      - name: eth2
+        ip: 10.2.2.1/30
+        peer: server-02
+
+  # 1 Edge router (external connectivity)
+  edge-01:
+    role: edge
+    asn: 65200
+    router_id: 10.0.2.1
+    interfaces:
+      - name: eth0
+        ip: 10.1.1.10/30
+        peer: spine-01
+      - name: eth1
+        ip: 10.1.2.10/30
+        peer: spine-02
+      - name: eth2
+        ip: 192.0.2.1/30
+        peer: external
+
+  # 2 Servers (endpoints)
+  server-01:
+    role: server
+    asn: 65301
+    router_id: 10.0.3.1
+    interfaces:
+      - name: eth0
+        ip: 10.2.1.2/30
+        peer: tor-01
+
+  server-02:
+    role: server
+    asn: 65302
+    router_id: 10.0.3.2
+    interfaces:
+      - name: eth0
+        ip: 10.2.2.2/30
+        peer: tor-02
+
+# BGP Peering relationships
+bgp_peers:
+  # Spine-01 peerings
+  - local_device: spine-01
+    local_asn: 65001
+    local_ip: 10.1.1.1
+    remote_device: tor-01
+    remote_asn: 65101
+    remote_ip: 10.1.1.2
+    session_type: eBGP
+    
+  - local_device: spine-01
+    local_asn: 65001
+    local_ip: 10.1.1.5
+    remote_device: tor-02
+    remote_asn: 65102
+    remote_ip: 10.1.1.6
+    session_type: eBGP
+    
+  - local_device: spine-01
+    local_asn: 65001
+    local_ip: 10.1.1.9
+    remote_device: edge-01
+    remote_asn: 65200
+    remote_ip: 10.1.1.10
+    session_type: eBGP
+
+  # Spine-02 peerings
+  - local_device: spine-02
+    local_asn: 65002
+    local_ip: 10.1.2.1
+    remote_device: tor-01
+    remote_asn: 65101
+    remote_ip: 10.1.2.2
+    session_type: eBGP
+    
+  - local_device: spine-02
+    local_asn: 65002
+    local_ip: 10.1.2.5
+    remote_device: tor-02
+    remote_asn: 65102
+    remote_ip: 10.1.2.6
+    session_type: eBGP
+    
+  - local_device: spine-02
+    local_asn: 65002
+    local_ip: 10.1.2.9
+    remote_device: edge-01
+    remote_asn: 65200
+    remote_ip: 10.1.2.10
+    session_type: eBGP
+
+  # ToR-01 peerings
+  - local_device: tor-01
+    local_asn: 65101
+    local_ip: 10.2.1.1
+    remote_device: server-01
+    remote_asn: 65301
+    remote_ip: 10.2.1.2
+    session_type: eBGP
+
+  # ToR-02 peerings
+  - local_device: tor-02
+    local_asn: 65102
+    local_ip: 10.2.2.1
+    remote_device: server-02
+    remote_asn: 65302
+    remote_ip: 10.2.2.2
+    session_type: eBGP
+
+# Prefix ownership (what each device advertises)
+prefixes:
+  spine-01:
+    - 10.0.0.0/24      # Loopback subnet
+  spine-02:
+    - 10.0.0.0/24      # Loopback subnet
+  tor-01:
+    - 10.10.1.0/24     # Server subnet
+    - 192.168.100.0/24 # Internal services
+  tor-02:
+    - 10.10.2.0/24     # Server subnet
+    - 192.168.101.0/24 # Internal services
+  edge-01:
+    - 0.0.0.0/0        # Default route (internet)
+    - 203.0.113.0/24   # Public services
+  server-01:
+    - 10.10.1.1/32     # Host route
+  server-02:
+    - 10.10.2.1/32     # Host route

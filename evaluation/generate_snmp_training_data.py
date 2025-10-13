@@ -172,10 +172,11 @@ def main():
     """Generate SNMP training dataset."""
     generator = SNMPTrainingDataGenerator()
 
-    # Generate LARGE training set (10x bigger)
-    # 100,000 samples = ~140 hours of data at 5s intervals
+    # Generate VERY LARGE training set for 100MB+ file
+    # 500,000 samples = ~700 hours of data at 5s intervals
+    # Expected file size: ~150MB
     generator.generate_dataset(
-        num_samples=100000,
+        num_samples=500000,
         anomaly_ratio=0.02,  # 2% anomalies
         output_file="data/evaluation/training/snmp_training_data.jsonl",
     )

@@ -1,0 +1,139 @@
+{
+  "config": {
+    "num_devices": 1000,
+    "num_failures": 5
+  },
+  "performance": {
+    "mean_detection_time_sec": 0.001287841796875,
+    "min_detection_time_sec": 0.0010235309600830078,
+    "max_detection_time_sec": 0.001644134521484375,
+    "detection_rate": 1.0,
+    "total_alerts": 10
+  },
+  "failures": {
+    "device-0589": 1760193848.0759912,
+    "device-0147": 1760193856.5879755,
+    "device-0851": 1760193865.0766268,
+    "device-0886": 1760193873.577136,
+    "device-0830": 1760193882.0789084
+  },
+  "detection_delays": {
+    "device-0886": 0.001644134521484375,
+    "device-0830": 0.0012819766998291016,
+    "device-0147": 0.0014235973358154297,
+    "device-0851": 0.001065969467163086,
+    "device-0589": 0.0010235309600830078
+  },
+  "alerts": [
+    {
+      "timestamp": 1760193848.0776353,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "temperatureHigh",
+        "device": "device-0589"
+      }
+    },
+    {
+      "timestamp": 1760193856.5892575,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "temperatureHigh",
+        "device": "device-0147"
+      }
+    },
+    {
+      "timestamp": 1760193856.6420069,
+      "source": "snmp",
+      "detector": "isolation_forest",
+      "confidence": 1.0,
+      "severity": "error",
+      "details": {
+        "affected_features": [],
+        "anomaly_score": -0.645832528503673
+      }
+    },
+    {
+      "timestamp": 1760193865.0780504,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "temperatureHigh",
+        "device": "device-0851"
+      }
+    },
+    {
+      "timestamp": 1760193865.0952497,
+      "source": "snmp",
+      "detector": "isolation_forest",
+      "confidence": 1.0,
+      "severity": "error",
+      "details": {
+        "affected_features": [],
+        "anomaly_score": -0.6994620035997829
+      }
+    },
+    {
+      "timestamp": 1760193873.578202,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "temperatureHigh",
+        "device": "device-0886"
+      }
+    },
+    {
+      "timestamp": 1760193873.594823,
+      "source": "snmp",
+      "detector": "isolation_forest",
+      "confidence": 1.0,
+      "severity": "error",
+      "details": {
+        "affected_features": [],
+        "anomaly_score": -0.6994620035997829
+      }
+    },
+    {
+      "timestamp": 1760193882.079932,
+      "source": "snmp_trap",
+      "detector": "rule_based",
+      "confidence": 0.95,
+      "severity": "critical",
+      "details": {
+        "trap_type": "temperatureHigh",
+        "device": "device-0830"
+      }
+    },
+    {
+      "timestamp": 1760193882.0964713,
+      "source": "snmp",
+      "detector": "isolation_forest",
+      "confidence": 1.0,
+      "severity": "error",
+      "details": {
+        "affected_features": [],
+        "anomaly_score": -0.6994620035997829
+      }
+    },
+    {
+      "timestamp": 1760193890.6030114,
+      "source": "snmp",
+      "detector": "isolation_forest",
+      "confidence": 1.0,
+      "severity": "error",
+      "details": {
+        "affected_features": [],
+        "anomaly_score": -0.6994620035997829
+      }
+    }
+  ]
+}

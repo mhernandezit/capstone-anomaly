@@ -15,6 +15,7 @@ Failure Scenarios:
 3. Optical Degradation: Interface errors (SNMP) + packet loss affecting BGP
 4. Hardware Failure: Temperature/power issues (SNMP) + BGP session flaps
 5. Route Leak: Normal SNMP + massive BGP route announcements
+6. BGP Flapping: Peer flapping + interface instability
 """
 
 import random
@@ -47,6 +48,8 @@ class NetworkEvent:
 class MultiModalSimulator:
     """
     Simulates realistic network events across BGP and SNMP modalities.
+    
+    Generates synthetic feature vectors for both BGP and SNMP data sources.
     """
 
     def __init__(
@@ -116,6 +119,7 @@ class MultiModalSimulator:
             "as_path_churn": 2.0,
         }
 
+
     def generate_normal_snmp_data(self, device: str) -> Dict[str, float]:
         """
         Generate normal SNMP metrics with natural variance.
@@ -184,7 +188,7 @@ class MultiModalSimulator:
         self, event_type: str, device: str = None, duration: float = 60.0, severity: str = "high"
     ) -> NetworkEvent:
         """
-        Inject a failure event into the simulation.
+        Inject a failure event into the simulation (synchronous version).
 
         Args:
             event_type: Type of failure (link_failure, router_overload, etc.)
@@ -194,6 +198,10 @@ class MultiModalSimulator:
 
         Returns:
             NetworkEvent object describing the injected failure
+
+        Note:
+            This is the legacy synchronous API for backward compatibility.
+            For real BGP simulator support, use inject_failure_async().
         """
         if device is None:
             # Prefer important devices (spine, edge)
@@ -224,6 +232,7 @@ class MultiModalSimulator:
         self.event_start_time = time.time()
 
         return event
+
 
     def _create_link_failure_event(
         self, device: str, duration: float, severity: str

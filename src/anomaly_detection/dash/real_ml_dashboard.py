@@ -85,6 +85,116 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+def create_network_topology():
+    """Create network topology graph for visualization"""
+    G = nx.Graph()
+    
+    # Simplified 8-node topology for better presentation
+    devices = {
+        # Spine layer
+        "spine-01": {"role": "spine", "pos": (2, 4), "color": "#ff6b6b"},
+        "spine-02": {"role": "spine", "pos": (4, 4), "color": "#ff6b6b"},
+        
+        # ToR layer
+        "tor-01": {"role": "tor", "pos": (1, 2.5), "color": "#4ecdc4"},
+        "tor-02": {"role": "tor", "pos": (3, 2.5), "color": "#4ecdc4"},
+        "tor-03": {"role": "tor", "pos": (5, 2.5), "color": "#4ecdc4"},
+        
+        # Leaf layer
+        "leaf-01": {"role": "leaf", "pos": (0.5, 1), "color": "#95e1d3"},
+        "leaf-02": {"role": "leaf", "pos": (2, 1), "color": "#95e1d3"},
+        "leaf-03": {"role": "leaf", "pos": (3.5, 1), "color": "#95e1d3"},
+        "leaf-04": {"role": "leaf", "pos": (5.5, 1), "color": "#95e1d3"},
+    }
+    
+    # Add nodes
+    for device, attrs in devices.items():
+        G.add_node(device, **attrs, status="normal", anomaly_score=0)
+    
+    # Add connections (spine to ToR, ToR to leaf)
+    connections = [
+        # Spine to ToR
+        ("spine-01", "tor-01"), ("spine-01", "tor-02"),
+        ("spine-02", "tor-02"), ("spine-02", "tor-03"),
+        # ToR to Leaf
+        ("tor-01", "leaf-01"), ("tor-01", "leaf-02"),
+        ("tor-02", "leaf-02"), ("tor-02", "leaf-03"),
+        ("tor-03", "leaf-03"), ("tor-03", "leaf-04"),
+    ]
+    
+    for src, dst in connections:
+        G.add_edge(src, dst, status="normal")
+    
+    return G
+
+
+def create_topology_figure(G):
+    """Create interactive topology visualization"""
+    # Edge traces
+    edge_x, edge_y = [], []
+    for edge in G.edges():
+        x0, y0 = G.nodes[edge[0]]["pos"]
+        x1, y1 = G.nodes[edge[1]]["pos"]
+        edge_x.extend([x0, x1, None])
+        edge_y.extend([y0, y1, None])
+    
+    edge_trace = go.Scatter(
+        x=edge_x, y=edge_y,
+        line=dict(width=3, color="#888"),
+        hoverinfo="none",
+        mode="lines",
+        showlegend=False,
+    )
+    
+    # Node traces
+    node_x, node_y, node_text, node_colors, node_sizes = [], [], [], [], []
+    
+    for node in G.nodes():
+        x, y = G.nodes[node]["pos"]
+        node_x.append(x)
+        node_y.append(y)
+        
+        role = G.nodes[node]["role"]
+        status = G.nodes[node]["status"]
+        anomaly_score = G.nodes[node]["anomaly_score"]
+        
+        # Node text
+        if status == "anomaly":
+            node_text.append(f"<b>{node}</b><br>Role: {role}<br>Status: ANOMALY<br>Score: {anomaly_score:.2f}")
+            node_colors.append("#ff4444")
+            node_sizes.append(60)
+        else:
+            node_text.append(f"<b>{node}</b><br>Role: {role}<br>Status: Normal")
+            node_colors.append(G.nodes[node]["color"])
+            node_sizes.append(40)
+    
+    node_trace = go.Scatter(
+        x=node_x, y=node_y,
+        mode="markers+text",
+        hoverinfo="text",
+        hovertext=node_text,
+        text=[n.split("-")[0] for n in G.nodes()],
+        textposition="middle center",
+        textfont=dict(size=10, color="white", family="Arial Black"),
+        marker=dict(size=node_sizes, color=node_colors, line=dict(width=2, color="white")),
+        showlegend=False,
+    )
+    
+    fig = go.Figure(data=[edge_trace, node_trace])
+    fig.update_layout(
+        title="Network Topology - 8-Node Leaf-Spine Architecture",
+        showlegend=False,
+        hovermode="closest",
+        margin=dict(b=20, l=5, r=5, t=40),
+        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+        plot_bgcolor="rgba(240,240,240,0.5)",
+        height=400,
+    )
+    
+    return fig
+
+
 @st.cache_resource
 def initialize_ml_pipelines():
     """Initialize the real ML detectors (cached)"""
@@ -109,19 +219,30 @@ def initialize_ml_pipelines():
             st.success("Loaded pre-trained Isolation Forest model")
         except Exception as e:
             st.warning(f"Could not load model: {e}. Training new model...")
-            # Quick train with synthetic data
+            # Quick train with synthetic data (matching 19-feature model)
             training_data = []
             for i in range(250):
-                # Generate synthetic normal SNMP features
+                # Generate synthetic normal SNMP features (all 19 features)
                 features = {
+                    "bgp_correlation": np.random.uniform(0.0, 0.1),
                     "cpu_utilization_mean": np.random.uniform(0.1, 0.5),
                     "cpu_utilization_max": np.random.uniform(0.3, 0.7),
+                    "environmental_stress_score": np.random.uniform(0.0, 0.2),
+                    "fan_speed_variance": np.random.uniform(0, 300),
+                    "interface_error_rate": np.random.uniform(0.0, 0.05),
+                    "interface_flap_count": np.random.randint(0, 2),
+                    "interface_utilization_mean": np.random.uniform(0.2, 0.6),
+                    "interface_utilization_std": np.random.uniform(0.01, 0.1),
                     "memory_utilization_mean": np.random.uniform(0.2, 0.55),
                     "memory_utilization_max": np.random.uniform(0.35, 0.7),
+                    "multi_device_correlation": np.random.uniform(0.0, 0.15),
+                    "power_stability_score": np.random.uniform(0.8, 1.0),
+                    "severity_escalations": 0,
+                    "syslog_correlation": np.random.uniform(0.0, 0.12),
                     "temperature_mean": np.random.uniform(30, 55),
                     "temperature_max": np.random.uniform(35, 60),
-                    "interface_error_rate": np.random.uniform(0.0, 0.05),
-                    "interface_utilization_mean": np.random.uniform(0.2, 0.6),
+                    "temperature_variance": np.random.uniform(0, 8),
+                    "threshold_violations": np.random.randint(0, 2),
                 }
                 feature_vector = np.array([features[k] for k in sorted(features.keys())])
                 training_data.append(feature_vector)
@@ -148,6 +269,14 @@ if "simulation_active" not in st.session_state:
     st.session_state.simulation_active = False
 if "bin_count" not in st.session_state:
     st.session_state.bin_count = 0
+if "max_bins" not in st.session_state:
+    st.session_state.max_bins = 20  # Default: run for 20 bins then stop
+if "topology" not in st.session_state:
+    st.session_state.topology = create_network_topology()
+if "nats_metrics" not in st.session_state:
+    st.session_state.nats_metrics = deque(maxlen=100)
+if "message_counts" not in st.session_state:
+    st.session_state.message_counts = {"bgp": 0, "snmp": 0, "alerts": 0}
 
 # Header
 st.markdown(
@@ -182,7 +311,14 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("### ML Pipeline Status")
 st.sidebar.markdown("✅ Matrix Profile: Loaded")
 st.sidebar.markdown("✅ Isolation Forest: Loaded")
-st.sidebar.markdown(f"📊 Bins Processed: {st.session_state.bin_count}")
+st.sidebar.markdown(f"📊 Bins Processed: {st.session_state.bin_count} / {st.session_state.max_bins}")
+
+st.sidebar.markdown("---")
+st.sidebar.markdown("### Simulation Control")
+max_bins = st.sidebar.slider("Max Bins to Process", min_value=5, max_value=50, value=st.session_state.max_bins, step=5)
+if max_bins != st.session_state.max_bins:
+    st.session_state.max_bins = max_bins
+st.sidebar.markdown(f"**Duration:** ~{max_bins * 2} seconds")
 
 # Start/Stop controls
 col1, col2 = st.sidebar.columns(2)
@@ -201,6 +337,10 @@ if st.sidebar.button("🔄 Reset"):
     st.session_state.snmp_buffer.clear()
     st.session_state.detections = {"bgp": [], "snmp": []}
     st.session_state.bin_count = 0
+    st.session_state.nats_metrics.clear()
+    st.session_state.message_counts = {"bgp": 0, "snmp": 0, "alerts": 0}
+    st.session_state.topology = create_network_topology()
+    st.session_state.simulation_active = False
     st.rerun()
 
 # Main dashboard
@@ -208,87 +348,127 @@ st.markdown("## 🔄 Real-Time ML Processing")
 
 # Processing simulation
 if st.session_state.simulation_active and scenario != "Normal Operation":
-    with st.spinner("Processing data through real ML pipelines..."):
-        current_time = time.time()
-        st.session_state.bin_count += 1
-        
-        # Generate realistic BGP data
-        is_bgp_anomaly = scenario in ["Link Failure (Multimodal)", "BGP Route Flapping", "Router Overload"]
-        
-        bgp_data = {
-            "wdr_total": np.random.poisson(150 if is_bgp_anomaly else 20),
-            "ann_total": np.random.poisson(120 if is_bgp_anomaly else 25),
-            "as_path_churn": np.random.uniform(10, 50) if is_bgp_anomaly else np.random.uniform(1, 8),
-        }
-        
-        # Create feature bin for Matrix Profile
-        feature_bin = FeatureBin(
-            bin_start=current_time - 30,
-            bin_end=current_time,
-            totals=bgp_data,
-            by_peer={},
-            by_prefix={},
-        )
-        
-        # REAL MATRIX PROFILE DETECTION
-        bgp_result = bgp_detector.update(feature_bin)
-        
-        st.session_state.bgp_buffer.append({
-            "timestamp": datetime.now(),
-            "value": bgp_data["wdr_total"],
-            "distance": bgp_result.get("min_distance", 0),
-            "is_anomaly": bgp_result["is_anomaly"],
-            "confidence": bgp_result.get("anomaly_confidence", 0),
-        })
-        
-        if bgp_result["is_anomaly"]:
-            st.session_state.detections["bgp"].append({
+    # Check if we've hit the limit
+    if st.session_state.bin_count >= st.session_state.max_bins:
+        st.session_state.simulation_active = False
+        st.success(f"✅ Simulation complete! Processed {st.session_state.bin_count} bins.")
+        st.info("Click 'Reset' to clear data or adjust 'Max Bins' slider to run longer.")
+    else:
+        with st.spinner(f"Processing bin {st.session_state.bin_count + 1}/{st.session_state.max_bins}..."):
+            current_time = time.time()
+            st.session_state.bin_count += 1
+            
+            # Generate realistic BGP data
+            is_bgp_anomaly = scenario in ["Link Failure (Multimodal)", "BGP Route Flapping", "Router Overload"]
+            
+            bgp_data = {
+                "wdr_total": np.random.poisson(150 if is_bgp_anomaly else 20),
+                "ann_total": np.random.poisson(120 if is_bgp_anomaly else 25),
+                "as_path_churn": np.random.uniform(10, 50) if is_bgp_anomaly else np.random.uniform(1, 8),
+            }
+            
+            # Create feature bin for Matrix Profile
+            feature_bin = FeatureBin(
+                bin_start=int(current_time - 30),
+                bin_end=int(current_time),
+                totals=bgp_data,
+                peers={},
+            )
+            
+            # REAL MATRIX PROFILE DETECTION
+            bgp_result = bgp_detector.update(feature_bin)
+            
+            st.session_state.bgp_buffer.append({
                 "timestamp": datetime.now(),
-                "confidence": bgp_result["anomaly_confidence"],
-                "series": bgp_result["detected_series"],
-                "device": "spine-01" if "Link" in scenario else "tor-01",
+                "value": bgp_data["wdr_total"],
+                "distance": bgp_result.get("min_distance", 0),
+                "is_anomaly": bgp_result["is_anomaly"],
+                "confidence": bgp_result.get("anomaly_confidence", 0),
             })
-        
-        # Generate realistic SNMP data
-        is_snmp_anomaly = scenario in ["Link Failure (Multimodal)", "Hardware Degradation", "Router Overload"]
-        
-        snmp_features = {
-            "cpu_utilization_mean": np.random.uniform(0.8, 0.98) if is_snmp_anomaly else np.random.uniform(0.1, 0.5),
-            "cpu_utilization_max": np.random.uniform(0.9, 0.99) if is_snmp_anomaly else np.random.uniform(0.3, 0.7),
-            "memory_utilization_mean": np.random.uniform(0.7, 0.92) if is_snmp_anomaly else np.random.uniform(0.2, 0.55),
-            "memory_utilization_max": np.random.uniform(0.85, 0.98) if is_snmp_anomaly else np.random.uniform(0.35, 0.7),
-            "temperature_mean": np.random.uniform(65, 85) if is_snmp_anomaly else np.random.uniform(30, 55),
-            "temperature_max": np.random.uniform(75, 95) if is_snmp_anomaly else np.random.uniform(35, 60),
-            "interface_error_rate": np.random.uniform(0.3, 0.5) if is_snmp_anomaly else np.random.uniform(0.0, 0.05),
-            "interface_utilization_mean": np.random.uniform(0.7, 0.95) if is_snmp_anomaly else np.random.uniform(0.2, 0.6),
-        }
-        
-        # REAL ISOLATION FOREST DETECTION
-        feature_names = sorted(snmp_features.keys())
-        feature_vector = np.array([snmp_features[k] for k in feature_names]).reshape(1, -1)
-        
-        snmp_result = snmp_detector.predict(feature_vector, current_time, feature_names)
-        
-        st.session_state.snmp_buffer.append({
-            "timestamp": datetime.now(),
-            "feature_1": snmp_features["cpu_utilization_mean"],
-            "feature_2": snmp_features["temperature_mean"],
-            "is_anomaly": snmp_result.is_anomaly,
-            "confidence": snmp_result.confidence,
-            "anomaly_score": snmp_result.anomaly_score,
-        })
-        
-        if snmp_result.is_anomaly:
-            st.session_state.detections["snmp"].append({
+            
+            if bgp_result["is_anomaly"]:
+                device = "spine-01" if "Link" in scenario else "tor-01"
+                st.session_state.detections["bgp"].append({
+                    "timestamp": datetime.now(),
+                    "confidence": bgp_result["anomaly_confidence"],
+                    "series": bgp_result["detected_series"],
+                    "device": device,
+                })
+                # Update topology
+                if device in st.session_state.topology.nodes:
+                    st.session_state.topology.nodes[device]["status"] = "anomaly"
+                    st.session_state.topology.nodes[device]["anomaly_score"] = bgp_result["anomaly_confidence"]
+                # Track NATS messages
+                st.session_state.message_counts["bgp"] += 1
+            
+            # Generate realistic SNMP data
+            is_snmp_anomaly = scenario in ["Link Failure (Multimodal)", "Hardware Degradation", "Router Overload"]
+            
+            snmp_features = {
+                "bgp_correlation": np.random.uniform(0.6, 0.9) if is_snmp_anomaly else np.random.uniform(0.0, 0.1),
+                "cpu_utilization_mean": np.random.uniform(0.8, 0.98) if is_snmp_anomaly else np.random.uniform(0.1, 0.5),
+                "cpu_utilization_max": np.random.uniform(0.9, 0.99) if is_snmp_anomaly else np.random.uniform(0.3, 0.7),
+                "environmental_stress_score": np.random.uniform(0.5, 0.8) if is_snmp_anomaly else np.random.uniform(0.0, 0.2),
+                "fan_speed_variance": np.random.uniform(500, 1000) if is_snmp_anomaly else np.random.uniform(0, 300),
+                "interface_error_rate": np.random.uniform(0.3, 0.5) if is_snmp_anomaly else np.random.uniform(0.0, 0.05),
+                "interface_flap_count": np.random.randint(3, 8) if is_snmp_anomaly else np.random.randint(0, 2),
+                "interface_utilization_mean": np.random.uniform(0.7, 0.95) if is_snmp_anomaly else np.random.uniform(0.2, 0.6),
+                "interface_utilization_std": np.random.uniform(0.15, 0.3) if is_snmp_anomaly else np.random.uniform(0.01, 0.1),
+                "memory_utilization_mean": np.random.uniform(0.7, 0.92) if is_snmp_anomaly else np.random.uniform(0.2, 0.55),
+                "memory_utilization_max": np.random.uniform(0.85, 0.98) if is_snmp_anomaly else np.random.uniform(0.35, 0.7),
+                "multi_device_correlation": np.random.uniform(0.4, 0.7) if is_snmp_anomaly else np.random.uniform(0.0, 0.15),
+                "power_stability_score": np.random.uniform(0.5, 0.7) if is_snmp_anomaly else np.random.uniform(0.8, 1.0),
+                "severity_escalations": np.random.randint(1, 3) if is_snmp_anomaly else 0,
+                "syslog_correlation": np.random.uniform(0.5, 0.8) if is_snmp_anomaly else np.random.uniform(0.0, 0.12),
+                "temperature_mean": np.random.uniform(65, 85) if is_snmp_anomaly else np.random.uniform(30, 55),
+                "temperature_max": np.random.uniform(75, 95) if is_snmp_anomaly else np.random.uniform(35, 60),
+                "temperature_variance": np.random.uniform(10, 20) if is_snmp_anomaly else np.random.uniform(0, 8),
+                "threshold_violations": np.random.randint(2, 5) if is_snmp_anomaly else np.random.randint(0, 2),
+            }
+            
+            # REAL ISOLATION FOREST DETECTION
+            feature_names = sorted(snmp_features.keys())
+            feature_vector = np.array([snmp_features[k] for k in feature_names]).reshape(1, -1)
+            
+            snmp_result = snmp_detector.predict(feature_vector, current_time, feature_names)
+            
+            st.session_state.snmp_buffer.append({
                 "timestamp": datetime.now(),
+                "feature_1": snmp_features["cpu_utilization_mean"],
+                "feature_2": snmp_features["temperature_mean"],
+                "is_anomaly": snmp_result.is_anomaly,
                 "confidence": snmp_result.confidence,
-                "severity": snmp_result.severity,
-                "features": snmp_result.affected_features,
-                "device": "spine-01" if "Link" in scenario else "spine-02",
+                "anomaly_score": snmp_result.anomaly_score,
             })
-        
-        time.sleep(2)  # Simulate processing time
-        st.rerun()
+            
+            if snmp_result.is_anomaly:
+                device = "spine-01" if "Link" in scenario else "spine-02"
+                st.session_state.detections["snmp"].append({
+                    "timestamp": datetime.now(),
+                    "confidence": snmp_result.confidence,
+                    "severity": snmp_result.severity,
+                    "features": snmp_result.affected_features,
+                    "device": device,
+                })
+                # Update topology
+                if device in st.session_state.topology.nodes:
+                    st.session_state.topology.nodes[device]["status"] = "anomaly"
+                    st.session_state.topology.nodes[device]["anomaly_score"] = snmp_result.confidence
+                # Track NATS messages
+                st.session_state.message_counts["snmp"] += 1
+                st.session_state.message_counts["alerts"] += 1
+            
+            # Track NATS telemetry
+            st.session_state.nats_metrics.append({
+                "timestamp": datetime.now(),
+                "bgp_messages": st.session_state.message_counts["bgp"],
+                "snmp_messages": st.session_state.message_counts["snmp"],
+                "alert_count": st.session_state.message_counts["alerts"],
+                "processing_time": 2.0,  # Actual processing time
+            })
+            
+            time.sleep(2)  # Simulate processing time
+            st.rerun()
 
 # Display ML Pipeline Visualizations
 col1, col2 = st.columns(2)
@@ -403,6 +583,96 @@ if st.session_state.detections["bgp"] or st.session_state.detections["snmp"]:
         """, unsafe_allow_html=True)
 else:
     st.info("No detections yet. Start a failure scenario to see real ML detection in action.")
+
+# Network Topology Visualization
+st.markdown("---")
+st.markdown("## 🌐 Network Topology")
+
+col1, col2 = st.columns([3, 1])
+
+with col1:
+    if st.session_state.topology:
+        topology_fig = create_topology_figure(st.session_state.topology)
+        st.plotly_chart(topology_fig, use_container_width=True)
+    else:
+        st.info("Topology loading...")
+
+with col2:
+    st.markdown("### Legend")
+    st.markdown("🔴 **Spine** - Core routers")
+    st.markdown("🔷 **ToR** - Top of Rack switches")
+    st.markdown("🟢 **Leaf** - Access switches")
+    st.markdown("")
+    st.markdown("**Node Colors:**")
+    st.markdown("- Normal: Role color")
+    st.markdown("- Anomaly: Red (enlarged)")
+    
+    if st.button("Reset Topology"):
+        st.session_state.topology = create_network_topology()
+        st.rerun()
+
+# NATS Bus Telemetry
+st.markdown("---")
+st.markdown("## 📡 NATS Message Bus Telemetry")
+
+if len(st.session_state.nats_metrics) > 0:
+    nats_df = pd.DataFrame(list(st.session_state.nats_metrics))
+    
+    # Create telemetry figure
+    fig = make_subplots(
+        rows=2, cols=1,
+        subplot_titles=("Message Throughput", "Processing Time"),
+        vertical_spacing=0.12
+    )
+    
+    # Message counts
+    fig.add_trace(
+        go.Scatter(x=nats_df["timestamp"], y=nats_df["bgp_messages"],
+                  mode="lines", name="BGP Messages",
+                  line=dict(color="#f5576c", width=2)),
+        row=1, col=1
+    )
+    fig.add_trace(
+        go.Scatter(x=nats_df["timestamp"], y=nats_df["snmp_messages"],
+                  mode="lines", name="SNMP Messages",
+                  line=dict(color="#4ecdc4", width=2)),
+        row=1, col=1
+    )
+    fig.add_trace(
+        go.Scatter(x=nats_df["timestamp"], y=nats_df["alert_count"],
+                  mode="lines", name="Alerts",
+                  line=dict(color="#ff4444", width=2, dash="dash")),
+        row=1, col=1
+    )
+    
+    # Processing time
+    fig.add_trace(
+        go.Scatter(x=nats_df["timestamp"], y=nats_df["processing_time"],
+                  mode="lines", name="Processing Time (s)",
+                  line=dict(color="#667eea", width=2), fill="tozeroy"),
+        row=2, col=1
+    )
+    
+    fig.update_xaxes(title_text="Time", row=2, col=1)
+    fig.update_yaxes(title_text="Message Count", row=1, col=1)
+    fig.update_yaxes(title_text="Seconds", row=2, col=1)
+    
+    fig.update_layout(height=500, showlegend=True, hovermode="x unified")
+    st.plotly_chart(fig, use_container_width=True)
+    
+    # Metrics summary
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("Total BGP Messages", st.session_state.message_counts["bgp"])
+    with col2:
+        st.metric("Total SNMP Messages", st.session_state.message_counts["snmp"])
+    with col3:
+        st.metric("Total Alerts", st.session_state.message_counts["alerts"])
+    with col4:
+        avg_processing = nats_df["processing_time"].mean() if len(nats_df) > 0 else 0
+        st.metric("Avg Processing Time", f"{avg_processing:.2f}s")
+else:
+    st.info("Start simulation to see NATS bus telemetry data")
 
 # Footer
 st.markdown("---")
