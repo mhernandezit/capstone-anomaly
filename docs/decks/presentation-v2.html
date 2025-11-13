@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning for Network Anomaly and Failure Detection</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/theme/black.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #FF6B35;
+            --secondary-color: #4ECDC4;
+            --accent-color: #FFE66D;
+            --text-light: #F7F7F7;
+            --text-muted: #B0B0B0;
+            --bg-dark: #0A0A0A;
+            --bg-card: #1A1A1A;
+        }
+
+        .reveal {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-light);
+        }
+
+        .reveal .slides section {
+            text-align: left;
+            padding: 1em 2em;
+            box-sizing: border-box;
+            overflow: visible;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .reveal h1 {
+            font-size: 3em;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: var(--text-light);
+            margin-bottom: 0.3em;
+            line-height: 1.1;
+        }
+
+        .reveal h2 {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.4em;
+            line-height: 1.2;
+        }
+
+        .reveal h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-top: 0.6em;
+            margin-bottom: 0.25em;
+        }
+
+        .reveal p {
+            font-size: 1em;
+            line-height: 1.3;
+            color: var(--text-light);
+            margin-bottom: 0.5em;
+        }
+
+        .reveal ul {
+            font-size: 0.95em;
+            line-height: 1.4;
+            margin-left: 0;
+            list-style: none;
+        }
+
+        .reveal li {
+            margin-bottom: 0.5em;
+            padding-left: 1.5em;
+            position: relative;
+        }
+
+        .reveal li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .reveal .cover-slide {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .reveal .cover-slide h1 {
+            font-size: 3.2em;
+            margin-bottom: 0.3em;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .reveal .cover-slide p {
+            font-size: 1.2em;
+            color: var(--text-muted);
+            margin: 0.3em 0;
+        }
+
+        .reveal .cover-slide .subtitle {
+            font-size: 1.2em;
+            color: var(--text-muted);
+            margin-top: 2em;
+        }
+
+        .reveal .big-number {
+            font-size: 3em;
+            font-weight: 900;
+            color: var(--primary-color);
+            line-height: 1;
+            margin: 0.1em 0;
+        }
+
+        .reveal .big-text {
+            font-size: 1.5em;
+            font-weight: 600;
+            line-height: 1.2;
+            margin: 0.25em 0;
+        }
+
+        .reveal .highlight {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .reveal .muted {
+            color: var(--text-muted);
+            font-size: 0.9em;
+        }
+
+        .reveal .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5em;
+            align-items: start;
+        }
+
+        .reveal .three-column {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1em;
+        }
+
+        .reveal .card {
+            background: var(--bg-card);
+            padding: 1.2em;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .reveal .card h3 {
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+
+        .reveal .card p {
+            font-size: 0.95em;
+            margin-bottom: 0.4em;
+        }
+
+        .reveal .stat-box {
+            text-align: center;
+            padding: 1em;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 2px solid var(--secondary-color);
+        }
+
+        .reveal .stat-box .number {
+            font-size: 2em;
+            font-weight: 900;
+            color: var(--secondary-color);
+            margin: 0.1em 0;
+        }
+
+        .reveal .stat-box .label {
+            font-size: 1.1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .reveal img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .reveal .image-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .reveal .image-slide img {
+            max-height: 60vh;
+            margin: 1em 0;
+        }
+
+        .reveal .image-slide p {
+            font-size: 1em;
+            color: var(--text-muted);
+            max-width: 80%;
+            margin-top: 0.5em;
+        }
+
+        .reveal .references {
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .reveal .references li {
+            margin-bottom: 0.6em;
+            padding-left: 0;
+        }
+
+        .reveal .references li:before {
+            content: "";
+        }
+
+        .reveal .fragment {
+            opacity: 0;
+        }
+
+        .reveal .fragment.visible {
+            opacity: 1;
+        }
+
+        .reveal .agenda-item {
+            font-size: 1.2em;
+            padding: 0.4em 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .reveal .notes {
+            display: none;
+        }
+
+        /* Ultra-wide layout for side-by-side presentation and notes */
+        .ultrawide-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10000;
+            background: var(--bg-dark);
+        }
+
+        .ultrawide-container.active {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .ultrawide-presentation {
+            width: 50%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ultrawide-notes {
+            width: 50%;
+            background: #1a1a1a;
+            padding: 2em;
+            overflow-y: auto;
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            border-left: 2px solid var(--primary-color);
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+        }
+
+        .ultrawide-notes h3 {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            margin-bottom: 1em;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5em;
+        }
+
+        .ultrawide-notes .note-content {
+            font-size: 1.1em;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .ultrawide-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10001;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s ease;
+        }
+
+        .ultrawide-toggle:hover {
+            background: #e55a2b;
+        }
+
+        /* Hide toggle button when speaker notes are visible */
+        .speaker-notes ~ .ultrawide-toggle,
+        body:has(.speaker-notes) .ultrawide-toggle,
+        .reveal-viewport:has(.speaker-notes) ~ .ultrawide-toggle {
+            display: none;
+        }
+        
+        /* Alternative: Hide when notes window exists */
+        .reveal .speaker-notes ~ body .ultrawide-toggle,
+        body:has(iframe[src*="notes"]) .ultrawide-toggle {
+            display: none !important;
+        }
+
+        .reveal .agenda-item:last-child {
+            border-bottom: none;
+        }
+
+        .reveal .problem-item {
+            font-size: 1.1em;
+            margin: 0.7em 0;
+            padding: 1em;
+            background: rgba(255, 107, 53, 0.1);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .reveal .solution-item {
+            font-size: 1.1em;
+            margin: 0.7em 0;
+            padding: 1em;
+            background: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid var(--secondary-color);
+            border-radius: 4px;
+        }
+
+        .reveal section[data-background] {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .reveal .centered {
+            text-align: center;
+        }
+
+        .reveal .quote {
+            font-size: 2em;
+            font-style: italic;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 2em;
+            border-left: 4px solid var(--primary-color);
+            margin: 2em 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- SLIDE 1: Cover Slide -->
+            <section class="cover-slide">
+                <h1>Machine Learning for Network Anomaly and Failure Detection</h1>
+                <p>CUNY School of Professional Studies</p>
+                <p><strong>Michael Hernandez</strong></p>
+                <p class="subtitle">IS 499 Information Systems Capstone | Professor John Bouma</p>
+                <p class="subtitle">October 11, 2025</p>
+                <aside class="notes">
+                    Good [morning/afternoon/evening]. I'm Michael Hernandez, presenting my capstone project on Machine Learning for Network Anomaly and Failure Detection.
+                    
+                    This project helps network operators find problems faster. We use machine learning to automatically spot issues in network data using two sources: routing updates showing path changes, and device health metrics. The goal is to reduce false alarms while helping operators locate problems quickly.
+                </aside>
+            </section>
+
+            <!-- SLIDE 2: Agenda Slide -->
+            <section>
+                <h2>Agenda</h2>
+                <div style="margin-top: 2em;">
+                    <div class="agenda-item">Introduction</div>
+                    <div class="agenda-item">Topic Description</div>
+                    <div class="agenda-item">Problem Description</div>
+                    <div class="agenda-item">Solution Description</div>
+                    <div class="agenda-item">Analysis</div>
+                    <div class="agenda-item">References</div>
+                </div>
+                <aside class="notes">
+                    Today I'll cover six sections: introduction, topic description, problem description, solution description, analysis, and references.
+                </aside>
+            </section>
+
+            <!-- SLIDE 3: Introduction (Part 1) -->
+            <section>
+                <h2>Introduction</h2>
+                <p class="big-text">Machine learning techniques for detecting and localizing network anomalies in large-scale environments</p>
+                <p style="margin-top: 1.5em;">Using data from <span class="highlight">BGP routing updates</span> and <span class="highlight">SNMP metrics</span></p>
+                <p class="muted" style="margin-top: 2em;">Traditional monitoring produces many false positives and offers little context for locating failures</p>
+                <aside class="notes">
+                    We use machine learning to find problems in large networks. Machine learning teaches computers to recognize patterns in data.
+                    
+                    We use two data types: routing updates that show how data paths change, and device health metrics like CPU, memory, and temperature.
+                    
+                    Traditional systems use fixed thresholds like "alert if CPU goes above 80%," creating false alarms. Machine learning learns what normal looks like and only alerts on truly unusual events.
+                </aside>
+            </section>
+
+            <!-- SLIDE 4: Introduction (Part 2) -->
+            <section>
+                <h2>Introduction</h2>
+                <div class="two-column">
+                    <div class="card">
+                        <h3>Matrix Profile</h3>
+                        <p>Time-series analysis for routing data</p>
+                    </div>
+                    <div class="card">
+                        <h3>Isolation Forest</h3>
+                        <p>Multi-dimensional outlier detection for hardware metrics</p>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5em; text-align: center; font-size: 1.3em;">
+                    <strong>Goal:</strong> Reduce alert noise while providing failure localization capabilities
+                </p>
+                <aside class="notes">
+                    Our system uses two machine learning techniques. For routing data, we use Matrix Profile, which learns normal routing patterns over time and flags unusual changes.
+                    
+                    For device health metrics, we use Isolation Forest, which looks at multiple metrics together - CPU, memory, temperature, errors - and spots unusual combinations.
+                    
+                    The goal: fewer false alarms and better problem localization. We tested whether combining both data sources works better than using just one.
+                </aside>
+            </section>
+
+            <!-- SLIDE 5: Topic Description - Network Monitoring Challenge -->
+            <section>
+                <h2>Topic Description: The Challenge</h2>
+                <p class="big-text">When something breaks, operators must quickly determine:</p>
+                <div class="problem-item">
+                    <strong>What failed?</strong>
+                </div>
+                <div class="problem-item">
+                    <strong>Where did it fail?</strong>
+                </div>
+                <div class="problem-item">
+                    <strong>How many devices are affected?</strong>
+                </div>
+                <p style="margin-top: 1.5em; font-size: 1.1em;" class="muted">
+                    Networks contain thousands of interconnected devices. Failures cascade rapidly, making root cause identification difficult.
+                </p>
+                <aside class="notes">
+                    When something breaks, operators must quickly answer three questions: What failed? Where did it fail? How many devices are affected?
+                    
+                    Networks contain thousands of interconnected devices. When one breaks, it can cascade to others, making root cause identification difficult. This project uses machine learning to automatically spot problems and uses network topology knowledge to point to the most likely source.
+                </aside>
+            </section>
+
+            <!-- SLIDE 6: Topic Description - Data Sources -->
+            <section>
+                <h2>Topic Description: Two Complementary Data Sources</h2>
+                <div class="two-column">
+                    <div class="card" style="border-left-color: var(--secondary-color);">
+                        <h3>BGP</h3>
+                        <p><strong>Border Gateway Protocol</strong></p>
+                        <ul style="font-size: 0.9em; margin-top: 0.8em;">
+                            <li>Routing path evolution</li>
+                            <li>Traffic direction changes</li>
+                            <li>Network topology updates</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-left-color: var(--accent-color);">
+                        <h3>SNMP</h3>
+                        <p><strong>Simple Network Management Protocol</strong></p>
+                        <ul style="font-size: 0.9em; margin-top: 0.8em;">
+                            <li>Device health metrics</li>
+                            <li>CPU, memory, temperature</li>
+                            <li>Interface error counts</li>
+                        </ul>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5em; text-align: center; font-size: 1.2em;">
+                    <span class="highlight">Together:</span> Routing shows path changes; hardware metrics reflect device health
+                </p>
+                <aside class="notes">
+                    BGP, the Border Gateway Protocol, is like GPS for the internet - it figures out data paths. Routers send messages about path changes, creating a stream of routing information.
+                    
+                    SNMP, the Simple Network Management Protocol, reports device health metrics like CPU, memory, temperature, and errors every few seconds.
+                    
+                    Together, BGP shows if paths are changing unexpectedly, while SNMP shows if devices are struggling. When both indicate problems simultaneously, that's stronger evidence of a real failure.
+                </aside>
+            </section>
+
+            <!-- SLIDE 7: Topic Description - Architecture Diagram -->
+            <section class="image-slide">
+                <h2 style="margin-bottom: 0.3em;">Topic Description: System Architecture</h2>
+                <div id="architecture-diagram" style="width: 100%; height: 80vh; margin: 0.5em 0 0 0;"></div>
+                <aside class="notes">
+                    This diagram shows our dual-pipeline architecture. BGP updates flow into Matrix Profile, which learns normal routing patterns and flags unusual changes.
+                    
+                    SNMP metrics flow into Isolation Forest, which looks at all device metrics together and spots unusual combinations.
+                    
+                    A message bus streams data in real-time. Each pipeline works independently, then a correlation stage combines their findings. If both pipelines detect problems simultaneously, that's a stronger signal. Finally, topology-aware triage assesses impact based on device connections and prioritizes alerts.
+                </aside>
+            </section>
+
+            <!-- SLIDE 8: Problem Description - Core Problem -->
+            <section>
+                <h2>Problem Description: The Core Problem</h2>
+                <p class="big-text">Traditional monitoring systems generate alerts without context</p>
+                <div style="margin-top: 1.5em;">
+                    <div class="problem-item">
+                        Operators receive numerous notifications but must manually investigate root cause
+                    </div>
+                    <div class="problem-item">
+                        Manual correlation across multiple systems is time-consuming
+                    </div>
+                    <div class="problem-item">
+                        Delays in resolution impact network operations
+                    </div>
+                </div>
+                <aside class="notes">
+                    Traditional monitoring systems generate alerts without context. This creates three problems:
+                    
+                    First, operators get flooded with alerts but must manually investigate root cause, wasting time on false alarms.
+                    
+                    Second, operators must manually correlate information across multiple systems - routing logs, device metrics, topology - stitching together the story by hand.
+                    
+                    Third, investigation delays mean problems take longer to fix, prolonging outages.
+                </aside>
+            </section>
+
+            <!-- SLIDE 9: Problem Description - Three Gaps -->
+            <section>
+                <h2>Problem Description: Three Critical Gaps</h2>
+                <div class="three-column">
+                    <div class="card">
+                        <h3>1. Isolated Systems</h3>
+                        <p>Routing and hardware monitored separately</p>
+                    </div>
+                    <div class="card">
+                        <h3>2. No Topology Awareness</h3>
+                        <p>Cannot assess impact or prioritize response</p>
+                    </div>
+                    <div class="card">
+                        <h3>3. Uniform Alerting</h3>
+                        <p>Same thresholds for all data types</p>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5em; text-align: center; font-size: 1.1em;" class="muted">
+                    Different data types require different detection methods
+                </p>
+                <aside class="notes">
+                    This project addresses three critical gaps:
+                    
+                    First, isolated systems. Routing and device health are monitored separately, missing correlations that indicate real problems.
+                    
+                    Second, no topology awareness. Systems don't understand device importance or connections, so they can't assess impact or prioritize.
+                    
+                    Third, uniform alerting. Systems use the same rules for all data types, but routing needs time-based analysis while device health needs multi-dimensional analysis.
+                </aside>
+            </section>
+
+            <!-- SLIDE 10: Problem Description - Why Current Systems Are Insufficient -->
+            <section>
+                <h2>Problem Description: Why Current Systems Are Insufficient</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>Excessive False Positives</h3>
+                        <p>Hardware monitoring produces alerts for harmless events</p>
+                        
+                        <h3>Lack of Context</h3>
+                        <p>No understanding of failure scope or impact</p>
+                    </div>
+                    <div>
+                        <h3>Independent Operation</h3>
+                        <p>Monitoring systems don't communicate</p>
+                        
+                        <h3>One-Size-Fits-All</h3>
+                        <p>Same logic applied to all data types</p>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5em; text-align: center; font-size: 1.3em;">
+                    <span class="highlight">Solution:</span> Combine specialized approaches with cross-source correlation
+                </p>
+                <aside class="notes">
+                    Current systems have limitations: hardware monitoring produces excessive false positives and lacks context. Different systems operate independently with no understanding of network structure. They use uniform rules despite different data behaviors.
+                    
+                    The solution: use specialized approaches for each data type, then combine findings. If both systems detect problems simultaneously, that's more reliable than either alone.
+                </aside>
+            </section>
+
+            <!-- SLIDE 11: Solution Description - Architecture Overview -->
+            <section>
+                <h2 style="margin-bottom: 0.3em;">Solution Description: Implementation Architecture</h2>
+                <div class="two-column" style="margin-bottom: 0.5em;">
+                    <div class="solution-item" style="margin: 0.4em 0.4em 0.4em 0; padding: 0.8em; font-size: 1em;">
+                        <h3 style="font-size: 1.2em; margin-bottom: 0.3em;">BGP Pipeline</h3>
+                        <p style="margin: 0; line-height: 1.3;">Matrix Profile analyzes routing patterns over time, comparing recent activity against historical baselines</p>
+                    </div>
+                    <div class="solution-item" style="margin: 0.4em 0 0.4em 0.4em; padding: 0.8em; font-size: 1em;">
+                        <h3 style="font-size: 1.2em; margin-bottom: 0.3em;">SNMP Pipeline</h3>
+                        <p style="margin: 0; line-height: 1.3;">Isolation Forest learns normal operating ranges and flags abnormal device performance</p>
+                    </div>
+                </div>
+                <div class="solution-item" style="margin-top: 0.5em; margin-bottom: 0; padding: 0.8em; background: rgba(255, 230, 109, 0.1); border-left-color: var(--accent-color); font-size: 1em;">
+                    <h3 style="font-size: 1.2em; margin-bottom: 0.3em;">Correlation Stage</h3>
+                    <p style="margin: 0; line-height: 1.3;">Combines alerts from both pipelines, checks for simultaneous problems, and incorporates topology information to assess impact scope</p>
+                </div>
+                <aside class="notes">
+                    The BGP pipeline uses Matrix Profile to learn normal routing patterns and flag unusual changes.
+                    
+                    The SNMP pipeline uses Isolation Forest to learn normal device behavior and spot unusual metric combinations.
+                    
+                    The correlation stage combines both findings. If both detect problems simultaneously in the same area, that's stronger evidence. The system also uses topology knowledge to assess impact scope.
+                </aside>
+            </section>
+
+            <!-- SLIDE 12: Solution Description - Key Implementation Details -->
+            <section>
+                <h2>Solution Description: Key Implementation Details</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>Matrix Profile</h3>
+                        <ul>
+                            <li>Real-time sliding windows</li>
+                            <li>12 time-period history</li>
+                            <li>Continuous baseline comparison</li>
+                        </ul>
+                        
+                        <h3>Isolation Forest</h3>
+                        <ul>
+                            <li>Trained on 500,000 samples</li>
+                            <li>Identifies 5% most unusual patterns</li>
+                            <li>Detects novel failure types</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Topology Configuration</h3>
+                        <ul>
+                            <li>Pre-configured device roles</li>
+                            <li>Core, ToR, and leaf identification</li>
+                            <li>Blast radius calculation</li>
+                        </ul>
+                        
+                        <div class="stat-box" style="margin-top: 1.5em;">
+                            <div class="number">20</div>
+                            <div class="label">Device Test Network</div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Matrix Profile uses sliding windows, keeping the last 12 time periods in memory and comparing new activity against recent history for real-time detection.
+                    
+                    Isolation Forest was trained on 500,000 examples and identifies the 5% most unusual metric combinations. It can detect novel failure types because it knows what normal looks like.
+                    
+                    Topology configuration defines device roles - core routers, top-of-rack switches, leaf devices - enabling blast radius calculation to prioritize problems.
+                    
+                    We tested on a 20-device network.
+                </aside>
+            </section>
+
+            <!-- SLIDE 13: Solution Description - Testing Approach -->
+            <section>
+                <h2>Solution Description: Testing Approach</h2>
+                <p class="big-text">Simulated network data: <span class="highlight">98% normal</span> traffic, <span class="highlight">2%</span> injected failures</p>
+                
+                <div class="two-column" style="margin-top: 1.5em;">
+                    <div>
+                        <h3>Test Scenarios</h3>
+                        <ul>
+                            <li>Route flapping</li>
+                            <li>Link failures</li>
+                            <li>Device restarts</li>
+                            <li>Hardware degradation</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>20-Device Test Network</h3>
+                        <ul>
+                            <li>2 edge routers</li>
+                            <li>4 spine/core routers</li>
+                            <li>8 top-of-rack switches</li>
+                            <li>8 servers</li>
+                        </ul>
+                        <p class="muted" style="margin-top: 1em; font-size: 1em;">
+                            Hierarchical structure enables testing of impact assessment and blast radius calculation
+                        </p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    We built simulators that generate realistic network data - 98% normal traffic, 2% injected failures. This lets us measure detection speed accurately.
+                    
+                    We tested four failure types: route flapping, link failures, device restarts, and gradual hardware degradation.
+                    
+                    Our 20-device test network has 2 edge routers, 4 core routers, 8 top-of-rack switches, and 8 servers, enabling impact assessment testing.
+                </aside>
+            </section>
+
+            <!-- SLIDE 14: Analysis - Evaluation Setup and Results -->
+            <section>
+                <h2>Analysis: Evaluation Setup and Results</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em; margin-top: 1em;">
+                    <div class="card" style="padding: 1em;">
+                        <h3 style="font-size: 1.1em; margin-bottom: 0.3em;">Route Flapping</h3>
+                        <p style="font-size: 0.9em; margin-bottom: 0.3em;">Strong routing alerts, minimal hardware signals. Correctly identified as routing-only problem.</p>
+                    </div>
+                    <div class="card" style="padding: 1em;">
+                        <h3 style="font-size: 1.1em; margin-bottom: 0.3em;">Link Failures</h3>
+                        <p style="font-size: 0.9em; margin-bottom: 0.3em;">Alerts from both systems simultaneously. Generated high-priority multi-modal alerts.</p>
+                    </div>
+                    <div class="card" style="padding: 1em;">
+                        <h3 style="font-size: 1.1em; margin-bottom: 0.3em;">Device Restarts</h3>
+                        <p style="font-size: 0.9em; margin-bottom: 0.3em;">Brief anomalies appropriately deprioritized. Avoided false alarms.</p>
+                    </div>
+                    <div class="card" style="padding: 1em;">
+                        <h3 style="font-size: 1.1em; margin-bottom: 0.3em;">Hardware Degradation</h3>
+                        <p style="font-size: 0.9em; margin-bottom: 0.3em;">Detected by hardware monitoring. Higher priority when routing activity co-occurred.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Route flapping generated strong routing alerts but minimal hardware signals - correctly identified as routing-only problem.
+                    
+                    Link failures produced alerts from both systems simultaneously - correlation generated high-priority multi-modal alerts.
+                    
+                    Device restarts were correctly recognized as temporary and routine - avoided false alarms.
+                    
+                    Hardware degradation was detected, and when accompanied by routing activity, received higher priority.
+                </aside>
+            </section>
+
+            <!-- SLIDE 15: Analysis - Performance Metrics -->
+            <section>
+                <h2>Analysis: Performance Metrics</h2>
+                <div class="three-column">
+                    <div class="stat-box">
+                        <div class="number">1.0</div>
+                        <div class="label">Precision</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">1.0</div>
+                        <div class="label">Recall</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">1.0</div>
+                        <div class="label">F1 Score</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1.5em;">
+                    <h3>Detection Latency</h3>
+                    <div class="two-column">
+                        <div>
+                            <p class="big-number">29.4s</p>
+                            <p>Mean detection delay</p>
+                        </div>
+                        <div>
+                            <p class="big-number">55.9s</p>
+                            <p>P95 detection delay</p>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: 0.8em; font-size: 1.2em;">
+                        <span class="highlight">All below 60-second operational target</span>
+                    </p>
+                </div>
+                <aside class="notes">
+                    The system achieved perfect detection accuracy: Precision 1.0 (no false alarms), Recall 1.0 (caught all failures), F1 Score 1.0.
+                    
+                    Mean detection delay was 29.4 seconds, with P95 of 55.9 seconds - all below our 60-second target. Sliding windows balance noise reduction with responsiveness.
+                </aside>
+            </section>
+
+            <!-- SLIDE 15b: Scalability Analysis -->
+            <section class="image-slide">
+                <h2>Analysis: Scalability Analysis</h2>
+                <div id="scalability-charts" style="width: 100%; height: 70vh; margin: 1em 0;"></div>
+                <p style="text-align: center; margin-top: 0.5em; font-size: 0.9em;">System performance remains consistent from 20 to 1,000 devices: 100% detection accuracy, linear memory scaling, and increased throughput</p>
+                <aside class="notes">
+                    Performance remained consistent from 20 to 1,000 devices. Memory usage grew linearly: 2.52 MB at 20 devices, 3.50 MB at 1,000 devices - about 1 KB per device.
+                    
+                    Throughput increased from 184 to 921 samples per second due to batch processing efficiency. Routing analysis computation depends on time window, not device count, enabling efficient scaling.
+                </aside>
+            </section>
+
+            <!-- SLIDE 16: Analysis - Limitations and Trade-offs -->
+            <section>
+                <h2>Analysis: Limitations and Trade-offs</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>Scale Limitations</h3>
+                        <p class="muted">20-device topology vs. thousands in production</p>
+                        
+                        <h3>Data Quality</h3>
+                        <p class="muted">Simulated data may not reflect real network conditions</p>
+                    </div>
+                    <div>
+                        <h3>Algorithmic Trade-offs</h3>
+                        <p class="muted">Aggregation reduces device-level attribution</p>
+                        
+                        <h3>Generalization</h3>
+                        <p class="muted">Controlled lab conditions vs. production validation</p>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5em; text-align: center; font-size: 1.1em;" class="muted">
+                    Evaluation on live networks with production data remains necessary
+                </p>
+                <aside class="notes">
+                    Limitations: We tested on 20 devices versus thousands in production, and only four failure types. We used simulated data rather than production data, which may not reflect real network complexity.
+                    
+                    Algorithmic trade-offs: Aggregation helps scaling but reduces device-level attribution. Time windows balance speed versus accuracy.
+                    
+                    This is a laboratory test. Production validation on live networks is the next step.
+                </aside>
+            </section>
+
+            <!-- SLIDE 17: References (Part 1) -->
+            <section>
+                <h2>References</h2>
+                <ul class="references">
+                    <li>Allagi, S., & Rachh, R. (2019). Analysis of Network log data using Machine Learning. 2019 IEEE 5th International Conference for Convergence in Technology (I2CT), 1-3.</li>
+                    <li>Cheng, M., Li, Q., Lv, J., Liu, W., & Wang, J. (2021). Multi-Scale LSTM Model for BGP Anomaly Classification. IEEE Transactions on Services Computing, 14(3), 765-778.</li>
+                    <li>Cisco Systems. (2006). Understanding Simple Network Management Protocol (SNMP) Traps. Cisco Technical Documentation.</li>
+                    <li>Feltin, T., Cordero Fuertes, J. A., Brockners, F., & Clausen, T. H. (2023). Understanding Semantics in Feature Selection for Fault Diagnosis in Network Telemetry Data. NOMS 2023-2023 IEEE/IFIP Network Operations and Management Symposium, 1-9.</li>
+                    <li>Liu, F. T., Ting, K. M., & Zhou, Z.-H. (2008). Isolation Forest. 2008 Eighth IEEE International Conference on Data Mining, 413-422.</li>
+                    <li>Liu, T., Zhu, Y., Xu, Q., Kong, X., & Yu, P. S. (2024). A layered isolation forest algorithm for outlier detection in imbalanced dataset. Neurocomputing, 578, 127381.</li>
+                </ul>
+                <aside class="notes">
+                    These are the first six references from the research that informed this project. The full paper includes all citations and links for anyone who wants to learn more about the techniques we used - things like time series pattern matching, outlier detection methods, and how internet routing actually works.
+                </aside>
+            </section>
+
+            <!-- SLIDE 18: References (Part 2) -->
+            <section>
+                <h2>References (continued)</h2>
+                <ul class="references">
+                    <li>Manna, A., & Alkasassbeh, M. (2019). Detecting network anomalies using machine learning and SNMP-MIB dataset with IP group. arXiv preprint arXiv:1906.00863.</li>
+                    <li>Mohammed, S. A., Mohammed, A. R., Côté, D., & Shirmohammadi, S. (2021). A machine-learning-based action recommender for Network Operation Centers. IEEE Transactions on Network and Service Management, 18(3), 2702-2713.</li>
+                    <li>Mueen, A., & Keogh, E. (2017). Matrix Profile I: All Pairs Similarity Joins for Time Series: A Unifying View that Includes Motifs, Discords and Shapelets. 2016 IEEE 16th International Conference on Data Mining (ICDM), 1317-1322.</li>
+                    <li>Rekhter, Y., Li, T., & Hares, S. (2006). A Border Gateway Protocol 4 (BGP-4). RFC 4271, Internet Engineering Task Force (IETF).</li>
+                    <li>Scott, B., Johnstone, M. N., Szewczyk, P., & Richardson, S. (2024). Matrix Profile data mining for BGP anomaly detection. Computer Networks, 242, 110257.</li>
+                    <li>Skazin, A. (2021). Detection of network anomalies in log files. IOP Conference Series: Materials Science and Engineering, 1069(1), 012021.</li>
+                    <li>Tan, Y., Huang, W., You, Y., Su, S., & Lu, H. (2024). Recognizing BGP Communities Based on Graph Neural Network. IEEE Network, 38(6), 232-238.</li>
+                    <li>Wang, H. (2020). Improvement and implementation of Wireless Network Topology System based on SNMP protocol for router equipment. Computer Communications, 151, 10-18.</li>
+                </ul>
+                <aside class="notes">
+                    These additional references also influenced how we designed and evaluated the system. Key papers include research on using Matrix Profile to find problems in routing data, Isolation Forest algorithms for spotting unusual patterns, and how machine learning can help network operations centers.
+                    
+                    I'm happy to share the full research paper and code details with anyone who is interested after the talk.
+                    
+                    Thank you for your attention. I'm now open to questions.
+                </aside>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/notes/notes.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            width: 1920,
+            height: 1080,
+            margin: 0,
+            minScale: 0.1,
+            maxScale: 2.0,
+            plugins: [ RevealNotes ],
+            view: {
+                width: 1920,
+                height: 1080
+            }
+        });
+
+        // Draw Architecture Diagram
+        function drawArchitectureDiagram() {
+            const container = document.getElementById('architecture-diagram');
+            if (!container) return;
+
+            const width = container.clientWidth || 1600;
+            const height = container.clientHeight || 700;
+            
+            // Clear container
+            container.innerHTML = '';
+            
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '100%');
+            svg.setAttribute('height', '100%');
+            svg.style.background = 'transparent';
+            container.appendChild(svg);
+
+            // Colors
+            const colors = {
+                bgp: '#4ECDC4',      // Secondary (teal)
+                snmp: '#FFE66D',     // Accent (yellow)
+                nats: '#4A90E2',     // Blue
+                fusion: '#FF6B35',   // Primary (orange)
+                triage: '#4ECDC4',   // Teal
+                output: '#FF6B35',   // Orange
+                text: '#F7F7F7',
+                textMuted: '#B0B0B0',
+                stroke: '#333333'
+            };
+
+            // Helper function to create a box
+            function createBox(x, y, width, height, fill, label, sublabel, textColor = colors.text) {
+                const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                
+                // Box
+                const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                rect.setAttribute('x', x);
+                rect.setAttribute('y', y);
+                rect.setAttribute('width', width);
+                rect.setAttribute('height', height);
+                rect.setAttribute('fill', fill);
+                rect.setAttribute('stroke', colors.stroke);
+                rect.setAttribute('stroke-width', '2');
+                rect.setAttribute('rx', '8');
+                group.appendChild(rect);
+                
+                // Label - increased font size
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', x + width / 2);
+                text.setAttribute('y', y + height / 2 - (sublabel ? 10 : 0));
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('fill', textColor);
+                text.setAttribute('font-size', '24');
+                text.setAttribute('font-weight', '600');
+                text.setAttribute('font-family', 'Inter, sans-serif');
+                text.textContent = label;
+                group.appendChild(text);
+                
+                // Sublabel (handle multi-line) - increased font size
+                if (sublabel) {
+                    const lines = sublabel.split('\n');
+                    lines.forEach((line, index) => {
+                        const subtext = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                        subtext.setAttribute('x', x + width / 2);
+                        subtext.setAttribute('y', y + height / 2 + 18 + (index * 22));
+                        subtext.setAttribute('text-anchor', 'middle');
+                        subtext.setAttribute('fill', textColor);
+                        subtext.setAttribute('font-size', '18');
+                        subtext.setAttribute('font-weight', '400');
+                        subtext.setAttribute('font-family', 'Inter, sans-serif');
+                        subtext.textContent = line;
+                        group.appendChild(subtext);
+                    });
+                }
+                
+                return group;
+            }
+
+            // Helper function to create an arrow
+            function createArrow(x1, y1, x2, y2, label = '', color = colors.text) {
+                const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                
+                // Line
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', x1);
+                line.setAttribute('y1', y1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y2', y2);
+                line.setAttribute('stroke', color);
+                line.setAttribute('stroke-width', '3');
+                line.setAttribute('marker-end', 'url(#arrowhead)');
+                group.appendChild(line);
+                
+                // Label - increased font size
+                if (label) {
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    const midX = (x1 + x2) / 2;
+                    const midY = (y1 + y2) / 2 - 10;
+                    text.setAttribute('x', midX);
+                    text.setAttribute('y', midY);
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('fill', colors.textMuted);
+                    text.setAttribute('font-size', '16');
+                    text.setAttribute('font-weight', '500');
+                    text.setAttribute('font-family', 'Inter, sans-serif');
+                    text.textContent = label;
+                    group.appendChild(text);
+                }
+                
+                return group;
+            }
+
+            // Define arrowhead marker - larger for better visibility
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+            marker.setAttribute('id', 'arrowhead');
+            marker.setAttribute('markerWidth', '12');
+            marker.setAttribute('markerHeight', '12');
+            marker.setAttribute('refX', '11');
+            marker.setAttribute('refY', '3.5');
+            marker.setAttribute('orient', 'auto');
+            const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            polygon.setAttribute('points', '0 0, 12 3.5, 0 7');
+            polygon.setAttribute('fill', colors.text);
+            marker.appendChild(polygon);
+            defs.appendChild(marker);
+            svg.appendChild(defs);
+
+            // Layout constants - increased sizes for better visibility, use full width
+            const boxWidth = Math.min(400, (width - 80) / 2.1);
+            const boxHeight = 100;
+            const spacing = 50;
+            const startY = 20;
+            const centerX = width / 2;
+
+            // 1. Data Sources (Top)
+            const bgpX = centerX - boxWidth - spacing / 2;
+            const snmpX = centerX + spacing / 2;
+            const dataY = startY;
+
+            svg.appendChild(createBox(bgpX, dataY, boxWidth, boxHeight, colors.bgp, 'BGP Updates', 'Routing Data', '#0A0A0A'));
+            svg.appendChild(createBox(snmpX, dataY, boxWidth, boxHeight, colors.snmp, 'SNMP Metrics', 'Device Health', '#0A0A0A'));
+
+            // 2. NATS Message Bus
+            const natsY = dataY + boxHeight + spacing;
+            const natsWidth = boxWidth * 2 + spacing;
+            const natsX = centerX - natsWidth / 2;
+
+            svg.appendChild(createBox(natsX, natsY, natsWidth, boxHeight, colors.nats, 'NATS Message Bus', 'Real-time Streaming'));
+
+            // Arrows from data sources to NATS
+            svg.appendChild(createArrow(bgpX + boxWidth / 2, dataY + boxHeight, natsX + natsWidth / 4, natsY, 'updates'));
+            svg.appendChild(createArrow(snmpX + boxWidth / 2, dataY + boxHeight, natsX + natsWidth * 3 / 4, natsY, 'metrics'));
+
+            // 3. Dual ML Pipelines
+            const pipelineY = natsY + boxHeight + spacing;
+            const pipelineBoxHeight = 120;
+
+            // BGP Pipeline
+            svg.appendChild(createBox(bgpX, pipelineY, boxWidth, pipelineBoxHeight, colors.bgp, 'BGP Pipeline', 'Matrix Profile\nTime-series', '#0A0A0A'));
+
+            // SNMP Pipeline
+            svg.appendChild(createBox(snmpX, pipelineY, boxWidth, pipelineBoxHeight, colors.snmp, 'SNMP Pipeline', 'Isolation Forest\nMulti-dimensional', '#0A0A0A'));
+
+            // Arrows from NATS to pipelines
+            svg.appendChild(createArrow(natsX + natsWidth / 4, natsY + boxHeight, bgpX + boxWidth / 2, pipelineY, 'BGP stream'));
+            svg.appendChild(createArrow(natsX + natsWidth * 3 / 4, natsY + boxHeight, snmpX + boxWidth / 2, pipelineY, 'SNMP stream'));
+
+            // 4. Fusion
+            const fusionY = pipelineY + pipelineBoxHeight + spacing;
+            svg.appendChild(createBox(natsX, fusionY, natsWidth, boxHeight, colors.fusion, 'Multi-Modal Signal Fusion', 'BGP + SNMP Correlation'));
+
+            // Arrows from pipelines to fusion
+            svg.appendChild(createArrow(bgpX + boxWidth / 2, pipelineY + pipelineBoxHeight, natsX + natsWidth / 4, fusionY, 'routing anomaly'));
+            svg.appendChild(createArrow(snmpX + boxWidth / 2, pipelineY + pipelineBoxHeight, natsX + natsWidth * 3 / 4, fusionY, 'hardware anomaly'));
+
+            // 5. Triage
+            const triageY = fusionY + boxHeight + spacing;
+            svg.appendChild(createBox(natsX, triageY, natsWidth, boxHeight, colors.triage, 'Topology-Aware Triage', 'Impact Assessment', '#0A0A0A'));
+
+            // Arrow from fusion to triage
+            svg.appendChild(createArrow(centerX, fusionY + boxHeight, centerX, triageY, 'correlated detections'));
+
+            // 6. Output
+            const outputY = triageY + boxHeight + spacing;
+            svg.appendChild(createBox(natsX, outputY, natsWidth, boxHeight, colors.output, 'Enriched Alerts', 'Root Cause + Recommendations'));
+
+            // Arrow from triage to output
+            svg.appendChild(createArrow(centerX, triageY + boxHeight, centerX, outputY, 'enriched context'));
+
+            // Calculate total height needed and set viewBox
+            const totalHeight = outputY + boxHeight + 30;
+            const totalWidth = width;
+            svg.setAttribute('viewBox', `0 0 ${totalWidth} ${totalHeight}`);
+            svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        }
+
+        // Draw Scalability Charts
+        function drawScalabilityCharts() {
+            const container = document.getElementById('scalability-charts');
+            if (!container) return;
+
+            const width = container.clientWidth || 1600;
+            const height = container.clientHeight || 700;
+            
+            container.innerHTML = '';
+            
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '100%');
+            svg.setAttribute('height', '100%');
+            svg.style.background = 'transparent';
+            container.appendChild(svg);
+
+            const colors = {
+                bar20: '#4ECDC4',      // Teal for 20 devices
+                bar1000: '#4A90E2',    // Blue for 1000 devices
+                target: '#FF6B35',     // Orange for target line
+                text: '#F7F7F7',
+                textMuted: '#B0B0B0',
+                grid: '#333333',
+                bg: '#1A1A1A'
+            };
+
+            // Chart dimensions
+            const chartWidth = (width - 60) / 2;
+            const chartHeight = (height - 60) / 2;
+            const margin = { top: 50, right: 30, bottom: 60, left: 80 };
+            const plotWidth = chartWidth - margin.left - margin.right;
+            const plotHeight = chartHeight - margin.top - margin.bottom;
+
+            // Helper to create a bar chart
+            function createBarChart(x, y, title, yLabel, data, yMax, yFormat, showTarget = false, targetValue = null) {
+                const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                group.setAttribute('transform', `translate(${x}, ${y})`);
+
+                // Title
+                const titleText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                titleText.setAttribute('x', chartWidth / 2);
+                titleText.setAttribute('y', 20);
+                titleText.setAttribute('text-anchor', 'middle');
+                titleText.setAttribute('fill', colors.text);
+                titleText.setAttribute('font-size', '16');
+                titleText.setAttribute('font-weight', '600');
+                titleText.setAttribute('font-family', 'Inter, sans-serif');
+                titleText.textContent = title;
+                group.appendChild(titleText);
+
+                // Y-axis label
+                const yLabelText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                yLabelText.setAttribute('x', -plotHeight / 2);
+                yLabelText.setAttribute('y', -50);
+                yLabelText.setAttribute('text-anchor', 'middle');
+                yLabelText.setAttribute('fill', colors.textMuted);
+                yLabelText.setAttribute('font-size', '12');
+                yLabelText.setAttribute('font-family', 'Inter, sans-serif');
+                yLabelText.setAttribute('transform', 'rotate(-90)');
+                yLabelText.textContent = yLabel;
+                group.appendChild(yLabelText);
+
+                // Grid lines
+                for (let i = 0; i <= 4; i++) {
+                    const yPos = margin.top + (plotHeight * i / 4);
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', margin.left);
+                    line.setAttribute('y1', yPos);
+                    line.setAttribute('x2', margin.left + plotWidth);
+                    line.setAttribute('y2', yPos);
+                    line.setAttribute('stroke', colors.grid);
+                    line.setAttribute('stroke-width', '1');
+                    line.setAttribute('stroke-dasharray', '2,2');
+                    group.appendChild(line);
+                }
+
+                // Target line (if needed)
+                if (showTarget && targetValue !== null) {
+                    const targetY = margin.top + plotHeight * (1 - targetValue / yMax);
+                    const targetLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    targetLine.setAttribute('x1', margin.left);
+                    targetLine.setAttribute('y1', targetY);
+                    targetLine.setAttribute('x2', margin.left + plotWidth);
+                    targetLine.setAttribute('y2', targetY);
+                    targetLine.setAttribute('stroke', colors.target);
+                    targetLine.setAttribute('stroke-width', '2');
+                    targetLine.setAttribute('stroke-dasharray', '5,5');
+                    group.appendChild(targetLine);
+
+                    const targetLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    targetLabel.setAttribute('x', margin.left + plotWidth - 5);
+                    targetLabel.setAttribute('y', targetY - 5);
+                    targetLabel.setAttribute('text-anchor', 'end');
+                    targetLabel.setAttribute('fill', colors.target);
+                    targetLabel.setAttribute('font-size', '11');
+                    targetLabel.setAttribute('font-weight', '600');
+                    targetLabel.setAttribute('font-family', 'Inter, sans-serif');
+                    targetLabel.textContent = `Target: ${yFormat(targetValue)}`;
+                    group.appendChild(targetLabel);
+                }
+
+                // Y-axis
+                const yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                yAxis.setAttribute('x1', margin.left);
+                yAxis.setAttribute('y1', margin.top);
+                yAxis.setAttribute('x2', margin.left);
+                yAxis.setAttribute('y2', margin.top + plotHeight);
+                yAxis.setAttribute('stroke', colors.text);
+                yAxis.setAttribute('stroke-width', '2');
+                group.appendChild(yAxis);
+
+                // X-axis
+                const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                xAxis.setAttribute('x1', margin.left);
+                xAxis.setAttribute('y1', margin.top + plotHeight);
+                xAxis.setAttribute('x2', margin.left + plotWidth);
+                xAxis.setAttribute('y2', margin.top + plotHeight);
+                xAxis.setAttribute('stroke', colors.text);
+                xAxis.setAttribute('stroke-width', '2');
+                group.appendChild(xAxis);
+
+                // Y-axis labels
+                for (let i = 0; i <= 4; i++) {
+                    const value = (yMax * i / 4);
+                    const yPos = margin.top + plotHeight - (plotHeight * i / 4);
+                    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    label.setAttribute('x', margin.left - 10);
+                    label.setAttribute('y', yPos + 4);
+                    label.setAttribute('text-anchor', 'end');
+                    label.setAttribute('fill', colors.textMuted);
+                    label.setAttribute('font-size', '11');
+                    label.setAttribute('font-family', 'Inter, sans-serif');
+                    label.textContent = yFormat(value);
+                    group.appendChild(label);
+                }
+
+                // Bars
+                const barWidth = plotWidth / 4;
+                const barSpacing = barWidth / 3;
+                const totalBarWidth = barWidth * 2 + barSpacing;
+                const startX = margin.left + (plotWidth - totalBarWidth) / 2;
+
+                data.forEach((item, index) => {
+                    const barX = startX + index * (barWidth + barSpacing);
+                    const barHeight = (item.value / yMax) * plotHeight;
+                    const barY = margin.top + plotHeight - barHeight;
+
+                    // Bar
+                    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    rect.setAttribute('x', barX);
+                    rect.setAttribute('y', barY);
+                    rect.setAttribute('width', barWidth);
+                    rect.setAttribute('height', barHeight);
+                    rect.setAttribute('fill', item.color);
+                    rect.setAttribute('rx', '4');
+                    group.appendChild(rect);
+
+                    // Value label on bar
+                    const valueLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    valueLabel.setAttribute('x', barX + barWidth / 2);
+                    valueLabel.setAttribute('y', barY - 5);
+                    valueLabel.setAttribute('text-anchor', 'middle');
+                    valueLabel.setAttribute('fill', colors.text);
+                    valueLabel.setAttribute('font-size', '12');
+                    valueLabel.setAttribute('font-weight', '600');
+                    valueLabel.setAttribute('font-family', 'Inter, sans-serif');
+                    valueLabel.textContent = yFormat(item.value);
+                    group.appendChild(valueLabel);
+
+                    // X-axis label
+                    const xLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    xLabel.setAttribute('x', barX + barWidth / 2);
+                    xLabel.setAttribute('y', margin.top + plotHeight + 25);
+                    xLabel.setAttribute('text-anchor', 'middle');
+                    xLabel.setAttribute('fill', colors.text);
+                    xLabel.setAttribute('font-size', '12');
+                    xLabel.setAttribute('font-weight', '600');
+                    xLabel.setAttribute('font-family', 'Inter, sans-serif');
+                    xLabel.textContent = item.label;
+                    group.appendChild(xLabel);
+                });
+
+                return group;
+            }
+
+            // Chart 1: Detection Speed
+            const chart1 = createBarChart(20, 20, 'Detection Speed: Near-Instantaneous at Scale', 
+                'Mean Detection Time (seconds)',
+                [
+                    { label: '20 devices', value: 0.0009, color: colors.bar20 },
+                    { label: '1000 devices', value: 0.00125, color: colors.bar1000 }
+                ],
+                0.002, 
+                (v) => v < 0.001 ? '<0.001s' : v.toFixed(3) + 's'
+            );
+            svg.appendChild(chart1);
+
+            // Chart 2: Detection Accuracy
+            const chart2 = createBarChart(chartWidth + 20, 20, 'Detection Accuracy: Consistent Across Scales',
+                'Detection Rate (%)',
+                [
+                    { label: '20 devices', value: 100, color: colors.bar20 },
+                    { label: '1000 devices', value: 100, color: colors.bar1000 }
+                ],
+                100,
+                (v) => v.toFixed(1) + '%',
+                true, 100
+            );
+            svg.appendChild(chart2);
+
+            // Chart 3: Memory Usage
+            const chart3 = createBarChart(20, chartHeight + 20, 'Memory Usage: Linear Scaling',
+                'Memory Footprint (MB)',
+                [
+                    { label: '20 devices', value: 2.52, color: colors.bar20 },
+                    { label: '1000 devices', value: 3.50, color: colors.bar1000 }
+                ],
+                4.0,
+                (v) => v.toFixed(2) + ' MB'
+            );
+            svg.appendChild(chart3);
+
+            // Chart 4: Processing Throughput
+            const chart4 = createBarChart(chartWidth + 20, chartHeight + 20, 'Processing Throughput: Scales with Network Size',
+                'Samples Processed per Second',
+                [
+                    { label: '20 devices', value: 184, color: colors.bar20 },
+                    { label: '1000 devices', value: 921, color: colors.bar1000 }
+                ],
+                1000,
+                (v) => Math.round(v) + ' sps'
+            );
+            svg.appendChild(chart4);
+
+            // Set viewBox
+            svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+            svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        }
+
+        // Draw diagram when slide is shown
+        Reveal.addEventListener('slidechanged', function(event) {
+            if (event.currentSlide.querySelector('#architecture-diagram')) {
+                setTimeout(drawArchitectureDiagram, 100);
+            }
+            if (event.currentSlide.querySelector('#scalability-charts')) {
+                setTimeout(drawScalabilityCharts, 100);
+            }
+        });
+
+        // Draw on initial load if already on that slide
+        if (document.getElementById('architecture-diagram')) {
+            setTimeout(drawArchitectureDiagram, 100);
+        }
+        if (document.getElementById('scalability-charts')) {
+            setTimeout(drawScalabilityCharts, 100);
+        }
+
+        // Ultra-wide side-by-side layout
+        let ultrawideMode = false;
+        const container = document.createElement('div');
+        container.className = 'ultrawide-container';
+        container.id = 'ultrawide-container';
+        
+        const presentationDiv = document.createElement('div');
+        presentationDiv.className = 'ultrawide-presentation';
+        presentationDiv.id = 'ultrawide-presentation';
+        
+        const notesDiv = document.createElement('div');
+        notesDiv.className = 'ultrawide-notes';
+        notesDiv.id = 'ultrawide-notes';
+        
+        container.appendChild(presentationDiv);
+        container.appendChild(notesDiv);
+        document.body.appendChild(container);
+        
+        const toggleButton = document.createElement('button');
+        toggleButton.className = 'ultrawide-toggle';
+        toggleButton.id = 'ultrawide-toggle-btn';
+        toggleButton.textContent = 'Toggle Ultra-Wide Mode';
+        
+        // Hide button when speaker notes window is open or in presentation mode
+        // Reveal.js opens notes in a popup, so we hide button in the main window during recording
+        function checkSpeakerNotes() {
+            // Hide if we're in the notes popup window (different window)
+            if (window.name && window.name.includes('reveal-notes')) {
+                toggleButton.style.display = 'none';
+                return;
+            }
+            
+            // Hide in main window when in fullscreen/presentation mode
+            // You can press 'F' for fullscreen or the button will be hidden
+            const isFullscreen = document.fullscreenElement || 
+                                document.webkitFullscreenElement || 
+                                document.mozFullScreenElement;
+            
+            // Also hide when presentation controls suggest we're presenting
+            const revealControls = document.querySelector('.reveal .controls');
+            if (isFullscreen || (revealControls && revealControls.style.display === 'none')) {
+                toggleButton.style.display = 'none';
+            }
+        }
+        
+        // Check on various events
+        setInterval(checkSpeakerNotes, 1000);
+        document.addEventListener('fullscreenchange', checkSpeakerNotes);
+        document.addEventListener('webkitfullscreenchange', checkSpeakerNotes);
+        document.addEventListener('mozfullscreenchange', checkSpeakerNotes);
+        
+        // Hide button when 'S' is pressed (speaker notes shortcut)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 's' || e.key === 'S') {
+                toggleButton.style.display = 'none';
+            }
+            // Press 'B' to toggle button visibility manually if needed
+            if (e.key === 'b' || e.key === 'B') {
+                if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    toggleButton.style.display = toggleButton.style.display === 'none' ? 'block' : 'none';
+                }
+            }
+        });
+        
+        // Initial check
+        checkSpeakerNotes();
+        
+        toggleButton.onclick = function() {
+            ultrawideMode = !ultrawideMode;
+            if (ultrawideMode) {
+                // Hide main reveal and show split view
+                document.querySelector('.reveal').style.display = 'none';
+                container.classList.add('active');
+                
+                // Move reveal to left side
+                const revealContainer = document.querySelector('.reveal');
+                revealContainer.style.display = 'block';
+                revealContainer.style.width = '50%';
+                revealContainer.style.height = '100vh';
+                revealContainer.style.position = 'fixed';
+                revealContainer.style.left = '0';
+                revealContainer.style.top = '0';
+                revealContainer.style.zIndex = '10001';
+                presentationDiv.appendChild(revealContainer);
+                
+                // Update notes
+                const currentSlide = Reveal.getCurrentSlide();
+                const notes = currentSlide.querySelector('aside.notes');
+                updateNotes(notes);
+            } else {
+                // Restore normal view
+                container.classList.remove('active');
+                const revealContainer = document.querySelector('.reveal');
+                revealContainer.style.display = 'block';
+                revealContainer.style.width = '';
+                revealContainer.style.height = '';
+                revealContainer.style.position = '';
+                revealContainer.style.left = '';
+                revealContainer.style.top = '';
+                revealContainer.style.zIndex = '';
+                document.body.appendChild(revealContainer);
+            }
+        };
+        document.body.appendChild(toggleButton);
+        
+        function updateNotes(notesElement) {
+            if (notesElement) {
+                notesDiv.innerHTML = '<h3>Speaker Notes</h3><div class="note-content">' + notesElement.textContent.trim() + '</div>';
+            } else {
+                notesDiv.innerHTML = '<h3>Speaker Notes</h3><div class="note-content">No notes for this slide.</div>';
+            }
+        }
+        
+        // Update notes when slide changes
+        Reveal.addEventListener('slidechanged', function(event) {
+            if (ultrawideMode) {
+                const slide = event.currentSlide;
+                const notes = slide.querySelector('aside.notes');
+                updateNotes(notes);
+            }
+        });
+        
+        // Initial notes update
+        const initialSlide = Reveal.getCurrentSlide();
+        const initialNotes = initialSlide.querySelector('aside.notes');
+        if (initialNotes) {
+            updateNotes(initialNotes);
+        }
+    </script>
+</body>
+</html>

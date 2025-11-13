@@ -2,6 +2,84 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2025-11-13] - Capstone Presentation v2: Interactive HTML Presentation with JavaScript Diagrams
+
+### Added
+
+**New HTML Presentation** (`docs/decks/presentation-v2.html`):
+- Interactive Reveal.js-based presentation matching professor's requirements
+- 18 slides covering all required sections: Cover, Agenda, Introduction, Topic Description, Problem Description, Solution Description, Analysis, References
+- TED Talk-inspired design with dark theme, large typography, and visual cards
+- JavaScript-generated SVG diagrams replacing static images:
+  - System architecture diagram showing dual-pipeline flow (BGP → Matrix Profile, SNMP → Isolation Forest → Fusion → Triage → Alerts)
+  - Scalability analysis charts (4-panel 2x2 grid: Detection Speed, Detection Accuracy, Memory Usage, Processing Throughput)
+- Speaker notes integrated with each slide, accessible via 'S' key
+- Ultra-wide monitor support with side-by-side layout (presentation left, notes right) for recording
+- Automatic toggle button hiding when speaker notes window is open
+- Responsive scaling optimized for ultra-wide displays (5120x1440)
+- Plain language speaker notes explaining technical concepts (BGP, SNMP, ML algorithms) for non-technical audiences
+
+**Presentation Features**:
+- Full-width architecture diagram with increased font sizes (24px labels, 18px sublabels)
+- Scalability charts showing performance from 20 to 1,000 devices
+- Condensed speaker notes targeting 15-minute presentation time (reduced from 20 minutes)
+- Professional color scheme matching paper design (orange #FF6B35, teal #4ECDC4, yellow #FFE66D)
+- All slides properly titled per professor's requirements
+
+**Supporting Documentation**:
+- `docs/decks/PRESENTATION_GUIDE.md`: Comprehensive guide for using and customizing the presentation
+- `docs/decks/presentation-v2-outline.md`: Markdown outline used to structure the presentation
+- `docs/decks/requirements.md`: Professor's requirements document
+
+### Changed
+
+**Presentation Content**:
+- All speaker notes rewritten to use plain language, removing jargon
+- Technical terms explained with analogies (BGP = GPS for internet, SNMP = vital signs)
+- Machine learning concepts explained simply (pattern recognition, learning normal behavior)
+- Notes condensed by 40-50% to fit 15-minute presentation target
+- Slide content matches requirements.md structure exactly
+
+**Visual Improvements**:
+- Architecture diagram expanded to use 80vh height (from 65vh)
+- Box widths increased to 400px maximum (from 220px) for better readability
+- Font sizes increased throughout (main labels 18px → 24px, sublabels 13px → 18px, arrow labels 12px → 16px)
+- Arrow stroke width increased (2px → 3px) with larger arrowheads
+- Removed bottom descriptive text to maximize diagram space
+
+**Implementation Architecture Slide**:
+- Reduced spacing and padding to prevent content cutoff
+- Optimized layout to fit all three components (BGP Pipeline, SNMP Pipeline, Correlation Stage)
+
+### Technical Details
+
+**JavaScript Diagram Generation**:
+- Native SVG rendering using JavaScript (no external dependencies)
+- Dynamic viewBox calculation to ensure all content fits
+- Responsive scaling based on container dimensions
+- Color-coded components matching presentation theme
+- Real-time redraw on slide navigation
+
+**Speaker Notes System**:
+- Standard Reveal.js speaker notes (press 'S' key)
+- Ultra-wide mode for side-by-side recording setup
+- Automatic button hiding when notes window opens
+- Manual toggle available (Ctrl+B / Cmd+B) if needed
+
+**Browser Compatibility**:
+- Tested with modern browsers (Chrome, Firefox, Edge)
+- Uses Reveal.js 4.3.1 from CDN
+- No local dependencies required (fully self-contained HTML)
+
+### Benefits
+
+- Professional presentation ready for capstone defense
+- Interactive diagrams that scale clearly at any resolution
+- Speaker notes help maintain consistent delivery
+- Ultra-wide mode enables professional video recording setup
+- Plain language makes technical content accessible to all audiences
+- Meets all professor requirements with proper slide titles and structure
+
 ## [2025-10-12] - Simplified BGP Simulator and Enhanced Topology Configuration
 
 ### Changed
@@ -538,30 +616,34 @@ Updated capstone document to remove syslog references, focus on dual-pipeline BG
 - All configurations well below 60s target
 
 **New Figure 3**: Performance graph showing detection delay vs number of devices
+
 - Line plot from 6 to 100 devices
 - Demonstrates stable performance through temporal aggregation
 - Validates architectural decision for O(n log n) scaling
 
 **Throughput capacity**:
-- Tested on Intel i7, 16 GB RAM
+
+- Tested on Intel i7, 32 GB RAM
 - 20 devices: 1000+ events/sec sustained
 - 100 devices (extrapolated): 5000+ events/sec feasible
 - Parallelizable feature extraction scales linearly with CPU cores
 
-### Technical Details
+### Technical Details 2
 
 **Feature dimensions**: 19 multi-modal features including:
+
 - Traditional hardware metrics (CPU, memory, temperature, interface counters)
 - Multi-device correlation patterns
 - Environmental stress scores
 - BGP correlation scores (without syslog)
 
 **Tuned model parameters**:
+
 - Isolation Forest: 150 estimators, 5% contamination, 200 training samples
 - Matrix Profile: Optimized discord distance threshold and subsequence length
 - Perfect scores: Precision=1.0, Recall=1.0, F1=1.0
 
-### Benefits
+### Benefits 3
 
 - Clearer architecture focusing on proven BGP+SNMP dual-pipeline approach
 - Better understanding of how simulators create realistic test conditions  
@@ -575,13 +657,14 @@ Updated capstone document to remove syslog references, focus on dual-pipeline BG
 
 ## [2025-10-11] - Capstone Draft with Perfect Tuned Model Results
 
-### Summary
+### Summary 2
 
 Created comprehensive third draft of capstone document with perfect metrics from tuned ML models and added dashboard demonstration guide for presentations.
 
 ### Added - Capstone Document
 
 **Created** `docs/presentations/capstone-draft.tex` - comprehensive 17-page capstone draft with:
+
 - Perfect evaluation metrics from tuned models (Precision=1.0, Recall=1.0, F1=1.0)
 - Updated TikZ charts showing actual performance vs targets
 - Detection delays: mean 29.4s, median 40.9s, P95 55.9s (all under 60s target)
