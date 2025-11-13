@@ -21,16 +21,26 @@ docs/
 │   ├── thesis.md            # Thesis statement
 │   ├── evaulation_plan.md   # Testing and evaluation plan
 │   └── proposal.md          # Project proposal
+├── decks/             # Interactive HTML presentation
+│   ├── presentation-v2.html  # Main Reveal.js presentation
+│   ├── PRESENTATION_GUIDE.md # Usage instructions
+│   └── requirements.md       # Presentation requirements
 ├── papers/            # PDF copies of referenced papers
-├── presentations/     # Final project presentation and materials
+├── presentations/     # LaTeX paper and presentation materials
 └── README.md         # This file
 ```
 
 ## Quick Access
 
+### Presentations
+
+- **[Interactive HTML Presentation](decks/presentation-v2.html)** - Reveal.js presentation with JavaScript diagrams
+  - [View on GitHub Pages](https://mhernandezit.github.io/capstone-anomaly/decks/presentation-v2.html)
+  - [Presentation Guide](decks/PRESENTATION_GUIDE.md) - Usage instructions and features
+- **[LaTeX Research Paper](presentations/capstone-draft5.tex)** - Complete academic paper source
+
 ### Essential Documents
 
-- **[Final Project Presentation](presentations/final_project_draft.pdf)** - Complete project presentation
 - **[References](research/references.md)** - Core academic literature
 - **[System Architecture](design/bgp_anomaly_uml.gv.png)** - Structural flow diagram
 - **[Behavioral Model](design/bgp_action_specification.gv.png)** - Use cases & actions
