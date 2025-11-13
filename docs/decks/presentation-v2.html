@@ -386,6 +386,139 @@
             border-left: 4px solid var(--primary-color);
             margin: 2em 0;
         }
+
+        /* Print/PDF Styles - Force black background */
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            /* Ensure CSS variables resolve in print mode - reuse existing colors */
+            :root {
+                --primary-color: #FF6B35;
+                --secondary-color: #4ECDC4;
+                --accent-color: #FFE66D;
+                --text-light: #F7F7F7;
+                --text-muted: #B0B0B0;
+                --bg-dark: #0A0A0A;
+                --bg-card: #1A1A1A;
+            }
+            /* Only override backgrounds - let existing CSS rules handle colors */
+            html,
+            body {
+                background: var(--bg-dark) !important;
+                background-color: var(--bg-dark) !important;
+            }
+            .reveal,
+            .reveal-viewport {
+                background: var(--bg-dark) !important;
+                background-color: var(--bg-dark) !important;
+            }
+            .reveal .slides {
+                position: relative;
+                width: 100% !important;
+                height: 100% !important;
+                background: var(--bg-dark) !important;
+                background-color: var(--bg-dark) !important;
+            }
+            .reveal .slides section {
+                page-break-after: always;
+                page-break-inside: avoid;
+                background: var(--bg-dark) !important;
+                background-color: var(--bg-dark) !important;
+                display: block !important;
+            }
+            .reveal .slides section.present,
+            .reveal .slides section.past,
+            .reveal .slides section.future {
+                background: var(--bg-dark) !important;
+                background-color: var(--bg-dark) !important;
+            }
+            .reveal .controls,
+            .reveal .progress,
+            .ultrawide-toggle {
+                display: none !important;
+            }
+            /* Ensure cards and boxes have visible backgrounds - colors come from existing CSS */
+            .reveal .card {
+                background: var(--bg-card) !important;
+                background-color: var(--bg-card) !important;
+            }
+            .reveal .problem-item,
+            .reveal .solution-item {
+                background: var(--bg-card) !important;
+                background-color: var(--bg-card) !important;
+            }
+            .reveal .stat-box {
+                background: var(--bg-card) !important;
+                background-color: var(--bg-card) !important;
+            }
+            /* Ensure SVG diagrams maintain dark background */
+            svg {
+                background: transparent !important;
+            }
+            #architecture-diagram,
+            #scalability-charts {
+                background: var(--bg-dark) !important;
+                background-color: var(--bg-dark) !important;
+            }
+            /* Override any Reveal.js print styles that force white */
+            .reveal .slides section[data-background],
+            .reveal .slides section[data-background-color] {
+                background: var(--bg-dark) !important;
+                background-color: var(--bg-dark) !important;
+            }
+            /* Explicitly preserve h2 color (AGENDA, etc.) - Reveal.js may override */
+            .reveal h2 {
+                color: var(--primary-color) !important;
+            }
+            .reveal h3 {
+                color: var(--secondary-color) !important;
+            }
+            .reveal .highlight {
+                color: var(--accent-color) !important;
+            }
+        }
+    </style>
+    
+    <!-- Additional print styles to override Reveal.js defaults -->
+    <style>
+        /* Force black background for print-pdf mode - must override Reveal.js */
+        /* Colors are handled by existing CSS rules using CSS variables */
+        body.print-pdf .reveal .slides section,
+        body.print-pdf .reveal .slides,
+        body.print-pdf .reveal,
+        body.print-pdf {
+            background: var(--bg-dark) !important;
+            background-color: var(--bg-dark) !important;
+        }
+        body.print-pdf .reveal .card,
+        body.print-pdf .reveal .stat-box,
+        body.print-pdf .reveal .problem-item,
+        body.print-pdf .reveal .solution-item {
+            background: var(--bg-card) !important;
+            background-color: var(--bg-card) !important;
+        }
+        /* Ensure CSS variables resolve in print */
+        body.print-pdf {
+            --primary-color: #FF6B35;
+            --secondary-color: #4ECDC4;
+            --accent-color: #FFE66D;
+            --text-light: #F7F7F7;
+            --text-muted: #B0B0B0;
+            --bg-dark: #0A0A0A;
+            --bg-card: #1A1A1A;
+        }
+        /* Explicitly preserve colors in print-pdf mode */
+        body.print-pdf .reveal h2 {
+            color: var(--primary-color) !important;
+        }
+        body.print-pdf .reveal h3 {
+            color: var(--secondary-color) !important;
+        }
+        body.print-pdf .reveal .highlight {
+            color: var(--accent-color) !important;
+        }
     </style>
 </head>
 <body>
@@ -425,9 +558,16 @@
             <!-- SLIDE 3: Introduction (Part 1) -->
             <section>
                 <h2>Introduction</h2>
-                <p class="big-text">Machine learning techniques for detecting and localizing network anomalies in large-scale environments</p>
-                <p style="margin-top: 1.5em;">Using data from <span class="highlight">BGP routing updates</span> and <span class="highlight">SNMP metrics</span></p>
-                <p class="muted" style="margin-top: 2em;">Traditional monitoring produces many false positives and offers little context for locating failures</p>
+                <div class="two-column" style="margin-top: 1em;">
+                    <div>
+                        <p class="big-text" style="font-size: 1.1em; margin-bottom: 1em;">Machine learning techniques for detecting and localizing network anomalies in large-scale environments</p>
+                        <p style="margin-top: 1em;">Using data from <span class="highlight">BGP routing updates</span> and <span class="highlight">SNMP metrics</span></p>
+                        <p class="muted" style="margin-top: 1.5em;">Traditional monitoring produces many false positives and offers little context for locating failures</p>
+                    </div>
+                    <div>
+                        <div id="intro-diagram" style="width: 100%; height: 300px; margin-top: 0.5em;"></div>
+                    </div>
+                </div>
                 <aside class="notes">
                     We use machine learning to find problems in large networks. Machine learning teaches computers to recognize patterns in data.
                     
@@ -1103,6 +1243,161 @@
             svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
         }
 
+        // Draw Intro Diagram (Slide 3)
+        function drawIntroDiagram() {
+            const container = document.getElementById('intro-diagram');
+            if (!container) return;
+
+            const width = container.clientWidth || 500;
+            const height = container.clientHeight || 300;
+
+            container.innerHTML = '';
+
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', width);
+            svg.setAttribute('height', height);
+            svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+            container.appendChild(svg);
+
+            const colors = {
+                bgp: '#4ECDC4',
+                snmp: '#FFE66D',
+                ml: '#FF6B35',
+                text: '#F7F7F7',
+                muted: '#B0B0B0'
+            };
+
+            // Arrow marker definition
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+            marker.setAttribute('id', 'intro-arrowhead');
+            marker.setAttribute('markerWidth', '10');
+            marker.setAttribute('markerHeight', '10');
+            marker.setAttribute('refX', '9');
+            marker.setAttribute('refY', '3');
+            marker.setAttribute('orient', 'auto');
+            const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            polygon.setAttribute('points', '0 0, 10 3, 0 6');
+            polygon.setAttribute('fill', colors.text);
+            marker.appendChild(polygon);
+            defs.appendChild(marker);
+            svg.appendChild(defs);
+
+            // BGP box (left)
+            const bgpBox = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            bgpBox.setAttribute('x', width * 0.1);
+            bgpBox.setAttribute('y', height * 0.2);
+            bgpBox.setAttribute('width', width * 0.35);
+            bgpBox.setAttribute('height', height * 0.25);
+            bgpBox.setAttribute('fill', 'rgba(78, 205, 196, 0.2)');
+            bgpBox.setAttribute('stroke', colors.bgp);
+            bgpBox.setAttribute('stroke-width', '2');
+            bgpBox.setAttribute('rx', '5');
+            svg.appendChild(bgpBox);
+
+            const bgpTitle = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            bgpTitle.setAttribute('x', width * 0.275);
+            bgpTitle.setAttribute('y', height * 0.28);
+            bgpTitle.setAttribute('text-anchor', 'middle');
+            bgpTitle.setAttribute('fill', colors.bgp);
+            bgpTitle.setAttribute('font-size', '18');
+            bgpTitle.setAttribute('font-weight', 'bold');
+            bgpTitle.textContent = 'BGP Updates';
+            svg.appendChild(bgpTitle);
+
+            const bgpDesc = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            bgpDesc.setAttribute('x', width * 0.275);
+            bgpDesc.setAttribute('y', height * 0.38);
+            bgpDesc.setAttribute('text-anchor', 'middle');
+            bgpDesc.setAttribute('fill', colors.text);
+            bgpDesc.setAttribute('font-size', '12');
+            bgpDesc.textContent = 'Routing paths';
+            svg.appendChild(bgpDesc);
+
+            // SNMP box (right)
+            const snmpBox = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            snmpBox.setAttribute('x', width * 0.55);
+            snmpBox.setAttribute('y', height * 0.2);
+            snmpBox.setAttribute('width', width * 0.35);
+            snmpBox.setAttribute('height', height * 0.25);
+            snmpBox.setAttribute('fill', 'rgba(255, 230, 109, 0.2)');
+            snmpBox.setAttribute('stroke', colors.snmp);
+            snmpBox.setAttribute('stroke-width', '2');
+            snmpBox.setAttribute('rx', '5');
+            svg.appendChild(snmpBox);
+
+            const snmpTitle = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            snmpTitle.setAttribute('x', width * 0.725);
+            snmpTitle.setAttribute('y', height * 0.28);
+            snmpTitle.setAttribute('text-anchor', 'middle');
+            snmpTitle.setAttribute('fill', colors.snmp);
+            snmpTitle.setAttribute('font-size', '18');
+            snmpTitle.setAttribute('font-weight', 'bold');
+            snmpTitle.textContent = 'SNMP Metrics';
+            svg.appendChild(snmpTitle);
+
+            const snmpDesc = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            snmpDesc.setAttribute('x', width * 0.725);
+            snmpDesc.setAttribute('y', height * 0.38);
+            snmpDesc.setAttribute('text-anchor', 'middle');
+            snmpDesc.setAttribute('fill', colors.text);
+            snmpDesc.setAttribute('font-size', '12');
+            snmpDesc.textContent = 'Device health';
+            svg.appendChild(snmpDesc);
+
+            // Arrows to ML box
+            const arrow1 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            arrow1.setAttribute('x1', width * 0.275);
+            arrow1.setAttribute('y1', height * 0.45);
+            arrow1.setAttribute('x2', width * 0.4);
+            arrow1.setAttribute('y2', height * 0.65);
+            arrow1.setAttribute('stroke', colors.text);
+            arrow1.setAttribute('stroke-width', '2');
+            arrow1.setAttribute('marker-end', 'url(#intro-arrowhead)');
+            svg.appendChild(arrow1);
+
+            const arrow2 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            arrow2.setAttribute('x1', width * 0.725);
+            arrow2.setAttribute('y1', height * 0.45);
+            arrow2.setAttribute('x2', width * 0.6);
+            arrow2.setAttribute('y2', height * 0.65);
+            arrow2.setAttribute('stroke', colors.text);
+            arrow2.setAttribute('stroke-width', '2');
+            arrow2.setAttribute('marker-end', 'url(#intro-arrowhead)');
+            svg.appendChild(arrow2);
+
+            // ML box (center bottom)
+            const mlBox = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            mlBox.setAttribute('x', width * 0.3);
+            mlBox.setAttribute('y', height * 0.6);
+            mlBox.setAttribute('width', width * 0.4);
+            mlBox.setAttribute('height', height * 0.25);
+            mlBox.setAttribute('fill', 'rgba(255, 107, 53, 0.2)');
+            mlBox.setAttribute('stroke', colors.ml);
+            mlBox.setAttribute('stroke-width', '3');
+            mlBox.setAttribute('rx', '5');
+            svg.appendChild(mlBox);
+
+            const mlTitle = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            mlTitle.setAttribute('x', width * 0.5);
+            mlTitle.setAttribute('y', height * 0.68);
+            mlTitle.setAttribute('text-anchor', 'middle');
+            mlTitle.setAttribute('fill', colors.ml);
+            mlTitle.setAttribute('font-size', '20');
+            mlTitle.setAttribute('font-weight', 'bold');
+            mlTitle.textContent = 'ML Detection';
+            svg.appendChild(mlTitle);
+
+            const mlDesc = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            mlDesc.setAttribute('x', width * 0.5);
+            mlDesc.setAttribute('y', height * 0.78);
+            mlDesc.setAttribute('text-anchor', 'middle');
+            mlDesc.setAttribute('fill', colors.text);
+            mlDesc.setAttribute('font-size', '13');
+            mlDesc.textContent = 'Anomaly detection';
+            svg.appendChild(mlDesc);
+        }
+
         // Draw Scalability Charts
         function drawScalabilityCharts() {
             const container = document.getElementById('scalability-charts');
@@ -1350,6 +1645,9 @@
             if (event.currentSlide.querySelector('#scalability-charts')) {
                 setTimeout(drawScalabilityCharts, 100);
             }
+            if (event.currentSlide.querySelector('#intro-diagram')) {
+                setTimeout(drawIntroDiagram, 100);
+            }
         });
 
         // Draw on initial load if already on that slide
@@ -1358,6 +1656,9 @@
         }
         if (document.getElementById('scalability-charts')) {
             setTimeout(drawScalabilityCharts, 100);
+        }
+        if (document.getElementById('intro-diagram')) {
+            setTimeout(drawIntroDiagram, 100);
         }
 
         // Ultra-wide side-by-side layout
